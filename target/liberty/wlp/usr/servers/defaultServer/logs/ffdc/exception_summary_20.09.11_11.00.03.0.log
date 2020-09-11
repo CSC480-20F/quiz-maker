@@ -1,0 +1,6 @@
+
+ Index  Count  Time of first Occurrence    Time of last Occurrence     Exception SourceId ProbeId
+------+------+---------------------------+---------------------------+---------------------------
+     0      1   9/11/20, 11:00:03:130 EDT   9/11/20, 11:00:03:130 EDT java.lang.NoClassDefFoundError com.ibm.ws.webserver.plugin.runtime-1.0.44.cl200920200820-0913 log
+                                                                            - C:\Users\TMP01\Documents\GitHub\quiz-maker\target\liberty\wlp\usr\servers\defaultServer\logs\ffdc\ffdc_20.09.11_11.00.03.0.log
+------+------+---------------------------+---------------------------+---------------------------
