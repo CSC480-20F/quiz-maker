@@ -26,6 +26,14 @@ nav > img {
   flex-direction: column;
 }
 
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10%;
+}
+
 .container > img {
   height: 200px;
   width: 200px;

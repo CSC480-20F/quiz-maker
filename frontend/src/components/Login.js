@@ -9,7 +9,7 @@ class Login extends React.Component {
 
     render() {
         return (
-            <div className="container">
+            <div className="container login">
                 <h1> QuizMaker </h1>
                 <div id="login-button">Sign in with Google</div>
             </div>
