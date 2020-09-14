@@ -1,0 +1,4 @@
+dev/microprofile/starter/StarterResource.class
+dev/microprofile/starter/StarterApplication.class
+dev/microprofile/health/StarterLivenessCheck.class
+dev/microprofile/health/StarterReadinessCheck.class

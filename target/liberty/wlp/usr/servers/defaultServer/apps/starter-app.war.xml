@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archive>
+    <dir sourceOnDisk="/home/matt/Git Repositories/quiz-maker/src/main/webapp" targetInArchive="/"/>
+    <dir sourceOnDisk="/home/matt/Git Repositories/quiz-maker/target/classes" targetInArchive="/WEB-INF/classes"/>
+    <file sourceOnDisk="/home/matt/Git Repositories/quiz-maker/target/tmp/META-INF/MANIFEST.MF" targetInArchive="/META-INF/MANIFEST.MF"/>
+</archive>
