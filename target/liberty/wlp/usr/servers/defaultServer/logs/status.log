@@ -1,0 +1,13 @@
+
+arg0=defaultServer
+arg1=--pid=
+arg2=--status
+exit=1
+
+                 Java home:  /usr/lib/jvm/java-11-openjdk-amd64
+              Install root:  /home/matt/Git Repositories/quiz-maker/target/liberty/wlp/
+          System libraries:  /home/matt/Git Repositories/quiz-maker/target/liberty/wlp/lib/
+                 User root:  /home/matt/Git Repositories/quiz-maker/target/liberty/wlp/usr/
+                    Config:  /home/matt/Git Repositories/quiz-maker/target/liberty/wlp/usr/servers/defaultServer/
+                    Output:  /home/matt/Git Repositories/quiz-maker/target/liberty/wlp/usr/servers/defaultServer/
+
