@@ -1,5 +1,6 @@
 import React from 'react'
 import {Dropdown} from 'react-bootstrap'
+import logo from '../pexels-anna-shvets-3683107.jpg'; 
 
 const Dashboard = () => {
     const authInstance = window.gapi.auth2.getAuthInstance()
@@ -12,7 +13,9 @@ const Dashboard = () => {
     return (
         <>
             <nav>
+            <img className="home-logo" src ={logo} alt ="=main page"/>
                 <div>QuizMaker</div>
+                
                 <img className="push" src={imageUrl} alt="Profile"/>
                 <Dropdown>
                     <Dropdown.Toggle as="a">
