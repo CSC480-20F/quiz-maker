@@ -8,7 +8,9 @@
     <configDirectory>/home/matt/Git Repositories/quiz-maker/src/main/liberty/config</configDirectory>
     <configFile>/home/matt/Git Repositories/quiz-maker/src/main/liberty/config/server.xml</configFile>
     <bootstrapProperties>
-        <app.context.root>starter-app</app.context.root>
+        <app.context.root>mongo</app.context.root>
+        <default.http.port>9080</default.http.port>
+        <default.https.port>9443</default.https.port>
     </bootstrapProperties>
     <appsDirectory>apps</appsDirectory>
     <looseApplication>true</looseApplication>

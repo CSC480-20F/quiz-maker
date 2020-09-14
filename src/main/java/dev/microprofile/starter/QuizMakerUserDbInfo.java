@@ -25,7 +25,7 @@ public class QuizMakerUserDbInfo {
         //Variable decelerations
         String dbInfo = "Start of all info in the data base:\n";
         //Gathers the specific collection we want
-        DBCollection collection = database.getCollection("testing");
+        DBCollection collection = database.getCollection("users");
         //Creates a basic db object
         BasicDBObject searchQuery = new BasicDBObject();
         //declaring it a search variable and setting the parameter to look for
