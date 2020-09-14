@@ -9,8 +9,6 @@
     <configFile>/home/matt/Git Repositories/quiz-maker/src/main/liberty/config/server.xml</configFile>
     <bootstrapProperties>
         <app.context.root>starter-app</app.context.root>
-        <default.http.port>9080</default.http.port>
-        <default.https.port>9443</default.https.port>
     </bootstrapProperties>
     <appsDirectory>apps</appsDirectory>
     <looseApplication>true</looseApplication>
@@ -28,5 +26,6 @@
     <refresh>false</refresh>
     <installAppsConfigDropins>/home/matt/Git Repositories/quiz-maker/target/liberty/wlp/usr/servers/defaultServer/configDropins/defaults/install_apps_configuration_1491924271.xml</installAppsConfigDropins>
     <projectType>war</projectType>
+    <projectCompileDependency>org.mongodb:mongo-java-driver:3.12.7</projectCompileDependency>
     <warSourceDirectory>/home/matt/Git Repositories/quiz-maker/src/main/webapp</warSourceDirectory>
 </liberty-plugin-config>

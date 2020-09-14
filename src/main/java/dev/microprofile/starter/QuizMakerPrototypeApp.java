@@ -3,7 +3,7 @@ package dev.microprofile.starter;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-@ApplicationPath("/starter")
-public class StarterApplication extends Application {
+@ApplicationPath("/info")
+public class QuizMakerPrototypeApp extends Application {
 
 }
