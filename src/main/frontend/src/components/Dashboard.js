@@ -2,6 +2,8 @@ import React from 'react'
 import {Dropdown} from 'react-bootstrap'
 import logo from '../pexels-anna-shvets-3683107.jpg'; 
 import CreateQuiz from './CreateQuiz';
+import Button from 'react-bootstrap/Button'
+import { Sidenav } from 'rsuite';
 
 const Dashboard = () => {
     const authInstance = window.gapi.auth2.getAuthInstance()
@@ -13,9 +15,10 @@ const Dashboard = () => {
 
     return (
         <>
-            <nav>
+            <Sidenav>
             <img className="home-logo" src ={logo} alt ="=main page"/>
                 <div>QuizMaker</div>
+                
                 
                 <img className="push" src={imageUrl} alt="Profile"/>
                 <Dropdown>
@@ -26,10 +29,13 @@ const Dashboard = () => {
                         <Dropdown.Item onClick={authInstance.signOut}>Sign out</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-            </nav>
+            </Sidenav>
 
             <div className="container">
+            <div>Welcome back, {name}</div>
+            <Button variant="warning">Create Quiz Here</Button>
                 <CreateQuiz/>
+    
             </div>
         </>
     )
