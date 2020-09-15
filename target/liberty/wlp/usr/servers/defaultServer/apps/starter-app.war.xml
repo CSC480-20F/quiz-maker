@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<archive>
-    <dir sourceOnDisk="/home/matt/Git Repositories/quiz-maker/src/main/webapp" targetInArchive="/"/>
-    <dir sourceOnDisk="/home/matt/Git Repositories/quiz-maker/target/classes" targetInArchive="/WEB-INF/classes"/>
-    <file sourceOnDisk="/home/matt/.m2/repository/org/mongodb/mongo-java-driver/3.12.7/mongo-java-driver-3.12.7.jar" targetInArchive="/WEB-INF/lib/mongo-java-driver-3.12.7.jar"/>
-    <file sourceOnDisk="/home/matt/Git Repositories/quiz-maker/target/tmp/META-INF/MANIFEST.MF" targetInArchive="/META-INF/MANIFEST.MF"/>
-</archive>
