@@ -17,7 +17,8 @@ class App extends React.Component {
   initializeGoogleSignIn() {
     window.gapi.load('auth2', () => {
       window.gapi.auth2.init({
-        client_id: '11698435631-cav1if2lia71joo1icee09aik0la3k1n.apps.googleusercontent.com'
+        client_id: '11698435631-cav1if2lia71joo1icee09aik0la3k1n.apps.googleusercontent.com',
+        hosted_domain: 'oswego.edu'
       }).then(() => {
         const authInstance =  window.gapi.auth2.getAuthInstance()
         const isSignedIn = authInstance.isSignedIn.get()
