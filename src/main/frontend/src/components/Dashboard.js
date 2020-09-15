@@ -3,8 +3,8 @@ import {Dropdown} from 'react-bootstrap'
 import logo from '../pexels-anna-shvets-3683107.jpg'; 
 import CreateQuiz from './CreateQuiz';
 import Button from 'react-bootstrap/Button'
-import { Sidenav } from 'rsuite';
 import MyCourses from './MyCourses';
+import Searchbar from './Searchbar';
 
 const Dashboard = () => {
     const authInstance = window.gapi.auth2.getAuthInstance()
@@ -16,7 +16,7 @@ const Dashboard = () => {
 
     return (
         <>
-            <Sidenav>
+            <nav>
             <img className="home-logo" src ={logo} alt ="=main page"/>
                 <div>QuizMaker</div>
                 
@@ -30,16 +30,19 @@ const Dashboard = () => {
                         <Dropdown.Item onClick={authInstance.signOut}>Sign out</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-            </Sidenav>
+            </nav>
 
             <div className="container">
             <div className="Dashboard-header"> QuizMaker </div>
             <div className='light-text'>Welcome back, {name}</div>
+
+            <Searchbar/>
+
             <Button variant="warning" className='create-quiz'>Create Quiz Here</Button>
                 <CreateQuiz/>
                 <div>
                     <MyCourses />
-                    <p> End </p>
+                    <p></p>
                 </div>
     
             </div>

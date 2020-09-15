@@ -13,7 +13,7 @@ class Login extends React.Component {
     render() {
         return (
             <div className = "login">
-            <Card border="black" style={{ width: '25rem', height:'20rem', display: 'center', margin: 'auto' }}>
+            <Card border="black" style={{ borderRadius: '20px', width: '25rem', height:'20rem', display: 'center', margin: 'auto' }}>
             {/* <Card.Header style ={{textAlign: "center", fontSize:"30px"}}><b>QuizMaker</b></Card.Header>  */}
             <Card.Body style ={{textAlign: "center", fontSize:"50px", height: '20rem', width: '24.5rem', fontFamily: Font}}><b>QuizMaker</b>
               <Card.Text>

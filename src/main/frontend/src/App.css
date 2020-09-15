@@ -47,9 +47,8 @@ nav > img {
 }
 
 .home-logo {
-  height: auto;
-  width: auto;
-  max-height: 145px;
+
+  max-height: 35px;
   max-width: 145px;
 }
 
