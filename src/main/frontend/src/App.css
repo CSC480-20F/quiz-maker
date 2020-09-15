@@ -65,10 +65,26 @@ nav > img {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.subtitle {
+.light-text {
   color: #808080;
 }
 
 .create-quiz {
   width: 20%;
+}
+
+.subtitle {
+  font-weight: 400;
+  color: #4d4d4d;
+
+}
+
+.courses-deck {
+  padding: 30px;
+}
+
+.course-card {
+  padding: 10px;
+  display: flex;
+  align-items: center;
 }
