@@ -4,6 +4,7 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import Dashboard from './components/Dashboard';
 import LoginPage from './components/Login';
 
+
 class App extends React.Component {
   constructor(props) {
       super(props)

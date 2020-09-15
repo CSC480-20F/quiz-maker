@@ -35,7 +35,14 @@ nav > img {
   /* justify-content: center;
   align-items: center; */
   /* flex-direction: column; */
-  padding: 15%;
+  padding: 13%;
+}
+
+.home-logo {
+  height: auto;
+  width: auto;
+  max-height: 40px;
+  max-width: 30px;
 }
 
 .container > img {

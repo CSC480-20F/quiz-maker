@@ -1,13 +1,14 @@
 import React from 'react'
 import {Dropdown} from 'react-bootstrap'
 import logo from '../pexels-anna-shvets-3683107.jpg'; 
+import CreateQuiz from './CreateQuiz';
 
 const Dashboard = () => {
     const authInstance = window.gapi.auth2.getAuthInstance()
     const user = authInstance.currentUser.get()
     const profile = user.getBasicProfile()
     const name = profile.getName()
-    const email = profile.getEmail()
+    //const email = profile.getEmail()
     const imageUrl = profile.getImageUrl()
 
     return (
@@ -26,9 +27,9 @@ const Dashboard = () => {
                     </Dropdown.Menu>
                 </Dropdown>
             </nav>
+
             <div className="container">
-                <h1>DASHBOARD</h1>
-                <p> Your email: {email}</p>
+                <CreateQuiz/>
             </div>
         </>
     )
