@@ -4,6 +4,7 @@ import logo from '../pexels-anna-shvets-3683107.jpg';
 import CreateQuiz from './CreateQuiz';
 import Button from 'react-bootstrap/Button'
 import { Sidenav } from 'rsuite';
+// import MyCourses from './MyCourses';
 
 const Dashboard = () => {
     const authInstance = window.gapi.auth2.getAuthInstance()
@@ -32,9 +33,13 @@ const Dashboard = () => {
             </Sidenav>
 
             <div className="container">
-            <div>Welcome back, {name}</div>
-            <Button variant="warning">Create Quiz Here</Button>
+            <div className="Dashboard-header"> QuizMaker </div>
+            <div className='subtitle'>Welcome back, {name}</div>
+            <Button variant="warning" className='create-quiz'>Create Quiz Here</Button>
                 <CreateQuiz/>
+                <div>
+                    {/* <MyCourses /> */}
+                </div>
     
             </div>
         </>

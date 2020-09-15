@@ -3,6 +3,7 @@ import './App.css';
 import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import Dashboard from './components/Dashboard';
 import LoginPage from './components/Login';
+import Loading from './components/Loading';
 
 
 class App extends React.Component {
@@ -40,7 +41,9 @@ class App extends React.Component {
   ifUserSignedIn(Component) {
       if (this.state.isSignedIn === null) {
           return (
-              <h1>Loading...</h1>
+            <div className='container-center'>
+              <Loading type={'spin'} color={'#6495ED'}/>
+            </div>
           )
       }
       return this.state.isSignedIn ?
