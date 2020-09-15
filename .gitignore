@@ -1,1 +1,4 @@
-**/target
+target/
+node/
+static/
+webapp/

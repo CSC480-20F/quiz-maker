@@ -70,7 +70,7 @@ nav > img {
 }
 
 .create-quiz {
-  width: 20%;
+  max-width: 20%;
 }
 
 .subtitle {
@@ -87,4 +87,6 @@ nav > img {
   padding: 10px;
   display: flex;
   align-items: center;
+  color: white;
+  background-color: #595959;
 }
