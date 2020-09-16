@@ -12,7 +12,7 @@ class MyCourses extends Component {
                         <Card.Title>Calculus I</Card.Title>
                     </Card>
                     <Card className="course-card">
-                        <Card.Title>Piano 101</Card.Title>
+                        <Card.Title>MUS101</Card.Title>
                     </Card>
                     <Card className="course-card">
                         <Card.Title>Programming Languages</Card.Title>

@@ -39,11 +39,12 @@ const Dashboard = () => {
             <Searchbar/>
 
             <Button variant="warning" className='create-quiz'>Create Quiz Here</Button>
-                <CreateQuiz/>
                 <div>
                     <MyCourses />
                     <p></p>
                 </div>
+
+                <CreateQuiz/>
     
             </div>
         </>
