@@ -82,10 +82,26 @@ nav > img {
   padding: 30px;
 }
 
+.card-deck .card{
+  margin-bottom: 20px;
+}
+
 .course-card {
+  min-width: 10rem;
   padding: 10px;
   display: flex;
   align-items: center;
+  text-align: center;
   color: white;
   background-color: #595959;
+}
+
+.regular-link {
+  text-decoration: none;
+  color: white;
+}
+
+.regular-link:hover {
+  text-decoration: none;
+  color: white;
 }

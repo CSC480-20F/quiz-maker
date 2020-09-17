@@ -38,12 +38,11 @@ const Dashboard = () => {
 
             <Searchbar/>
 
-            <Button variant="warning" className='create-quiz'>Create Quiz Here</Button>
-                <div>
+            <div style={{padding: '10px'}}> </div>
+            <Button variant="warning" className='create-quiz'>Create a Quiz</Button>
+                <div style={{padding: '10px'}}>
                     <MyCourses />
-                    <p></p>
                 </div>
-
                 <CreateQuiz/>
     
             </div>
