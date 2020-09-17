@@ -5,6 +5,7 @@ import CreateQuiz from './CreateQuiz';
 import Button from 'react-bootstrap/Button'
 import MyCourses from './MyCourses';
 import Searchbar from './Searchbar';
+import QuizTable from './QuizTable';
 
 const Dashboard = () => {
     const authInstance = window.gapi.auth2.getAuthInstance()
@@ -44,6 +45,10 @@ const Dashboard = () => {
                     <MyCourses />
                 </div>
                 <CreateQuiz/>
+
+                <div style={{padding: '10px'}}>
+                    <QuizTable />
+                </div>
     
             </div>
         </>
