@@ -58,7 +58,7 @@ class App extends React.Component {
           <BrowserRouter>
               <Switch>
                   <Route exact path="/" render={() => this.ifUserSignedIn(Dashboard)}/>
-                  <Route path="/:course_id" render={() => this.ifUserSignedIn(Course)}/>
+                  <Route path="/:course_id" component={Course}/>
                   {/* <Route path="/dashboard" render={() => this.ifUserSignedIn(Dashboard)}/> */}
               </Switch>
           </BrowserRouter>

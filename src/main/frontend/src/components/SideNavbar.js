@@ -14,7 +14,7 @@ const SideNavbar = () => {
     // const imageUrl = profile.getImageUrl()
 
     return (
-      <div class="sidebar">
+      <div className="sidebar">
         <img className="home-logo" src ={logo} alt ="=main page"/>
         <Link to='/' className='regular-link'> Dashboard </Link>
         <Nav.Link onClick={authInstance.signOut} href="/"> Sign Out </Nav.Link>

@@ -1,13 +1,29 @@
 import React, { Component } from 'react';
 import SideNavbar from './SideNavbar';
+import axios from 'axios';
 
 class Course extends Component {
+    state = {
+        post: null
+    }
+
+    componentDidMount() {
+        let id = this.props.match.params.course_id;
+        axios.get("https://jsonplaceholder.typicode.com/users/" + id).then(res => {
+            console.log(res.data)
+            this.setState({
+                post: res.data
+            })
+        })
+    }
 
     render () {
-        const course = this.props.course ? (
+        const post = this.state.post ? (
             <div>
                 <SideNavbar/>
-                <h4 className="center">{this.props.course.name}</h4>
+                <div className='content'>
+                <div className='container'> <h4 className="center">{this.state.post.name}</h4> </div>
+                </div>
             </div>
         ) : (
             <div> <SideNavbar/>
@@ -16,7 +32,7 @@ class Course extends Component {
         )
         return(
             <div>
-                { course }
+                {post}
             </div>
         )
     }
