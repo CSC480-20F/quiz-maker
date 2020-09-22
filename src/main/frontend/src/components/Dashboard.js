@@ -1,11 +1,12 @@
 import React from 'react'
-import {Dropdown} from 'react-bootstrap'
-import logo from '../pexels-anna-shvets-3683107.jpg'; 
-import CreateQuiz from './CreateQuiz';
-import Button from 'react-bootstrap/Button'
+// import {Dropdown} from 'react-bootstrap'
+// import logo from '../pexels-anna-shvets-3683107.jpg'; 
+// import CreateQuiz from './CreateQuiz';
+import { Button } from "react-bootstrap";
 import MyCourses from './MyCourses';
 import Searchbar from './Searchbar';
-import QuizTable from './QuizTable';
+// import QuizTable from './QuizTable';
+import Sidebar from './SideNavbar';
 
 const Dashboard = () => {
     const authInstance = window.gapi.auth2.getAuthInstance()
@@ -13,11 +14,11 @@ const Dashboard = () => {
     const profile = user.getBasicProfile()
     const name = profile.getName()
     //const email = profile.getEmail()
-    const imageUrl = profile.getImageUrl()
+    // const imageUrl = profile.getImageUrl()
 
     return (
         <>
-            <nav>
+            {/* <nav>
             <img className="home-logo" src ={logo} alt ="=main page"/>
                 <div>QuizMaker</div>
                 
@@ -31,8 +32,10 @@ const Dashboard = () => {
                         <Dropdown.Item onClick={authInstance.signOut}>Sign out</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-            </nav>
-
+            </nav> */}
+            <div> <Sidebar/></div>
+            {/* <Sidebar/> */}
+            
             <div className="container">
             <div className="Dashboard-header"> QuizMaker </div>
             <div className='light-text'>Welcome back, {name}</div>
@@ -41,13 +44,13 @@ const Dashboard = () => {
 
             <div style={{padding: '10px'}}> </div>
             <Button variant="warning" className='create-quiz'>Create a Quiz</Button>
-                <div style={{padding: '10px'}}>
+                <div className='content' style={{padding: '10px'}}>
                     <MyCourses />
                 </div>
-                <CreateQuiz/>
+                {/* <CreateQuiz/> */}
 
                 <div style={{padding: '10px'}}>
-                    <QuizTable />
+                    {/* <QuizTable /> */}
                 </div>
     
             </div>

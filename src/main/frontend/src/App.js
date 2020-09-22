@@ -4,6 +4,7 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import Dashboard from './components/Dashboard';
 import LoginPage from './components/Login';
 import Loading from './components/Loading';
+import Course from './components/Course';
 
 
 class App extends React.Component {
@@ -57,6 +58,7 @@ class App extends React.Component {
           <BrowserRouter>
               <Switch>
                   <Route exact path="/" render={() => this.ifUserSignedIn(Dashboard)}/>
+                  <Route path="/:course" render={() => this.ifUserSignedIn(Course)}/>
                   {/* <Route path="/dashboard" render={() => this.ifUserSignedIn(Dashboard)}/> */}
               </Switch>
           </BrowserRouter>
