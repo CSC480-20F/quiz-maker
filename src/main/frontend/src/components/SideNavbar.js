@@ -18,7 +18,7 @@ const SideNavbar = () => {
         <img className="home-logo" src ={logo} alt ="=main page"/>
         <Link to='/' className='regular-link'> Dashboard </Link>
         <Nav.Link onClick={authInstance.signOut} href="/"> Sign Out </Nav.Link>
-    </div>
+      </div>
         // <nav>
         //     <img className="home-logo" src ={logo} alt ="=main page"/>
         //         <NavLink className="regular-link" to="/">QuizMaker</NavLink>

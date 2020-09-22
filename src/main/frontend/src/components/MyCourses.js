@@ -27,7 +27,7 @@ class MyCourses extends Component {
             myCourses.map(course => {
                 return (
                         <Card className="course-card">
-                        <Link to={'/' + course} className='regular-link'>
+                        <Link to={'/' + course.id} className='regular-link'>
                             <Card.Title>{course.username}</Card.Title>
                         </Link>
                         </Card>
