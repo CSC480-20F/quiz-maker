@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SideNavbar from './SideNavbar';
 import axios from 'axios';
+import QuizTable from './QuizTable';
 
 class Course extends Component {
     state = {
@@ -22,7 +23,10 @@ class Course extends Component {
             <div>
                 <SideNavbar/>
                 <div className='content'>
-                <div className='container'> <h4 className="center">{this.state.post.name}</h4> </div>
+                <div className='container'> 
+                <h4 className="center">{this.state.post.name}</h4> 
+                <QuizTable />
+                </div>
                 </div>
             </div>
         ) : (
