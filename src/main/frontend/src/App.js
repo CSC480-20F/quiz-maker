@@ -1,11 +1,35 @@
 import React from 'react';
 import './App.css';
-import {BrowserRouter, Switch, Route} from 'react-router-dom'
+import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 import Dashboard from './components/Dashboard';
 import LoginPage from './components/Login';
 import Loading from './components/Loading';
 import Course from './components/Course';
 
+
+class ProtectedRoute extends React.Component {
+  render() {
+    const { component: Component, condition: Condition, ...props } = this.props
+
+    if (Condition === null) {
+      return (
+        <div className='container-center'>
+          <Loading type={'spin'} color={'#6495ED'}/>
+        </div>
+      )
+    }
+    return (
+      <Route 
+        {...props} 
+        render={props => (
+          Condition ?
+            <Component {...props} /> :
+            <Redirect to='/' />
+        )} 
+      />
+    )
+  }
+}
 
 class App extends React.Component {
   constructor(props) {
@@ -58,7 +82,7 @@ class App extends React.Component {
           <BrowserRouter>
               <Switch>
                   <Route exact path="/" render={() => this.ifUserSignedIn(Dashboard)}/>
-                  <Route path="/:course_id" component={Course}/>
+                  <ProtectedRoute path="/:course_id" condition={this.state.isSignedIn} component={Course}/>
                   {/* <Route path="/dashboard" render={() => this.ifUserSignedIn(Dashboard)}/> */}
               </Switch>
           </BrowserRouter>

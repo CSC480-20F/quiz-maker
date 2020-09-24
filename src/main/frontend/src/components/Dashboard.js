@@ -37,7 +37,7 @@ const Dashboard = () => {
             {/* <Sidebar/> */}
             
             <div className="container">
-            <div className="Dashboard-header"> QuizMaker </div>
+            <div className="header"> QuizMaker </div>
             <div className='light-text'>Welcome back, {name}</div>
 
             <Searchbar/>
