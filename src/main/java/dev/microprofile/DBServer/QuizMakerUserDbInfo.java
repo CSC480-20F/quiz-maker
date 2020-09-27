@@ -1,4 +1,4 @@
-package dev.microprofile.starter;
+package dev.microprofile.DBServer;
 
 import com.mongodb.*;
 
@@ -6,16 +6,14 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.awt.*;
-import java.util.Collections;
 
 @Path("/mock-users")
 public class QuizMakerUserDbInfo {
     // Creates login username and password
     MongoCredential adminAuth = MongoCredential.createScramSha256Credential("superuser", "admin", "AdminPassword123".toCharArray());
     // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
-    ServerAddress serverAddress = new ServerAddress("localhost", 27017);
-    MongoClient mongoClient = new MongoClient(serverAddress, Collections.singletonList(adminAuth));
+    ServerAddress serverAddress = new ServerAddress("68.172.33.6", 27017);
+    MongoClient mongoClient = new MongoClient(serverAddress);
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("testing");
 
