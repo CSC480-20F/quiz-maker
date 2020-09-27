@@ -1,7 +1,7 @@
 /* @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext'); */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
-nav {
+/* nav {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -20,7 +20,7 @@ nav > img {
 
 .push {
   margin-left: auto;
-}
+} */
 
 .container {
   display: flex;
@@ -49,11 +49,6 @@ nav > img {
 .home-logo {
   max-height: 35px;
   max-width: 145px;
-}
-
-.container > img {
-  height: 200px;
-  width: 200px;
 }
 
 .header {
@@ -105,8 +100,10 @@ nav > img {
   color: white;
 }
 
-.content {
-  margin-left: 120px;
-  /* padding: 1px 16px;
-  height: 1000px; */
+.tall {
+  height:70px;
+  background-color: cornflowerblue;
+  padding-left: 50px;
+  padding-right: 50px;
+  font-weight: bold;
 }

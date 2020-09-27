@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SideNavbar from './SideNavbar';
+import TopNavbar from './TopNavbar';
 import axios from 'axios';
 import QuizTable from './QuizTable';
 import { Button } from "react-bootstrap";
@@ -12,7 +12,6 @@ class Course extends Component {
     componentDidMount() {
         let id = this.props.match.params.course_id;
         axios.get("https://jsonplaceholder.typicode.com/users/" + id).then(res => {
-            console.log(res.data)
             this.setState({
                 post: res.data
             })
@@ -22,17 +21,16 @@ class Course extends Component {
     render () {
         const post = this.state.post ? (
             <div>
-                <SideNavbar/>
-                <div className='content'>
+                <TopNavbar/>
                 <div className='container'> 
                 <h1 className="center header">{this.state.post.name}</h1>
-                <div style={{padding: '10px'}}> <Button variant='light' className='create-quiz'>Create a Quiz</Button> </div>
+                <div style={{padding: '10px'}}> </div>
+                <Button variant='warning' className='create-quiz'>Create a Quiz</Button>
                 <div style={{padding: '10px'}}> <QuizTable /> </div>
-                </div>
                 </div>
             </div>
         ) : (
-            <div> <SideNavbar/>
+            <div> <TopNavbar/>
             <div className="container"> Loading course...</div>
             </div>
         )

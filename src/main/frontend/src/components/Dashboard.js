@@ -1,12 +1,8 @@
 import React from 'react'
-// import {Dropdown} from 'react-bootstrap'
-// import logo from '../pexels-anna-shvets-3683107.jpg'; 
-// import CreateQuiz from './CreateQuiz';
 import { Button } from "react-bootstrap";
 import MyCourses from './MyCourses';
 import Searchbar from './Searchbar';
-// import QuizTable from './QuizTable';
-import Sidebar from './SideNavbar';
+import TopNavbar from './TopNavbar';
 
 const Dashboard = () => {
     const authInstance = window.gapi.auth2.getAuthInstance()
@@ -18,23 +14,7 @@ const Dashboard = () => {
 
     return (
         <>
-            {/* <nav>
-            <img className="home-logo" src ={logo} alt ="=main page"/>
-                <div>QuizMaker</div>
-                
-                
-                <img className="push" src={imageUrl} alt="Profile"/>
-                <Dropdown>
-                    <Dropdown.Toggle as="a">
-                        {name}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item onClick={authInstance.signOut}>Sign out</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-            </nav> */}
-            <div> <Sidebar/></div>
-            {/* <Sidebar/> */}
+            <div> <TopNavbar/></div>
             
             <div className="container">
             <div className="header"> QuizMaker </div>
@@ -44,13 +24,8 @@ const Dashboard = () => {
 
             <div style={{padding: '10px'}}> </div>
             <Button variant="warning" className='create-quiz'>Create a Quiz</Button>
-                <div className='content' style={{padding: '10px'}}>
-                    <MyCourses />
-                </div>
-                {/* <CreateQuiz/> */}
-
                 <div style={{padding: '10px'}}>
-                    {/* <QuizTable /> */}
+                    <MyCourses />
                 </div>
     
             </div>

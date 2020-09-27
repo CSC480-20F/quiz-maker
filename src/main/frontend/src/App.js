@@ -20,7 +20,7 @@ class ProtectedRoute extends React.Component {
     }
     return (
       <Route 
-        {...props} 
+        {...props}
         render={props => (
           Condition ?
             <Component {...props} /> :
