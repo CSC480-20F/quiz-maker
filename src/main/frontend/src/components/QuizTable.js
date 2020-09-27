@@ -60,13 +60,13 @@ componentDidMount() {
 
         ]
       return (
-            <div>
-                <ReactTable
+            <div style={{padding: '50px'}}>
+                <ReactTable className='quiztable'
                     data={data}
                     columns={columns}
                     defaultPageSize = {10}
                     filterable
-                    pageSizeOptions = {[2,4, 6]}
+                    pageSizeOptions = {[5,10,20,25]}
                 />
             </div>
       )

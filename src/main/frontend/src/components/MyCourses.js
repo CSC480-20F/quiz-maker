@@ -39,7 +39,7 @@ class MyCourses extends Component {
         return (
             <div>
             <h1 className='subtitle'> My Courses </h1>
-            <Card>
+            <Card className='rounded-corner'>
                 <CardDeck className="courses-deck">
                     {coursesList}
                 </CardDeck>
