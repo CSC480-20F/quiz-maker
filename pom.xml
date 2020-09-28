@@ -12,5 +12,6 @@
 
     <modules>
         <module>DB</module>
+        <module>Frontend</module>
     </modules>
 </project>
