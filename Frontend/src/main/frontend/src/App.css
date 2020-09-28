@@ -1,0 +1,128 @@
+/* @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext'); */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+/* nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background: black;
+  color: white;
+  height: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+nav > img {
+  height: auto;
+  width: 40px;
+  padding-right: 10px;
+}
+
+.push {
+  margin-left: auto;
+} */
+
+.container-middle{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.container-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 75vh;
+}
+
+.login {
+  background:#f5f5f5;
+  /* display: center; */
+  /* justify-content: center;
+  align-items: center; */
+  /* flex-direction: column; */
+  padding: 13%;
+}
+
+.home-logo {
+  max-height: 35px;
+  max-width: 145px;
+}
+
+.header {
+  text-align: center;
+  font-size: 50px;
+  padding-top: 20px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.light-text {
+  color: #808080;
+}
+
+.create-quiz {
+  min-width: 20%;
+}
+
+.subtitle {
+  font-weight: 400;
+  color: #4d4d4d;
+
+}
+
+.rounded-corner {
+  border-radius: 20px;
+}
+
+.courses-deck {
+  padding: 50px;
+}
+
+.card-deck .card{
+  margin: 20px;
+}
+
+.course-card {
+  min-width: 200px;
+  min-height: 100px;
+  border-radius: 10px;
+  max-height: fit-content;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  background-color: #595959;
+}
+
+.regular-link {
+  text-decoration: none;
+  color: white;
+}
+
+.regular-link:hover {
+  text-decoration: none;
+  color: white;
+}
+
+.tall {
+  height:70px;
+  background-color: cornflowerblue;
+  padding-left: 50px;
+  padding-right: 50px;
+  font-weight: bold;
+}
+
+.quiztable{
+  background: #f2f2f2;
+}
