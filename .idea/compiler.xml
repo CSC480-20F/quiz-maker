@@ -6,11 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="starter-app" />
+        <module name="Frontend" />
+        <module name="DBServer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="starter-app" target="1.8" />
+      <module name="DBServer" target="1.8" />
+      <module name="Frontend" target="1.5" />
+      <module name="quiz-maker" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
