@@ -62,7 +62,7 @@ nav > img {
   font-size: 50px;
   padding-top: 20px;
   font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Roboto;
 }
 
 .light-text {
@@ -103,6 +103,7 @@ nav > img {
   text-align: center;
   color: white;
   background-color: #595959;
+  /* background-color: black; */
 }
 
 .regular-link {
@@ -115,14 +116,18 @@ nav > img {
   color: white;
 }
 
-.tall {
+.nav-bar-style {
   height:70px;
-  background-color: cornflowerblue;
+  background-color: white;
   padding-left: 50px;
   padding-right: 50px;
-  font-weight: bold;
+  font-family: Roboto;
+  font-size: 20px;
 }
 
 .quiztable{
   background: #f2f2f2;
 }
+
+
+

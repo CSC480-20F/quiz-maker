@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TopNavbar from './TopNavbar';
+import TopNavbar from './TopNavbar_v2';
 import axios from 'axios';
 import QuizTable from './QuizTable';
 import { Button, Card } from "react-bootstrap";
