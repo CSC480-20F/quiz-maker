@@ -1,5 +1,6 @@
-import React from 'react'
-
+import React from 'react';
+import axios from 'axios';
+import TopNavbar from './TopNavbar';
 
 class CreateQuiz extends React.Component {
     constructor(props) {
@@ -12,11 +13,30 @@ class CreateQuiz extends React.Component {
         }
     }
 
+    handleSubmit(e) {
+      e.preventDefault();
+      axios({
+        method: "POST", 
+        url:"https://localhost:9081/info/testing-input", 
+        data:  this.state
+      }).then((response)=>{
+        if (response.data.status === 'success'){
+          alert("Message Sent."); 
+          this.resetForm()
+        }else if(response.data.status === 'fail'){
+          alert("Message failed to send.")
+        }
+      })
+      
+    }
+
 
     render(){
 
         return(
-        <div className="App">
+         
+        <div className="container">
+        <TopNavbar/>
         <form id="contact-form" onSubmit={this.handleSubmit.bind(this)} method="POST">
         <div className="form-group">
         <label htmlFor="name">Name of the Quiz</label>
