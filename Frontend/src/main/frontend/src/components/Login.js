@@ -15,7 +15,7 @@ class Login extends React.Component {
             <div className = "login">
             <Card border="black" style={{ borderRadius: '20px', width: '25rem', height:'20rem', display: 'center', margin: 'auto' }}>
             {/* <Card.Header style ={{textAlign: "center", fontSize:"30px"}}><b>QuizMaker</b></Card.Header>  */}
-            <Card.Body style ={{textAlign: "center", fontSize:"50px", height: '20rem', width: '24.5rem', fontFamily: Font}}><b>QuizMaker</b>
+            <Card.Body style ={{textAlign: "center", color: '#286896' ,fontSize:"50px", height: '20rem', width: '24.5rem', fontFamily: Font}}><b>QuizMaker</b>
               <Card.Text>
               <div id="login-button" style = {{display: 'flex',  justifyContent:'center', alignItems: 'center', padding: '10%'}}>Sign in with Google</div>
               </Card.Text>
