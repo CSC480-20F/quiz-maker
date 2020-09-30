@@ -6,27 +6,51 @@ class CreateQuiz extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          name: '',
-          course: '',
-          message: ''
-
+            "fname":"Anisha",
+            "lname":"KC",
+            "age":20.0,
+            "major":"Computer-Science"
         }
     }
 
     handleSubmit(e) {
       e.preventDefault();
-      axios({
-        method: "POST", 
-        url:"https://localhost:9081/info/testing-input", 
-        data:  this.state
-      }).then((response)=>{
-        if (response.data.status === 'success'){
-          alert("Message Sent."); 
-          this.resetForm()
-        }else if(response.data.status === 'fail'){
-          alert("Message failed to send.")
-        }
+    //   const text = {
+    //     "fname": "Anisha",
+    //     "lname": "KC",
+    //     "age": 20.0,
+    //     "major": "Computer-Science"
+    // }
+    
+    // console.log(JSON.stringify(text));
+
+    // axios({
+    //     method: 'post',
+    //     url: 'http://localhost:9081/users/testing-input',
+    //     data: text
+    //   }).then(response => {
+    //     this.props.history.push('/MainPage')
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //   });
+
+      axios.post('http://localhost:9081/users/testing-input', {
+        "fname": "Anisha",
+        "lname": "KC",
+        "age": 20.0,
+        "major": "Computer-Science",
+        headers: { "Access-Control-Allow-Origin": "*"
+        // "Access-Control-Allow-Origin": "http://localhost:3000/CreateQuiz",
+        // 'Access-Control-Allow-Credentials': 'true'
+      }
       })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
       
     }
 
@@ -38,7 +62,7 @@ class CreateQuiz extends React.Component {
         <div className="container">
         <TopNavbar/>
         <form id="contact-form" onSubmit={this.handleSubmit.bind(this)} method="POST">
-        <div className="form-group">
+        {/* <div className="form-group">
         <label htmlFor="name">Name of the Quiz</label>
         <input type="text" className="form-control" value={this.state.name} onChange={this.onNameChange.bind(this)} />
         </div>
@@ -49,27 +73,27 @@ class CreateQuiz extends React.Component {
         <div className="form-group">
         <label htmlFor="message">Put your questions here</label>
         <textarea className="form-control" rows="5" value={this.state.message} onChange={this.onMessageChange.bind(this)} />
-        </div>
+        </div> */}
         <button type="submit" className="btn btn-primary">Submit</button>
         </form>
         </div>
  );
 }
 
-  onNameChange(event) {
-	this.setState({name: event.target.value})
-  }
+  // onNameChange(event) {
+	// this.setState({name: event.target.value})
+  // }
 
-  onCourseChange(event) {
-	this.setState({course: event.target.value})
-  }
+  // onCourseChange(event) {
+	// this.setState({course: event.target.value})
+  // }
 
-  onMessageChange(event) {
-	this.setState({message: event.target.value})
-  }
+  // onMessageChange(event) {
+	// this.setState({message: event.target.value})
+  // }
 
-handleSubmit(event) {
-}
+// handleSubmit(event) {
+// }
 }
     
 export default CreateQuiz;

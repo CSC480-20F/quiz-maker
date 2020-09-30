@@ -18,9 +18,67 @@ class Course extends Component {
                 post: res.data
             })
         })
-        const text = 'React POST Request Example';
-        axios.post('https://localhost:9081/users/testing-input', text).then(response => 
-            this.setState({ textID: response.data.id }));
+        // const text = {
+        //     "fname": "Anisha",
+        //     "lname": "KC",
+        //     "age": 20.0,
+        //     "major": "Computer-Science"
+        // }
+        
+        // console.log(JSON.stringify(text));
+
+        // axios({
+        //     method: 'post',
+        //     url: 'http://localhost:9081/users/testing-input',
+        //     data: text
+        //   }).then(response => {
+        //     this.props.history.push('/MainPage')
+        //   })
+        //   .catch(error => {
+        //     console.log(error)
+        //   });
+
+    //     axios.post('https://localhost:9081/info/testing-input',  JSON.stringify(text))
+    //     .then(res => {
+    //     console.log(res);
+    //     console.log(res.data);
+    //   })
+
+        // (async () => {
+        //     const json = JSON.stringify({ "fname":"Anisha",
+        //     "lname":"KC",
+        //     "age":20.0,
+        //     "major":"Computer-Science" });
+        //     const res = await axios.post('http://localhost:9081/users/testing-input', json);
+        
+        //     // all of the script.... 
+        
+        // })();
+        // nothing else
+
+        // const json = JSON.stringify({ "fname":"Anisha",
+        //     "lname":"KC",
+        //     "age":20.0,
+        //     "major":"Computer-Science" });
+        // const res = await axios.post('http://localhost:9081/users/testing-input', json);
+
+        // // axios.post('http://localhost:9081/users/testing-input', JSON).then(response => 
+        // //     this.setState({ textID: response.data.id }));
+
+        // Axios automatically sets the `Content-Type` based on the
+        // 2nd parameter to `axios.post()`.
+        // res.data.headers['Content-Type'];
+
+        // const res = await axios.post('http://localhost:9081/users/testing-input', { 
+        //     "fname":"Anisha",
+        //     "lname":"KC",
+        //     "age":20.0,
+        //     "major":"Computer-Science" });
+
+        // res.data.data; // '{"answer":42}'
+        // res.data.headers['Content-Type']; 
+        // // axios.post('http://localhost:9081/users/testing-input', JSON).then(response => 
+        // //     this.setState({ textID: response.data.id }));
     }
 
     handleClick() {
