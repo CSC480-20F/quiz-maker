@@ -43,10 +43,10 @@ const TopNavbar = () => {
       <Nav.Link href="/Quizzes">Quizzes</Nav.Link>
       <Nav.Link href="/CreateQuiz">Create Quiz</Nav.Link>
       
-      <Form inline>
+      {/* <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-      {/* <Button variant="dark">Search</Button> */}
-      </Form>
+      <Button variant="dark">Search</Button>
+      </Form> */}
       </Nav>
       <NavDropdown className="justify-content-end" title={name} id="collasible-nav-dropdown">
       <NavDropdown.Item onClick={authInstance.signOut} href="/">Sign Out

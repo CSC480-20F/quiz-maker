@@ -24,25 +24,13 @@ class CreateQuiz extends React.Component {
     
     // console.log(JSON.stringify(text));
 
-    // axios({
-    //     method: 'post',
-    //     url: 'http://localhost:9081/users/testing-input',
-    //     data: text
-    //   }).then(response => {
-    //     this.props.history.push('/MainPage')
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //   });
-
       axios.post('http://localhost:9081/users/testing-input', {
         "fname": "Anisha",
         "lname": "KC",
         "age": 20.0,
         "major": "Computer-Science",
-        headers: { "Access-Control-Allow-Origin": "*"
-        // "Access-Control-Allow-Origin": "http://localhost:3000/CreateQuiz",
-        // 'Access-Control-Allow-Credentials': 'true'
+        headers: { 'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
       }
       })
       .then(function (response) {
