@@ -1,7 +1,8 @@
 import React from 'react';
-import { Navbar, Nav, NavDropdown, Form, FormControl,Button, Col, InputGroup } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import logo from '../pexels-anna-shvets-3683107.jpg';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 
 const Styles = styled.div`
@@ -35,13 +36,13 @@ const TopNavbar = () => {
       <>
       <Styles>
       <Navbar className = "nav-bar-style"  variant="light" >
-      <Navbar.Brand href="/">QuizMaker</Navbar.Brand>
+      <Navbar.Brand as={Link} to="/">QuizMaker</Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Nav className="mx-auto">
-      <Nav.Link href="/">Home</Nav.Link>
-      <Nav.Link href="/Courses">Courses</Nav.Link>
-      <Nav.Link href="/Quizzes">Quizzes</Nav.Link>
-      <Nav.Link href="/CreateQuiz">Create Quiz</Nav.Link>
+      <Nav.Link as={Link} to="/"> Home </Nav.Link>
+      <Nav.Link as={Link} to="/Courses">Courses</Nav.Link>
+      <Nav.Link as={Link} to="/Quizzes">Quizzes</Nav.Link>
+      <Nav.Link as={Link} to="/CreateQuiz">Create Quiz</Nav.Link>
       
       {/* <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />

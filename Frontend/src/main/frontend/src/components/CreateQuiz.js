@@ -23,22 +23,40 @@ class CreateQuiz extends React.Component {
     // }
     
     // console.log(JSON.stringify(text));
+    let headers = new Headers();
 
-      axios.post('http://localhost:9081/users/testing-input', {
-        "fname": "Anisha",
-        "lname": "KC",
-        "age": 20.0,
-        "major": "Computer-Science",
-        headers: { 'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      }
-      })
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+
+  headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
+  headers.append('Access-Control-Allow-Credentials', 'true');
+
+  headers.append('GET', 'POST', 'DELETE', 'PUT');
+
+        axios.get('http://129.3.20.26:9081/users/all')
       .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    console.log(response);
+    })
+    .catch(function (error) {
+    console.log(error);
+    });
+
+      // axios.post('http://129.3.20.26:9081/users/testing-input', {
+      //   "fname": "Esther",
+      //   "lname": "Fejziu",
+      //   "age": 20.0,
+      //   "major": "Psychology",
+      //   headers: headers
+      // //   headers: { 'Access-Control-Allow-Origin': '*',
+      // //   'Content-Type': 'application/json',
+      // // }
+      // })
+      // .then(function (response) {
+      //   console.log(response);
+      // })
+      // .catch(function (error) {
+      //   console.log(error);
+      // });
       
     }
 
