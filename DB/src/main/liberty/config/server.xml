@@ -8,4 +8,21 @@
         httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
     
     <webApplication location="DBServer.war" contextRoot="${app.context.root}"/>
+
+    <cors domain="/users/testing-input"
+      allowedOrigins="http://localhost:9080"
+      allowedMethods="POST, GET, DELETE"
+      allowedHeaders="accept, MyRequestHeader1"
+      exposeHeaders="MyResponseHeader1"
+      allowCredentials="true"
+      maxAge="3600" />
+
+      <cors domain="/users/all"
+      allowedOrigins="http://localhost:9080"
+      allowedMethods="GET, DELETE, POST"
+      allowedHeaders="accept, MyRequestHeader1"
+      exposeHeaders="MyResponseHeader1"
+      allowCredentials="true"
+      maxAge="3600" />
+
 </server>
