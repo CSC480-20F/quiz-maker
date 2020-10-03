@@ -16,7 +16,8 @@
     "react-scripts": "3.4.3",
     "react-table": "^7.5.0",
     "react-table-6": "^6.11.0",
-    "rsuite": "^4.8.2"
+    "rsuite": "^4.8.2",
+    "styled-components": "^5.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

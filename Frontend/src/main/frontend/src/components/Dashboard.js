@@ -14,13 +14,14 @@ const Dashboard = () => {
 
     return (
         <>
-            <div> <TopNavbar/></div>
+            {/* <div> <TopNavbar/></div> */}
+            <div> <TopNavbar/> </div>
             
             <div className="container-middle">
             <div className="header"> QuizMaker </div>
             <div className='light-text'>Welcome back, {name}</div>
 
-            <Searchbar/>
+            {/* <Searchbar/> */}
 
             <div style={{padding: '10px'}}> </div>
             <Button variant="warning" className='create-quiz'>Create a Quiz</Button>

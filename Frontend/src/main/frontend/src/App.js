@@ -5,7 +5,7 @@ import Dashboard from './components/Dashboard';
 import LoginPage from './components/Login';
 import Loading from './components/Loading';
 import Course from './components/Course';
-
+import CreateQuiz from './components/CreateQuiz';
 
 class ProtectedRoute extends React.Component {
   render() {
@@ -82,7 +82,8 @@ class App extends React.Component {
           <BrowserRouter>
               <Switch>
                   <Route exact path="/" render={() => this.ifUserSignedIn(Dashboard)}/>
-                  <ProtectedRoute path="/:course_id" condition={this.state.isSignedIn} component={Course}/>
+                  <ProtectedRoute path="/Courses/:course_id" condition={this.state.isSignedIn} component={Course}/>
+                  <ProtectedRoute path="/CreateQuiz" condition={this.state.isSignedIn} component={CreateQuiz}/>
                   {/* <Route path="/dashboard" render={() => this.ifUserSignedIn(Dashboard)}/> */}
               </Switch>
           </BrowserRouter>

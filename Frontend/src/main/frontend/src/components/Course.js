@@ -7,7 +7,8 @@ import TopQuizzes from './TopQuizzes';
 
 class Course extends Component {
     state = {
-        post: null
+        post: null,
+        textID: ''
     }
 
     componentDidMount() {
@@ -17,6 +18,11 @@ class Course extends Component {
                 post: res.data
             })
         })
+        
+    }
+
+    handleClick(e) {
+        window.location.assign('http://localhost:9081/users/all');
     }
 
     render () {
@@ -26,7 +32,7 @@ class Course extends Component {
                 <div className='container-middle'> 
                     <h1 className="center header">{this.state.post.name}</h1>
                     <div style={{padding: '10px'}}> </div>
-                    <Button className ='center' variant='warning' className='create-quiz'>Create a Quiz</Button>
+                    <Button className ='center' variant='warning' className='create-quiz' onClick={this.handleClick.bind(this)}>Create a Quiz</Button>
                 </div>
 
                 <div className='container'>
@@ -48,6 +54,7 @@ class Course extends Component {
         return(
             <div>
                 {post}
+                <h1 className='header'> {this.state.textID} </h1>
             </div>
         )
     }

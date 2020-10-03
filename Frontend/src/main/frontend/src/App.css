@@ -1,27 +1,6 @@
 /* @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext'); */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
-/* nav {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  background: black;
-  color: white;
-  height: 40px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-nav > img {
-  height: auto;
-  width: 40px;
-  padding-right: 10px;
-}
-
-.push {
-  margin-left: auto;
-} */
-
 .container-middle{
   display: flex;
   justify-content: center;
@@ -62,7 +41,8 @@ nav > img {
   font-size: 50px;
   padding-top: 20px;
   font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
+  color: #286896;
+  font-family: Roboto;
 }
 
 .light-text {
@@ -71,12 +51,14 @@ nav > img {
 
 .create-quiz {
   min-width: 20%;
+  color: white;
+  background-color: #FE9C02;
 }
 
 .subtitle {
   font-weight: 400;
-  color: #4d4d4d;
-
+  color: #286896;
+  font-weight: 500;
 }
 
 .rounded-corner {
@@ -103,6 +85,7 @@ nav > img {
   text-align: center;
   color: white;
   background-color: #595959;
+  /* background-color: black; */
 }
 
 .regular-link {
@@ -115,14 +98,18 @@ nav > img {
   color: white;
 }
 
-.tall {
+.nav-bar-style {
   height:70px;
-  background-color: cornflowerblue;
+  background-color: white;
   padding-left: 50px;
   padding-right: 50px;
-  font-weight: bold;
+  font-family: Roboto;
+  font-size: 20px;
 }
 
 .quiztable{
   background: #f2f2f2;
 }
+
+
+
