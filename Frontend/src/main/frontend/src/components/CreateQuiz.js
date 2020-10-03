@@ -9,47 +9,56 @@ class CreateQuiz extends React.Component {
             "fname":"Anisha",
             "lname":"KC",
             "age":20.0,
-            "major":"Computer-Science"
+            "major":"Computer-Science",
+            "response": ""
         }
+    }
+
+    handleGet(e) {
+      e.preventDefault();
+      axios.get(`http://localhost:9081/users/all`).then(res => {
+        const data = res.data;
+        this.setState({
+          response: data
+        })
+      });
     }
 
     handleSubmit(e) {
       e.preventDefault();
-    //   const text = {
-    //     "fname": "Anisha",
-    //     "lname": "KC",
-    //     "age": 20.0,
-    //     "major": "Computer-Science"
-    // }
+      const text = {
+        "fname": "Anisha",
+        "lname": "KC",
+        "age": 20.0,
+        "major": "Computer-Science"
+    }
+    axios.post(`http://localhost:9081/users/testing-input`, { text })
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
     
-    // console.log(JSON.stringify(text));
-    let headers = new Headers();
+  //   // console.log(JSON.stringify(text));
+    // let headers = new Headers();
 
-  headers.append('Content-Type', 'application/json');
-  headers.append('Accept', 'application/json');
+  // headers.append('Content-Type', 'application/json');
+  // headers.append('Accept', 'application/json');
 
-  headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
-  headers.append('Access-Control-Allow-Credentials', 'true');
+  // headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
+  // headers.append('Access-Control-Allow-Credentials', 'true');
 
-  headers.append('GET', 'POST', 'DELETE', 'PUT');
+  // headers.append('GET', 'POST', 'DELETE', 'PUT');
 
-        axios.get('http://129.3.20.26:9081/users/all')
-      .then(function (response) {
-    console.log(response);
-    })
-    .catch(function (error) {
-    console.log(error);
-    });
-
-      // axios.post('http://129.3.20.26:9081/users/testing-input', {
-      //   "fname": "Esther",
-      //   "lname": "Fejziu",
-      //   "age": 20.0,
-      //   "major": "Psychology",
-      //   headers: headers
-      // //   headers: { 'Access-Control-Allow-Origin': '*',
-      // //   'Content-Type': 'application/json',
-      // // }
+      // axios.post('http://localhost:9081/users/testing-input', {
+      //   // "fname": "Anisha",
+      //   // "lname": "KC",
+      //   // "age": 20.0,
+      //   // "major": "Computer Science",
+      //   data: text,
+      //   // headers: headers
+      //   headers: { 'accept': '*/*',
+      //   'Content-Type': 'application/json',
+      // }
       // })
       // .then(function (response) {
       //   console.log(response);
@@ -62,12 +71,11 @@ class CreateQuiz extends React.Component {
 
 
     render(){
-
         return(
          
         <div className="container">
         <TopNavbar/>
-        <form id="contact-form" onSubmit={this.handleSubmit.bind(this)} method="POST">
+        <form id="contact-form" onSubmit={this.handleSubmit.bind(this)}>
         {/* <div className="form-group">
         <label htmlFor="name">Name of the Quiz</label>
         <input type="text" className="form-control" value={this.state.name} onChange={this.onNameChange.bind(this)} />
@@ -80,8 +88,12 @@ class CreateQuiz extends React.Component {
         <label htmlFor="message">Put your questions here</label>
         <textarea className="form-control" rows="5" value={this.state.message} onChange={this.onMessageChange.bind(this)} />
         </div> */}
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button type="submit" className="btn btn-primary">POST</button>
         </form>
+        <form id="form" onSubmit={this.handleGet.bind(this)}>
+        <button type="submit" className="btn btn-warning">GET</button>
+        </form>
+        <p> {this.state.response} </p>
         </div>
  );
 }
@@ -97,9 +109,6 @@ class CreateQuiz extends React.Component {
   // onMessageChange(event) {
 	// this.setState({message: event.target.value})
   // }
-
-// handleSubmit(event) {
-// }
 }
     
 export default CreateQuiz;
