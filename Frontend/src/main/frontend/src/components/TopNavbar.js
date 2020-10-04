@@ -2,13 +2,14 @@ import React from 'react';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import logo from '../pexels-anna-shvets-3683107.jpg';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 
 const Styles = styled.div`
-  .navbar { background-color: white; } //background
+  .navbar { background-color: "#F2F2F2"; } //background
   a, .navbar-nav, .navbar-light .nav-link {
-    color: black;
+    color: grey;
+    padding: 15px;
     &:hover { color: black; }
   }
   .navbar-brand {
@@ -39,10 +40,10 @@ const TopNavbar = () => {
       <Navbar.Brand as={Link} to="/">QuizMaker</Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Nav className="mx-auto">
-      <Nav.Link as={Link} to="/"> Home </Nav.Link>
-      <Nav.Link as={Link} to="/Courses">Courses</Nav.Link>
-      <Nav.Link as={Link} to="/Quizzes">Quizzes</Nav.Link>
-      <Nav.Link as={Link} to="/CreateQuiz">Create Quiz</Nav.Link>
+      <NavLink exact to="/" activeClassName="active" style={{ textDecoration: 'none' }}> Home </NavLink>
+      <NavLink to="/Courses" activeClassName="active" style={{ textDecoration: 'none' }}>Courses</NavLink>
+      <NavLink to="/Quizzes" activeClassName="active" style={{ textDecoration: 'none' }}>Quizzes</NavLink>
+      <NavLink to="/CreateQuiz" activeClassName="active">Create Quiz</NavLink>
       
       {/* <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button } from "react-bootstrap";
 import MyCourses from './MyCourses';
+import RecentQuizzes from './RecentQuizzes';
 import Searchbar from './Searchbar';
 import TopNavbar from './TopNavbar';
 
@@ -13,8 +14,7 @@ const Dashboard = () => {
     // const imageUrl = profile.getImageUrl()
 
     return (
-        <>
-            {/* <div> <TopNavbar/></div> */}
+        <div style={{backgroundColor: '#F2F2F2'}}>
             <div> <TopNavbar/> </div>
             
             <div className="container-middle">
@@ -26,11 +26,16 @@ const Dashboard = () => {
             <div style={{padding: '10px'}}> </div>
             <Button variant="warning" className='create-quiz'>Create a Quiz</Button>
                 <div className='container'>
+                    <h1 className='subtitle'> My Courses </h1>
                     <MyCourses />
+                    <div className="spacer"></div>
+                    <h1 className='subtitle'> Recent Quizzes </h1>
+                    <RecentQuizzes/>
+                    <div style={{padding: '10px'}}></div>
                 </div>
     
             </div>
-        </>
+        </div>
     )
 }
 

@@ -32,40 +32,40 @@ class CreateQuiz extends React.Component {
         "age": 20.0,
         "major": "Computer-Science"
     }
-    axios.post(`http://localhost:9081/users/testing-input`, { text })
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      })
+    // axios.post(`http://localhost:9081/users/testing-input`, { text })
+    //   .then(res => {
+    //     console.log(res);
+    //     console.log(res.data);
+    //   })
     
   //   // console.log(JSON.stringify(text));
-    // let headers = new Headers();
+    let headers = new Headers();
 
-  // headers.append('Content-Type', 'application/json');
-  // headers.append('Accept', 'application/json');
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
 
-  // headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
-  // headers.append('Access-Control-Allow-Credentials', 'true');
+  headers.append('Access-Control-Allow-Origin', 'http://localhost:9080');
+  headers.append('Access-Control-Allow-Credentials', 'true');
 
-  // headers.append('GET', 'POST', 'DELETE', 'PUT');
+  headers.append('POST', 'GET', 'DELETE');
 
-      // axios.post('http://localhost:9081/users/testing-input', {
-      //   // "fname": "Anisha",
-      //   // "lname": "KC",
-      //   // "age": 20.0,
-      //   // "major": "Computer Science",
-      //   data: text,
-      //   // headers: headers
+      axios.post('http://localhost:9081/users/testing-input', {
+        // "fname": "Anisha",
+        // "lname": "KC",
+        // "age": 20.0,
+        // "major": "Computer Science",
+        data: text,
+        headers: headers
       //   headers: { 'accept': '*/*',
       //   'Content-Type': 'application/json',
       // }
-      // })
-      // .then(function (response) {
-      //   console.log(response);
-      // })
-      // .catch(function (error) {
-      //   console.log(error);
-      // });
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
       
     }
 

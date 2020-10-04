@@ -52,13 +52,17 @@
 .create-quiz {
   min-width: 20%;
   color: white;
+  border-radius: 15px;
+  font-size: 20px;
+  font-weight: 500;
   background-color: #FE9C02;
 }
 
 .subtitle {
-  font-weight: 400;
   color: #286896;
-  font-weight: 500;
+  font-size: 35px;
+  font-weight: 650;
+  margin-left: 10px;
 }
 
 .rounded-corner {
@@ -66,16 +70,22 @@
 }
 
 .courses-deck {
-  padding: 50px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 60px;
+  padding-right: 60px;
 }
 
 .card-deck .card{
   margin: 20px;
+  margin: 20px;
+  margin-inline-end: 30px;
+  margin-inline-start: 30px;
 }
 
 .course-card {
-  min-width: 200px;
-  min-height: 100px;
+  min-width: 220px;
+  min-height: 150px;
   border-radius: 10px;
   max-height: fit-content;
   padding: 10px;
@@ -100,11 +110,21 @@
 
 .nav-bar-style {
   height:70px;
-  background-color: white;
+  background-color: #F2F2F2;
   padding-left: 50px;
   padding-right: 50px;
   font-family: Roboto;
   font-size: 20px;
+}
+
+.nav-bar-style .active{
+  font-weight: bold;
+  color: black;
+  border-bottom: 3px solid #FE9C02;
+}
+
+.spacer {
+  padding: 3%;
 }
 
 .quiztable{

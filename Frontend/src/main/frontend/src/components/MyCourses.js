@@ -12,7 +12,8 @@ class MyCourses extends Component {
     componentDidMount() {
         axios.get('https://jsonplaceholder.typicode.com/users').then(res => {
             this.setState({
-                myCourses: res.data
+                // SLICE MEANS WE ONLY TAKE THE FIRST 6, THIS IS JUST FOR TESTING, CAN GET RID OF IT LATER
+                myCourses: res.data.slice(0,6)
             })
         })
     }
@@ -38,7 +39,6 @@ class MyCourses extends Component {
         )
         return (
             <div>
-            <h1 className='subtitle'> My Courses </h1>
             <Card className='rounded-corner'>
                 <CardDeck className="courses-deck">
                     {coursesList}

@@ -52,7 +52,7 @@ class Course extends Component {
             </div>
         )
         return(
-            <div>
+            <div style={{backgroundColor: '#F2F2F2'}}>
                 {post}
                 <h1 className='header'> {this.state.textID} </h1>
             </div>
