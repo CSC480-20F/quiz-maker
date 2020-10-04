@@ -1,0 +1,27 @@
+import React from 'react'
+import { Button } from "react-bootstrap";
+import MyCourses from './MyCourses';
+import RecentQuizzes from './RecentQuizzes';
+import TopNavbar from './TopNavbar';
+
+const Courses = () => {
+    return (
+        <div>
+            <div> <TopNavbar/> </div>
+            
+            <div className="container-middle">
+            <div className="header"> Courses </div>
+
+            <div style={{padding: '10px'}}> </div>
+                <div className='container'>
+                    <h1 className='subtitle'> Courses where I am a learner </h1>
+                    <MyCourses />
+                    <div style={{padding: '10px'}}></div>
+                </div>
+    
+            </div>
+        </div>
+    )
+}
+
+export default Courses;

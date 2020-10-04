@@ -74,17 +74,21 @@
   padding-bottom: 20px;
   padding-left: 60px;
   padding-right: 60px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
 }
 
 .card-deck .card{
   margin: 20px;
   margin: 20px;
+  flex: 1;
   margin-inline-end: 30px;
   margin-inline-start: 30px;
 }
 
 .course-card {
-  min-width: 220px;
+  min-width: 240px;
   min-height: 150px;
   border-radius: 10px;
   max-height: fit-content;
@@ -130,6 +134,5 @@
 .quiztable{
   background: #f2f2f2;
 }
-
 
 

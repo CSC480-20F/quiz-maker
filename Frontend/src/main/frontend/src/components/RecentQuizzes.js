@@ -25,11 +25,11 @@ class RecentQuizzes extends Component {
             recentQuizzes.map(quiz => {
                 return (
                         // CHANGE THE STYLING BELOW IF WE WANT
-                        <Card className="course-card" key={quiz.id}>
-                        <Link to={'/Quizzes/' + quiz.id} className='regular-link'>
+                        <Link to={'/Quizzes/' + quiz.id} className='regular-link' key={quiz.id}>
+                        <Card className="course-card">
                             <Card.Title>{quiz.name}</Card.Title>
-                        </Link>
                         </Card>
+                        </Link>
                 )
             })
         ):(

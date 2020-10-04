@@ -7,11 +7,12 @@ import { NavLink, Link } from 'react-router-dom';
 
 const Styles = styled.div`
   .navbar { background-color: "#F2F2F2"; } //background
-  a, .navbar-nav, .navbar-light .nav-link {
+  a, .nav-link {
     color: grey;
     padding: 15px;
     &:hover { color: black; }
   }
+
   .navbar-brand {
     font-size: 1.4em;
     color: black;
@@ -43,7 +44,7 @@ const TopNavbar = () => {
       <NavLink exact to="/" activeClassName="active" style={{ textDecoration: 'none' }}> Home </NavLink>
       <NavLink to="/Courses" activeClassName="active" style={{ textDecoration: 'none' }}>Courses</NavLink>
       <NavLink to="/Quizzes" activeClassName="active" style={{ textDecoration: 'none' }}>Quizzes</NavLink>
-      <NavLink to="/CreateQuiz" activeClassName="active">Create Quiz</NavLink>
+      <NavLink to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Create Quiz</NavLink>
       
       {/* <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />

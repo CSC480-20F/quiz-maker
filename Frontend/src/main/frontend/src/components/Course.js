@@ -36,10 +36,10 @@ class Course extends Component {
                 </div>
 
                 <div className='container'>
-                    <div style={{padding: '10px'}}> </div>
-                    <TopQuizzes />
+                    {/* <div style={{padding: '10px'}}> </div>
+                    <TopQuizzes /> */}
 
-                    <div style={{padding: '10px'}}> </div>
+                    <div className="spacer"></div>
                     <h1 className='subtitle'> Quizzes </h1>
                     <Card className='rounded-corner'>
                         <QuizTable />
@@ -52,7 +52,7 @@ class Course extends Component {
             </div>
         )
         return(
-            <div style={{backgroundColor: '#F2F2F2'}}>
+            <div>
                 {post}
                 <h1 className='header'> {this.state.textID} </h1>
             </div>
