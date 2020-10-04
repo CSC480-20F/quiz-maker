@@ -1,7 +1,6 @@
-package dev.microprofile.DBServer;
+package dev.microprofile.QuestionsServer;
 
 import com.mongodb.*;
-
 
 import javax.json.Json;
 import javax.json.JsonObject;

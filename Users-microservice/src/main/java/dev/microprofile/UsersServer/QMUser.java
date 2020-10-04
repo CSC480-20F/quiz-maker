@@ -1,4 +1,4 @@
-package dev.microprofile.DBServer;
+package dev.microprofile.UsersServer;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;

@@ -1,4 +1,4 @@
-package dev.microprofile.DBServer;
+package dev.microprofile.QuestionsServer;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
