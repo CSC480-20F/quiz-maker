@@ -24,10 +24,10 @@ public class QuizMakerUserDbInfo {
 
     @Path("/all")
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response dbDump(){
         //Variable decelerations
-        String dbInfo = "Start of all info in the data base:\n";
+        String dbInfo="";
         //Gathers the specific collection we want
         DBCollection collection = database.getCollection("users");
         //Creates a basic db object

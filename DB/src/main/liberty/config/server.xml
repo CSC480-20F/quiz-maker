@@ -9,12 +9,11 @@
     
     <webApplication location="DBServer.war" contextRoot="${app.context.root}"/>
 
+    <!-- http://localhost:9080 -->
     <cors domain="/users"
-      allowedOrigins="http://localhost:9080"
-      allowedMethods="POST, GET, DELETE"
-      allowedHeaders="accept, MyRequestHeader1"
-      exposeHeaders="MyResponseHeader1"
-      allowCredentials="true"
+      allowedOrigins="*"
+      allowedMethods="POST, GET, DELETE, PUT"
+      allowedHeaders="origin, content-type, accept, authorization, cache-control"
       maxAge="3600" />
 
 </server>

@@ -6,10 +6,10 @@ class CreateQuiz extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            "fname":"Anisha",
-            "lname":"KC",
-            "age":20.0,
-            "major":"Computer-Science",
+            "fname":"",
+            "lname":"",
+            "age":"",
+            "major":"",
             "response": ""
         }
     }
@@ -18,6 +18,7 @@ class CreateQuiz extends React.Component {
       e.preventDefault();
       axios.get(`http://localhost:9081/users/all`).then(res => {
         const data = res.data;
+        console.log(data);
         this.setState({
           response: data
         })
@@ -26,47 +27,18 @@ class CreateQuiz extends React.Component {
 
     handleSubmit(e) {
       e.preventDefault();
-      const text = {
-        "fname": "Anisha",
-        "lname": "KC",
-        "age": 20.0,
-        "major": "Computer-Science"
-    }
-    // axios.post(`http://localhost:9081/users/testing-input`, { text })
-    //   .then(res => {
-    //     console.log(res);
-    //     console.log(res.data);
-    //   })
-    
-  //   // console.log(JSON.stringify(text));
-    let headers = new Headers();
-
-  headers.append('Content-Type', 'application/json');
-  headers.append('Accept', 'application/json');
-
-  headers.append('Access-Control-Allow-Origin', 'http://localhost:9080');
-  headers.append('Access-Control-Allow-Credentials', 'true');
-
-  headers.append('POST', 'GET', 'DELETE');
-
-      axios.post('http://localhost:9081/users/testing-input', {
-        // "fname": "Anisha",
-        // "lname": "KC",
-        // "age": 20.0,
-        // "major": "Computer Science",
-        data: text,
-        headers: headers
-      //   headers: { 'accept': '*/*',
-      //   'Content-Type': 'application/json',
-      // }
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-      
+    axios.post(`http://localhost:9081/users/testing-input`, {
+      "fname": this.state.fname,
+      "lname": this.state.lname,
+      "age": this.state.age,
+      "major": this.state.major
+    })
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      }).catch(error =>{
+        console.log(error.response);
+      })  
     }
 
 
@@ -76,20 +48,25 @@ class CreateQuiz extends React.Component {
         <div className="container">
         <TopNavbar/>
         <form id="contact-form" onSubmit={this.handleSubmit.bind(this)}>
-        {/* <div className="form-group">
-        <label htmlFor="name">Name of the Quiz</label>
-        <input type="text" className="form-control" value={this.state.name} onChange={this.onNameChange.bind(this)} />
+        <div className="form-group">
+        <label htmlFor="firstName">First Name</label>
+        <input type="text" className="form-control" value={this.state.fname} onChange={this.onNameChange.bind(this)} />
         </div>
         <div className="form-group">
-        <label htmlFor="exampleInputCourse1">Course</label>
-        <input type="course" className="form-control" aria-describedby="courseHelp" value={this.state.course} onChange={this.onCourseChange.bind(this)} />
+        <label htmlFor="lastName">Last Name</label>
+        <input type="text" className="form-control" value={this.state.lname} onChange={this.onLastNameChange.bind(this)} />
         </div>
         <div className="form-group">
-        <label htmlFor="message">Put your questions here</label>
-        <textarea className="form-control" rows="5" value={this.state.message} onChange={this.onMessageChange.bind(this)} />
-        </div> */}
+        <label htmlFor="age">Age</label>
+        <input type="text" className="form-control"  value={this.state.age} onChange={this.onAgeChange.bind(this)} />
+        </div>
+        <div className="form-group">
+        <label htmlFor="major">Major</label>
+        <input type="text" className="form-control" value={this.state.major} onChange={this.onMajorChange.bind(this)} />
+        </div>
         <button type="submit" className="btn btn-primary">POST</button>
         </form>
+        <div className="spacer"></div>
         <form id="form" onSubmit={this.handleGet.bind(this)}>
         <button type="submit" className="btn btn-warning">GET</button>
         </form>
@@ -98,17 +75,21 @@ class CreateQuiz extends React.Component {
  );
 }
 
-  // onNameChange(event) {
-	// this.setState({name: event.target.value})
-  // }
+  onNameChange(event) {
+	this.setState({fname: event.target.value})
+  }
 
-  // onCourseChange(event) {
-	// this.setState({course: event.target.value})
-  // }
+  onLastNameChange(event){
+    this.setState({lname: event.target.value})
+  }
 
-  // onMessageChange(event) {
-	// this.setState({message: event.target.value})
-  // }
+  onAgeChange(event) {
+	this.setState({age: parseInt(event.target.value)})
+  }
+
+  onMajorChange(event) {
+	this.setState({major: event.target.value})
+  }
 }
     
 export default CreateQuiz;
