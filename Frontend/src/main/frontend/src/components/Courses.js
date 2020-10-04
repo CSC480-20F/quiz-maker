@@ -1,7 +1,5 @@
-import React from 'react'
-import { Button } from "react-bootstrap";
+import React from 'react';
 import MyCourses from './MyCourses';
-import RecentQuizzes from './RecentQuizzes';
 import TopNavbar from './TopNavbar';
 
 const Courses = () => {

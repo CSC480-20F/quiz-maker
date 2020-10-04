@@ -3,12 +3,10 @@ import TopNavbar from './TopNavbar';
 import axios from 'axios';
 import QuizTable from './QuizTable';
 import { Button, Card } from "react-bootstrap";
-import TopQuizzes from './TopQuizzes';
 
 class Course extends Component {
     state = {
         post: null,
-        textID: ''
     }
 
     componentDidMount() {
