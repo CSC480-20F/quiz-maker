@@ -4,6 +4,6 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 @ApplicationPath("/")
-public class QuizMakerPrototypeApp extends Application {
+public class QuizMakerUsersApp extends Application {
 
 }
