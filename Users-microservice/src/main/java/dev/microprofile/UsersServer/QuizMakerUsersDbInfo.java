@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 
 
 @Path("/users")
-public class QuizMakerUserDbInfo {
+public class QuizMakerUsersDbInfo {
     // Creates login username and password
     MongoCredential adminAuth = MongoCredential.createScramSha256Credential("superuser", "admin", "AdminPassword123".toCharArray());
     // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
