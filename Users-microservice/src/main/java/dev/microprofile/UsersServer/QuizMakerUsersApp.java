@@ -1,4 +1,4 @@
-package dev.microprofile.DBServer;
+package dev.microprofile.UsersServer;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
