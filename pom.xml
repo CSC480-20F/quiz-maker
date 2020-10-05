@@ -25,7 +25,8 @@
     </build>
 
     <modules>
-        <module>DB</module>
+        <module>Users-microservice</module>
+        <module>Questions-microservice</module>
         <module>Frontend</module>
     </modules>
 </project>
