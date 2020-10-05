@@ -18,6 +18,7 @@ public class QuizMakerUsersDbInfo {
     // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
     ServerAddress serverAddress = new ServerAddress("68.172.33.6", 27017);
     MongoClient mongoClient = new MongoClient(serverAddress);
+    //MongoClient mongoClient = new MongoClient();
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("testing");
 
