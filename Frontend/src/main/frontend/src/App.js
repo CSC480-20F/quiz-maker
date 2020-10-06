@@ -8,6 +8,8 @@ import Course from './components/Course';
 import CreateQuiz from './components/CreateQuiz';
 import Courses from './components/Courses';
 import Quizzes from './components/Quizzes';
+import CreateQuiz_v2 from './components/CreateQuiz_v2';
+import CreateQuizForm from './components/CreateQuizForm';
 
 class ProtectedRoute extends React.Component {
   render() {
@@ -88,6 +90,10 @@ class App extends React.Component {
                   <ProtectedRoute path="/CreateQuiz" condition={this.state.isSignedIn} component={CreateQuiz}/>
                   <ProtectedRoute exact path="/Courses" condition={this.state.isSignedIn} component={Courses}/>
                   <ProtectedRoute exact path="/Quizzes" condition={this.state.isSignedIn} component={Quizzes}/>
+                  <ProtectedRoute path="/CreateQuiz_v2" condition={this.state.isSignedIn} component={CreateQuiz_v2}/>
+                  <ProtectedRoute path="/CreateQuizForm" condition={this.state.isSignedIn} component={CreateQuizForm}/>
+
+                  
                   {/* <Route path="/dashboard" render={() => this.ifUserSignedIn(Dashboard)}/> */}
               </Switch>
           </BrowserRouter>
