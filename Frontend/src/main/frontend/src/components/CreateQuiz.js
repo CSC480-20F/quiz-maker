@@ -41,7 +41,6 @@ class CreateQuiz extends React.Component {
       })  
     }
 
-
     render(){
         return(
          

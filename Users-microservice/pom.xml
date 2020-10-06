@@ -10,8 +10,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>DB</groupId>
-    <artifactId>DBServer</artifactId>
+    <groupId>Users-DB</groupId>
+    <artifactId>UsersServer</artifactId>
     <packaging>war</packaging>
 
     <properties>
