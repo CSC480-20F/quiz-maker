@@ -37,9 +37,14 @@ public class QuizMakerUsersDbInfo {
         //Starting a cursor to search with our declared search variable
         DBCursor cursor = collection.find(searchQuery);
         //Iterate through each db hit and amend it to a string
+        dbInfo = dbInfo.concat("[");
         while (cursor.hasNext()) {
             dbInfo = dbInfo.concat(cursor.next().toString());
+            if (cursor.hasNext()){
+                dbInfo = dbInfo.concat(",");
+            }
         }
+        dbInfo = dbInfo.concat("]");
         return Response.ok(dbInfo, MediaType.APPLICATION_JSON).build();
 
     }

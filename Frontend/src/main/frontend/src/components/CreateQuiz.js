@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import TopNavbar from './TopNavbar';
+import { CardColumns, Card } from 'react-bootstrap';
 
 class CreateQuiz extends React.Component {
     constructor(props) {
@@ -10,7 +11,7 @@ class CreateQuiz extends React.Component {
             "lname":"",
             "age":"",
             "major":"",
-            "response": ""
+            "response": []
         }
     }
 
@@ -36,6 +37,12 @@ class CreateQuiz extends React.Component {
       .then(res => {
         console.log(res);
         console.log(res.data);
+        this.setState({
+          fname:"",
+          lname:"",
+          age:"",
+          major:""
+        })
       }).catch(error =>{
         console.log(error.response);
       })  
@@ -71,7 +78,16 @@ class CreateQuiz extends React.Component {
         <form id="form" onSubmit={this.handleGet.bind(this)}>
         <button type="submit" className="btn btn-warning">GET</button>
         </form>
-        <p> {this.state.response} </p>
+        <div className="spacer"></div>
+        <CardColumns>
+        {this.state.response.map(user => (
+        <Card key={user._id.$oid} style={{padding: '15px'}}>
+        <Card.Title> {user.fname} {user.lname} </Card.Title>
+        <li> Age: {user.age} </li>
+        <li> Major: {user.major} </li>
+        </Card>
+      ))}
+      </CardColumns>
         </div>
         </>
  );
