@@ -114,7 +114,7 @@
 
 .nav-bar-style {
   height:70px;
-  background-color: #F2F2F2;
+  background-color:#235937;
   padding-left: 50px;
   padding-right: 50px;
   font-family: Roboto;
@@ -122,10 +122,11 @@
 }
 
 .nav-bar-style .active{
-  font-weight: bold;
-  color: black;
+  color: white;
   border-bottom: 3px solid #FE9C02;
 }
+
+
 
 .spacer {
   padding: 3%;

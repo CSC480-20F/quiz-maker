@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { Button, Card,Form, Col } from "react-bootstrap";
 
+
 const Styles = styled.div`
     display: flex;
     flex-direction: row;
@@ -47,6 +48,11 @@ const Input = styled.input.attrs(props => ({
         state = {
             "question":"",
             "correct_answer":"",
+
+            "incorrect_answer1":"",
+            "incorrect_answer2":"",
+            "incorrect_answer3":"",
+
             "incorrect_answers":[]
 
         }
@@ -54,6 +60,11 @@ const Input = styled.input.attrs(props => ({
 
         handleSubmit(e) {
             e.preventDefault();
+            // this.setState({ 
+            //     incorrect_answers: this.state.incorrect_answers.concat([this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3])
+            //)}
+            
+            console.log(this.state)
         axios.post(`http://localhost:9081/users/testing-input`, {
             "question":this.state.question,
             "correct_answer":this.state.correct_answer,
@@ -74,9 +85,45 @@ const Input = styled.input.attrs(props => ({
           onCorrect_answerChange(event){
             this.setState({correct_answer: event.target.value})
           }
-          onIncorrect_answerNameChange(event){
-            this.setState({incorrect_answers: event.target.value})
+          onIncorrect_answerChange1(event){
+
+            let a = {...this.state.incorrect_answers};//creates the clone of the state
+            a[0] = event.target.value;
+            this.setState({incorrect_answers: a, incorrect_answer1:event.target.value});
+
+           //this.setState({incorrect_answer1: event.target.value
+                
+           // })
+
           }
+
+          onIncorrect_answerChange2(event){
+            let a = {...this.state.incorrect_answers};//creates the clone of the state
+            a[1] = event.target.value;
+            this.setState({incorrect_answers: a, incorrect_answer2:event.target.value});
+            //this.setState({incorrect_answer2: event.target.value
+            //})
+          }
+
+          onIncorrect_answerChange3(event){
+            let a = {...this.state.incorrect_answers};//creates the clone of the state
+            a[2] = event.target.value;
+            this.setState({incorrect_answers: a, incorrect_answer3:event.target.value});
+            //this.setState({incorrect_answer3: event.target.value
+           // })
+          }
+
+
+
+
+
+
+
+        //   onIncorrect_answerChange(event){
+        //       this.setState(prevState => ({
+        //           incorrect_answers:[...prevState.incorrect_answers, event.target.value]
+        //       }))
+        //   }
       
     
 
@@ -88,6 +135,7 @@ const Input = styled.input.attrs(props => ({
             <h3 style={{display:'flex', justifyContent:'center', alignItems:'center'}} className="container">
             
             <Card style={{ width: '50rem', padding:'35px' }} className='rounded-corner'>
+
             <Form id="quiz-form" onSubmit={this.handleSubmit.bind(this)}>
             
             <div>
@@ -113,7 +161,7 @@ const Input = styled.input.attrs(props => ({
             A
             </Form.Label >
             <Col>
-            <Form.Control size="lg" type="text" placeholder="Enter your answer here" value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
+            <Form.Control size="lg" type="text" placeholder="Enter correct answer here" value={this.state.correct_answers} onChange={this.onCorrect_answerChange.bind(this)}/>
             </Col>
             </Form.Row>
             <br/>
@@ -123,7 +171,7 @@ const Input = styled.input.attrs(props => ({
             B
             </Form.Label>
             <Col>
-            <Form.Control size="lg" type="text" placeholder="Enter your answer here" value={[this.state.incorrect_answers]} onChange={this.onIncorrect_answerNameChange.bind(this)}/>
+            <Form.Control size="lg" type="text" placeholder="Enter an incorrect answer here" value={this.state.incorrect_answer1} onChange={this.onIncorrect_answerChange1.bind(this)}/>
             </Col>
             </Form.Row>
             <br/>
@@ -133,7 +181,7 @@ const Input = styled.input.attrs(props => ({
             C
             </Form.Label>
             <Col>
-            <Form.Control size="lg" type="text" placeholder="Enter your answer here" value={[this.state.incorrect_answers]} onChange={this.onIncorrect_answerNameChange.bind(this)} />
+            <Form.Control size="lg" type="text" placeholder="Enter an incorrect answer here" value={this.state.incorrect_answer2} onChange={this.onIncorrect_answerChange2.bind(this)} />
             </Col>
             </Form.Row>
             <br/>
@@ -143,7 +191,7 @@ const Input = styled.input.attrs(props => ({
             D
             </Form.Label>
             <Col>
-            <Form.Control size="lg" type="text" placeholder="Enter your answer here" value={[this.state.incorrect_answers]} onChange={this.onIncorrect_answerNameChange.bind(this)}/>
+            <Form.Control size="lg" type="text" placeholder="Enter an incorrect answer here" value={this.state.incorrect_answer3} onChange={this.onIncorrect_answerChange3.bind(this)}/>
             </Col>
             </Form.Row>
             <br/>

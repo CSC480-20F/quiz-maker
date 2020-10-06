@@ -43,11 +43,12 @@ class CreateQuiz extends React.Component {
 
     render(){
         return(
-         
+          <>
+          <TopNavbar/>
         <div className="container">
-        <TopNavbar/>
+        
         <form id="contact-form" onSubmit={this.handleSubmit.bind(this)}>
-          
+
         <div className="form-group">
         <label htmlFor="firstName">First Name</label>
         <input type="text" className="form-control" value={this.state.fname} onChange={this.onNameChange.bind(this)} />
@@ -72,6 +73,7 @@ class CreateQuiz extends React.Component {
         </form>
         <p> {this.state.response} </p>
         </div>
+        </>
  );
 }
 

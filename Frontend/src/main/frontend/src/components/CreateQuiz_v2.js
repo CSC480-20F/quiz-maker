@@ -12,7 +12,7 @@ const Styles = styled.div`
     justify-content: center;
     align-items: center;
     padding-top: 200px;
-    background-color:purple;
+    background-color:white;
 
 `;
 

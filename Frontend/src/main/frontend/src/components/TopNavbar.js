@@ -6,22 +6,29 @@ import { NavLink, Link } from 'react-router-dom';
 
 
 const Styles = styled.div`
-  .navbar { background-color: "#F2F2F2"; } //background
+  .navbar { background-color: "black"; } //background
   a, .nav-link {
-    color: grey;
+    color: white;
     padding: 15px;
-    &:hover { color: black; }
+    &:hover { color: white; }
   }
 
   .navbar-brand {
     font-size: 1.4em;
-    color: black;
+    color: white;
     &:hover { color: black; }
   }
   .form-center {
     position: absolute !important;
     left: 25%;
     right: 25%;
+  }
+
+  #nav-drop-down-little-box{
+  background-color:white;
+  color:#235937;
+}
+  
   }
 `;
 
@@ -37,7 +44,7 @@ const TopNavbar = () => {
   return (
       <>
       <Styles>
-      <Navbar className = "nav-bar-style"  variant="light" >
+      <Navbar className = "nav-bar-style"  variant="dark" >
       <Navbar.Brand as={Link} to="/">QuizMaker</Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Nav className="mx-auto">
@@ -54,7 +61,7 @@ const TopNavbar = () => {
       </Form> */}
       </Nav>
       <NavDropdown className="justify-content-end" title={name} id="collasible-nav-dropdown">
-      <NavDropdown.Item onClick={authInstance.signOut} href="/">Sign Out
+      <NavDropdown.Item id="nav-drop-down-little-box" onClick={authInstance.signOut} href="/">Sign Out
       </NavDropdown.Item>
       </NavDropdown>
 
