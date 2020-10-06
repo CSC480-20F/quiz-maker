@@ -41,7 +41,7 @@
   font-size: 50px;
   padding-top: 20px;
   font-weight: bold;
-  color: #286896;
+  color: #235937;
   font-family: Roboto;
 }
 
@@ -59,7 +59,7 @@
 }
 
 .subtitle {
-  color: #286896;
+  color: #235937;
   font-size: 35px;
   font-weight: 650;
   margin-left: 10px;
@@ -77,6 +77,9 @@
   display: flex;
   justify-content: space-evenly;
   flex-direction: row;
+  /* background-color: black;
+  border:2px solid white;
+  border-radius: 20px; */
 }
 
 .card-deck .card{
@@ -98,7 +101,7 @@
   justify-content: center;
   text-align: center;
   color: white;
-  background-color: #595959;
+  background-color:#595959;
   /* background-color: black; */
 }
 
@@ -123,7 +126,11 @@
 
 .nav-bar-style .active{
   color: white;
-  border-bottom: 3px solid #FE9C02;
+  text-decoration: underline;
+  text-decoration-color: #FE9C02;
+  text-underline-position: under;
+  /* border-bottom: 3px solid #FE9C02;
+  padding-bottom: 0.1px; */
 }
 
 

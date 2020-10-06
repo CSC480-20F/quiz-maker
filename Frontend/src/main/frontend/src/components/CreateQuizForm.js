@@ -46,6 +46,8 @@ const Input = styled.input.attrs(props => ({
   class CreateQuizForm extends React.Component{
 
         state = {
+            "counter":1,
+
             "question":"",
             "correct_answer":"",
 
@@ -65,6 +67,9 @@ const Input = styled.input.attrs(props => ({
             //)}
             
             console.log(this.state)
+            this.setState({
+                counter:this.state.counter + 1
+            })
         axios.post(`http://localhost:9081/users/testing-input`, {
             "question":this.state.question,
             "correct_answer":this.state.correct_answer,
@@ -140,7 +145,7 @@ const Input = styled.input.attrs(props => ({
             
             <div>
             <Form.Label  column="lg" lg={3}>
-            Question 1
+            Question {this.state.counter}
             </Form.Label>
             
             
