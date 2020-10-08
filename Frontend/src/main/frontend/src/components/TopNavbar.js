@@ -12,6 +12,7 @@ const Styles = styled.div`
   a, .nav-link {
     color: white;
     padding: 15px;
+    font-size: 15px;
     &:hover { color: white; }
   }
 
@@ -49,13 +50,13 @@ const TopNavbar = () => {
       <Navbar className = "nav-bar-style"  variant="dark" >
       <Navbar.Brand as={Link} to="/">QuizMaker</Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-      <Nav className="mx-auto">
-      <NavLink exact to="/" activeClassName="active"> Home </NavLink>
-      <NavLink to="/Courses" activeClassName="active">Courses</NavLink>
-      <NavLink to="/Quizzes" activeClassName="active">Quizzes</NavLink>
-      <NavLink to="/CreateQuiz" activeClassName="active">Create</NavLink>
-      <NavLink to="/CreateQuiz_v2" activeClassName="active">Createv2</NavLink>
-      <NavLink to="/CreateQuizForm" activeClassName="active">CreateForm</NavLink>
+      <Nav className="mr-auto">
+      <NavLink exact to="/" activeClassName="active" style={{ textDecoration: 'none' }}> Home </NavLink>
+      <NavLink to="/Courses" activeClassName="active" style={{ textDecoration: 'none' }}>Courses</NavLink>
+      <NavLink to="/Quizzes" activeClassName="active" style={{ textDecoration: 'none' }}>Quizzes</NavLink>
+      <NavLink to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Create</NavLink>
+      <NavLink to="/CreateQuiz_v2" activeClassName="active" style={{ textDecoration: 'none' }}>Createv2</NavLink>
+      <NavLink to="/CreateQuizForm" activeClassName="active" style={{ textDecoration: 'none' }}>CreateForm</NavLink>
       
       {/* <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />

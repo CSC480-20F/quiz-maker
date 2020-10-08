@@ -12,7 +12,7 @@ const Courses = () => {
 
             <div style={{padding: '10px'}}> </div>
                 <div className='container'>
-                    <h1 className='subtitle'> Courses where I am a learner </h1>
+                    <h1 className='subtitle'> Courses where I am a student </h1>
                     <MyCourses />
                     <div style={{padding: '10px'}}></div>
                 </div>

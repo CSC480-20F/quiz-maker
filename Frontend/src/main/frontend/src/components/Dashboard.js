@@ -29,7 +29,7 @@ const Dashboard = () => {
                     <h1 className='subtitle'> My Courses </h1>
                     <MyCourses />
                     <div className="spacer"></div>
-                    <h1 className='subtitle'> Recent Quizzes </h1>
+                    <h1 className='subtitle'> My Recently Created Quizzes </h1>
                     <RecentQuizzes/>
                     <div style={{padding: '10px'}}></div>
                 </div>

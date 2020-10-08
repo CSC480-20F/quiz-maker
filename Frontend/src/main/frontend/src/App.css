@@ -63,6 +63,7 @@
   font-size: 35px;
   font-weight: 650;
   margin-left: 10px;
+  padding-bottom: 5px;
 }
 
 .rounded-corner {
@@ -125,15 +126,10 @@
 }
 
 .nav-bar-style .active{
-  color: white;
-  text-decoration: underline;
-  text-decoration-color: #FE9C02;
-  text-underline-position: under;
+  color: #FE9C02;
   /* border-bottom: 3px solid #FE9C02;
   padding-bottom: 0.1px; */
 }
-
-
 
 .spacer {
   padding: 3%;

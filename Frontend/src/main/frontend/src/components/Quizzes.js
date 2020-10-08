@@ -15,16 +15,16 @@ const Quizzes = () => {
 
             <div style={{padding: '10px'}}> </div>
                 <div className='container'>
-                    <h1 className='subtitle'> Most Recent </h1>
+                    <h1 className='subtitle'> My Top Rated Quizzes </h1>
                     <RecentQuizzes />
 
                     <div className="spacer"></div>
                     <Tabs defaultActiveKey="MyQuizzes" id="uncontrolled-tab-example">
-                    <Tab eventKey="MyQuizzes" title="My Quizzes">
+                    <Tab eventKey="MyQuizzes" title="My created quizzes">
                         TODO: Make a MyQuizzesTable Component to put here
                         <h1> MY QUIZZES </h1>
                     </Tab>
-                    <Tab eventKey="QuizHistory" title="Quiz History">
+                    <Tab eventKey="QuizHistory" title="Quizzes I took">
                         TODO: Make a QuizHistoryTable Component to put here
                         <h1> QUIZ HISTORY </h1>
                     </Tab>

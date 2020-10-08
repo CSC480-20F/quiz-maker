@@ -46,7 +46,8 @@ const Input = styled.input.attrs(props => ({
   class CreateQuizForm extends React.Component{
 
         state = {
-            "counter":1,
+            "counter":0,
+            "questions":[],
 
             "question":"",
             "correct_answer":"",
@@ -145,7 +146,7 @@ const Input = styled.input.attrs(props => ({
             
             <div>
             <Form.Label  column="lg" lg={3}>
-            Question {this.state.counter}
+            Question {this.state.counter + 1}
             </Form.Label>
             
             
