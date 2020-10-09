@@ -7,13 +7,21 @@ import logo from './logo.png';
 
 
 const Styles = styled.div`
-  .navbar { background-color: "black";
-   border-bottom:1px solid white; }
+  .navbar { 
+    background-color: "black";
+    border-bottom:1px solid white; 
+  }
+
   a, .nav-link {
     color: white;
     padding: 15px;
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: light;
     &:hover { color: white; }
+  }
+
+  a {
+    
   }
 
   .navbar-brand {
@@ -63,7 +71,7 @@ const TopNavbar = () => {
       <Button variant="dark">Search</Button>
       </Form> */}
       </Nav>
-      <img src={logo} style={{width:100, height: 40, marginTop: -8}} />
+      <img src={logo} style={{width:98, height: 36, marginTop: -8}} />
       <NavDropdown className="justify-content-end" title={name} id="collasible-nav-dropdown">
       <NavDropdown.Item id="nav-drop-down-little-box" onClick={authInstance.signOut} href="/">Sign Out
       </NavDropdown.Item>
