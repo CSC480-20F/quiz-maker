@@ -51,6 +51,6 @@ public class QMUser {
 
 
     public DBObject convertUsertoDBobject(QMUser convertUser){
-        return new BasicDBObject("fname",convertUser.getFname()).append("lname",convertUser.lname).append("age", convertUser.getAge()).append("major", convertUser.getMajor());
+        return new BasicDBObject("fname",convertUser.getFname()).append("lname",convertUser.getLname()).append("age", convertUser.getAge()).append("major", convertUser.getMajor());
     }
 }
