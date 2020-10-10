@@ -10,7 +10,6 @@ import Courses from './components/Courses';
 import Quizzes from './components/Quizzes';
 import CreateQuiz_v2 from './components/CreateQuiz_v2';
 import CreateQuizForm from './components/CreateQuizForm';
-import CSVUpload from './components/CSVUpload';
 
 class ProtectedRoute extends React.Component {
   render() {
@@ -93,7 +92,6 @@ class App extends React.Component {
                   <ProtectedRoute exact path="/Quizzes" condition={this.state.isSignedIn} component={Quizzes}/>
                   <ProtectedRoute path="/CreateQuiz_v2" condition={this.state.isSignedIn} component={CreateQuiz_v2}/>
                   <ProtectedRoute path="/CreateQuizForm" condition={this.state.isSignedIn} component={CreateQuizForm}/>
-                  <ProtectedRoute path="/CSVUpload" condition={this.state.isSignedIn} component={CSVUpload}/>
 
                   
                   {/* <Route path="/dashboard" render={() => this.ifUserSignedIn(Dashboard)}/> */}

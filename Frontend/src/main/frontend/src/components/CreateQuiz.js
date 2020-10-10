@@ -140,8 +140,8 @@ class CreateQuiz extends React.Component {
         return d.data.Emails;
       })
     })
-    console.log(this.state.emails);
-    console.log(this.state);
+    // console.log(this.state.emails);
+    // console.log(this.state);
   }
 
   handleOnError = (err, file, inputElem, reason) => {
