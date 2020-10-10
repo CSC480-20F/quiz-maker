@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import TopNavbar from './TopNavbar';
-import { CardColumns, Card } from 'react-bootstrap';
+import { CardColumns, Card, Button } from 'react-bootstrap';
 import { CSVReader } from 'react-papaparse';
 
 // class CreateQuiz extends React.Component {
@@ -118,7 +118,9 @@ class CreateQuiz extends React.Component {
             super(props);
             this.state = {
                 "response": [],
-                "emails": []
+                "emails": [],
+                "course": "",
+                "professor": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
             }
         }
 
@@ -130,37 +132,16 @@ class CreateQuiz extends React.Component {
   }
 
   handleOnDrop = (data) => {
-    console.log('---------------------------');
-    console.log(data[0].data.Emails);
-    console.log('---------------------------');
     this.setState({
       "response": data
     })
-    console.log(this.state.response);
-
-  //   Object.values(this.state.response).map((singularData) => {
-  //     console.log(singularData.Emails)
-  //     return (
-  //       {singularData}
-  //     )
-  // })
-  //   this.state.response.map((data) => {
-  //     var joined = this.state.myArray.concat(data.Emails);
-  //     this.setState({ emails: joined })
-  //   }
-  this.setState({
-    "emails": this.state.response.map(d => {
-      return d.data.Emails;
+    this.setState({
+      "emails": this.state.response.map(d => {
+        return d.data.Emails;
+      })
     })
-  })
-  console.log(this.state.emails);
-
- }
-
-  
-  
-  getEmails = () => {
-    
+    console.log(this.state.emails);
+    console.log(this.state);
   }
 
   handleOnError = (err, file, inputElem, reason) => {
@@ -168,9 +149,7 @@ class CreateQuiz extends React.Component {
   }
 
   handleOnRemoveFile = (data) => {
-    console.log('---------------------------')
     console.log(data)
-    console.log('---------------------------')
   }
 
   handleRemoveFile = (e) => {
@@ -180,14 +159,36 @@ class CreateQuiz extends React.Component {
     }
   }
 
+  onCourseChange(event) {
+	  this.setState({course: event.target.value})
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    axios.post(`http://localhost:9084/courses/testing-input`, {
+      "teacher": this.state.professor,
+      "courseName": this.state.course,
+      "courseRoster": this.state.emails
+    })
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        this.setState({
+          course:""
+        })
+      }).catch(error =>{
+        console.log(error.response);
+      })  
+  }
+
   render() {
     return (
       <>
         <TopNavbar/>
         <div className="container">
-        <h5>Click and Drag Upload</h5>
+        <h5>Click and Drag Upload the Class Roster</h5>
         <CSVReader
-          config={{header: true}}
+          config={{header: true, skipEmptyLines: true}}
           onDrop={this.handleOnDrop}
           onError={this.handleOnError}
           addRemoveButton
@@ -195,6 +196,11 @@ class CreateQuiz extends React.Component {
         >
           <span>Drop CSV file here or click to upload.</span>
         </CSVReader>
+        <form id="course-form" onSubmit={this.handleSubmit.bind(this)}>
+        <label htmlFor="course">Course Name</label>
+        <input type="text" className="form-control" value={this.state.course} onChange={this.onCourseChange.bind(this)} />
+        <Button type="submit" className="btn-warning"> Add Roster </Button>
+        </form>
         </div>
       </>
     )
