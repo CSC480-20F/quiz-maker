@@ -6,9 +6,9 @@ import RecentQuizzes from './RecentQuizzes';
 import TopNavbar from './TopNavbar';
 
 const Dashboard = () => {
-    const authInstance = window.gapi.auth2.getAuthInstance()
-    const user = authInstance.currentUser.get()
-    const profile = user.getBasicProfile()
+    // const authInstance = window.gapi.auth2.getAuthInstance()
+    // const user = authInstance.currentUser.get()
+    // const profile = user.getBasicProfile()
     // const name = profile.getName()
     //const email = profile.getEmail()
     // const imageUrl = profile.getImageUrl()

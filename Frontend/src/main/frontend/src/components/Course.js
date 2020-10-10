@@ -31,7 +31,7 @@ class Course extends Component {
                 <div className='container-middle'> 
                     <h1 className="center header">{this.state.post.name}</h1>
                     <div style={{padding: '10px'}}> </div>
-                    <Button className ='center' variant='light' className='create-quiz' onClick={this.handleClick.bind(this)}>Create a Quiz</Button>
+                    <Button variant='light' className='create-quiz center' onClick={this.handleClick.bind(this)}>Create a Quiz</Button>
                 </div>
 
                 <div className='container'>

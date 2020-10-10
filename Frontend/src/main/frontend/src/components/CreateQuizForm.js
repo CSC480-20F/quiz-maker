@@ -1,19 +1,19 @@
 import React from 'react';
 import TopNavbar from './TopNavbar';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import axios from 'axios';
-import { Button, Card,Form, Col } from "react-bootstrap";
+import { Card,Form, Col } from "react-bootstrap";
 
 
-const Styles = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding-top: 100px;
-    background-color:;
+// const Styles = styled.div`
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: center;
+//     align-items: center;
+//     padding-top: 100px;
+//     background-color:;
 
-`;
+// `;
 
 // const Button = styled.button`
 //     color: black;
@@ -25,28 +25,27 @@ const Styles = styled.div`
 //     display: block;
 // `;
 
-const Input = styled.input.attrs(props => ({
-    // we can define static props
-    type: "question",
+// const Input = styled.input.attrs(props => ({
+//     // we can define static props
+//     type: "question",
   
-    // or we can define dynamic ones
-    size: props.size || "1em",
-  }))`
-    color: palevioletred;
-    font-size: 1em;
-    border: 2px solid palevioletred;
-    border-radius: 3px;
+//     // or we can define dynamic ones
+//     size: props.size || "1em",
+//   }))`
+//     color: palevioletred;
+//     font-size: 1em;
+//     border: 2px solid palevioletred;
+//     border-radius: 3px;
   
-    /* here we use the dynamically computed prop */
-    margin: ${props => props.size};
-    padding: ${props => props.size};
-  `;
+//     /* here we use the dynamically computed prop */
+//     margin: ${props => props.size};
+//     padding: ${props => props.size};
+//   `;
 
 
   class CreateQuizForm extends React.Component{
-
         state = {
-            "counter":0,
+            "index":0,
             "questions":[],
 
             "question":"",
@@ -69,7 +68,7 @@ const Input = styled.input.attrs(props => ({
             
             console.log(this.state)
             this.setState({
-                counter:this.state.counter + 1
+                counter:this.state.index + 1
             })
         axios.post(`http://localhost:9081/users/testing-input`, {
             "question":this.state.question,
@@ -146,7 +145,7 @@ const Input = styled.input.attrs(props => ({
             
             <div>
             <Form.Label  column="lg" lg={3}>
-            Question {this.state.counter + 1}
+            Question {this.state.index + 1}
             </Form.Label>
             
             

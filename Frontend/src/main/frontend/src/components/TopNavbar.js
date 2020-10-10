@@ -20,8 +20,8 @@ const Styles = styled.div`
     &:hover { color: white; }
   }
 
-  a {
-    
+  a:hover {
+    color: #FE9C02;
   }
 
   .navbar-brand {
@@ -29,6 +29,7 @@ const Styles = styled.div`
     color: white;
     &:hover { color: white; }
   }
+
   .form-center {
     position: absolute !important;
     left: 25%;
@@ -71,7 +72,7 @@ const TopNavbar = () => {
       <Button variant="dark">Search</Button>
       </Form> */}
       </Nav>
-      <img src={logo} style={{width:98, height: 36, marginTop: -8}} />
+      <img src={logo} alt="SUNY Oswego Logo" style={{width:98, height: 36, marginTop: -8}} />
       <NavDropdown className="justify-content-end" title={name} id="collasible-nav-dropdown">
       <NavDropdown.Item id="nav-drop-down-little-box" onClick={authInstance.signOut} href="/">Sign Out
       </NavDropdown.Item>
