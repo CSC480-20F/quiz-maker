@@ -3,6 +3,7 @@ import TopNavbar from './TopNavbar';
 import axios from 'axios';
 import QuizTable from './QuizTable';
 import { Button, Card } from "react-bootstrap";
+import TopQuizzes from './CourseTopQuizzes';
 
 class Course extends Component {
     state = {
@@ -30,15 +31,15 @@ class Course extends Component {
                 <div className='container-middle'> 
                     <h1 className="center header">{this.state.post.name}</h1>
                     <div style={{padding: '10px'}}> </div>
-                    <Button className ='center' variant='warning' className='create-quiz' onClick={this.handleClick.bind(this)}>Create a Quiz</Button>
+                    <Button variant='light' className='create-quiz center' onClick={this.handleClick.bind(this)}>Create a Quiz</Button>
                 </div>
 
                 <div className='container'>
-                    {/* <div style={{padding: '10px'}}> </div>
-                    <TopQuizzes /> */}
+                    <h1 className='subtitle'> Top Rated Quizzes </h1>
+                    <TopQuizzes />
 
                     <div className="spacer"></div>
-                    <h1 className='subtitle'> Quizzes </h1>
+                    <h1 className='subtitle'> Course Quizzes </h1>
                     <Card className='rounded-corner'>
                         <QuizTable />
                     </Card>

@@ -3,8 +3,8 @@ import { CardDeck, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-
-class TopQuizzes extends Component {
+// MY TOP RATED QUIZZES - TOP QUIZZES OF A USER (IN THE QUIZZES SECTION)
+class MyTopRatedQuizzes extends Component {
     state = {
         topQuizzes: []
     }
@@ -12,7 +12,7 @@ class TopQuizzes extends Component {
     componentDidMount() {
         axios.get('https://jsonplaceholder.typicode.com/todos').then(res => {
             this.setState({
-                topQuizzes: res.data.slice(0, 4)
+                topQuizzes: res.data.slice(0, 3)
             })
         })
     }
@@ -22,11 +22,11 @@ class TopQuizzes extends Component {
         const topQuizzesList = topQuizzes.length ? (
             topQuizzes.map(quiz => {
                 return (
-                        <Card className="course-card" key={quiz.id}>
-                        <Link to={'/' + quiz.id} className='regular-link'>
+                    <Link to={'/' + quiz.id} className='regular-link' key={quiz.id}>
+                        <Card className="course-card">
                             <Card.Title>{quiz.completed}</Card.Title>
-                        </Link>
                         </Card>
+                    </Link>
                 )
             })
         ):(
@@ -34,7 +34,6 @@ class TopQuizzes extends Component {
         )
         return (
             <div>
-            <h1 className='subtitle'> Top Quizzes </h1>
             <Card className='rounded-corner'>
                 <CardDeck className="courses-deck">
                     {topQuizzesList}
@@ -45,4 +44,4 @@ class TopQuizzes extends Component {
     }
 }
 
-export default TopQuizzes;
+export default MyTopRatedQuizzes;
