@@ -66,6 +66,7 @@ const TopNavbar = () => {
       <NavLink to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Create</NavLink>
       <NavLink to="/CreateQuiz_v2" activeClassName="active" style={{ textDecoration: 'none' }}>Createv2</NavLink>
       <NavLink to="/CreateQuizForm" activeClassName="active" style={{ textDecoration: 'none' }}>CreateForm</NavLink>
+      <NavLink to="/CSVUpload" activeClassName="active" style={{ textDecoration: 'none' }}>CSVUpload</NavLink>
       
       {/* <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />

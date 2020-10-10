@@ -47,7 +47,7 @@ import { Card,Form, Col } from "react-bootstrap";
         state = {
             "index":0,
             "questions":[],
-
+            
             "question":"",
             "correct_answer":"",
 
@@ -130,8 +130,7 @@ import { Card,Form, Col } from "react-bootstrap";
         //       }))
         //   }
       
-    
-
+  
     render(){
         return (
             <div> 
