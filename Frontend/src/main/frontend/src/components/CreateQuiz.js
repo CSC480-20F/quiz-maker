@@ -131,17 +131,33 @@ class CreateQuiz extends React.Component {
 
   handleOnDrop = (data) => {
     console.log('---------------------------');
-    console.log(data);
+    console.log(data[0].data.Emails);
     console.log('---------------------------');
     this.setState({
       "response": data
     })
     console.log(this.state.response);
-    this.state.response.map((data) => {
-      var joined = this.state.myArray.concat(data.Emails);
-      this.setState({ emails: joined })
-    }
-  }
+
+  //   Object.values(this.state.response).map((singularData) => {
+  //     console.log(singularData.Emails)
+  //     return (
+  //       {singularData}
+  //     )
+  // })
+  //   this.state.response.map((data) => {
+  //     var joined = this.state.myArray.concat(data.Emails);
+  //     this.setState({ emails: joined })
+  //   }
+  this.setState({
+    "emails": this.state.response.map(d => {
+      return d.data.Emails;
+    })
+  })
+  console.log(this.state.emails);
+
+ }
+
+  
   
   getEmails = () => {
     
