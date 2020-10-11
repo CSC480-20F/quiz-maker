@@ -16,7 +16,7 @@ public class QuizMakerCoursesDbInfo {
     // Creates login username and password
     MongoCredential adminAuth = MongoCredential.createScramSha256Credential("superuser", "admin", "AdminPassword123".toCharArray());
     // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
-    ServerAddress serverAddress = new ServerAddress("68.172.33.6", 27018);
+    ServerAddress serverAddress = new ServerAddress("129.3.20.26", 27018);
     MongoClient mongoClient = new MongoClient(serverAddress);
     //MongoClient mongoClient = new MongoClient(27018);
     //Connects to the specific db we want;
@@ -27,17 +27,16 @@ public class QuizMakerCoursesDbInfo {
     @Produces(MediaType.APPLICATION_JSON)
     public Response dbDump(){
         //Variable decelerations
-        String dbInfo="";
+        String dbInfo="[";
         //Gathers the specific collection we want
         DBCollection collection = database.getCollection("courses");
         //Creates a basic db object
         BasicDBObject searchQuery = new BasicDBObject();
         //declaring it a search variable and setting the parameter to look for
-        searchQuery.get("Matt");
+        searchQuery.get("teacher");
         //Starting a cursor to search with our declared search variable
         DBCursor cursor = collection.find(searchQuery);
         //Iterate through each db hit and amend it to a string
-        dbInfo = dbInfo.concat("[");
         while (cursor.hasNext()) {
             dbInfo = dbInfo.concat(cursor.next().toString());
             if (cursor.hasNext()){
@@ -53,13 +52,13 @@ public class QuizMakerCoursesDbInfo {
     @POST
     @Consumes("application/json")
     public Response testingInput(JsonObject test){
-        DBCollection collection = database.getCollection("users");
+        DBCollection collection = database.getCollection("courses");
        /* JsonObjectBuilder builder = Json.createObjectBuilder();
         for (String key: test.keySet()){
             builder.add(key, test.get(key));
         } */
-        QMUser user = new QMUser(test);
-        collection.save(user.convertUsertoDBobject(user));
+        QuizMakerCourse course = new QuizMakerCourse(test);
+        collection.save(course.convertCoursetoDBobject(course));
         return Response.ok().build();
     }
 
