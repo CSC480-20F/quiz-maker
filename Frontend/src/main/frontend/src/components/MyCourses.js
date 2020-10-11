@@ -10,10 +10,10 @@ class MyCourses extends Component {
     }
 
     componentDidMount() {
-        axios.get('https://jsonplaceholder.typicode.com/users').then(res => {
+        axios.get('https://localhost:9083/courses/all').then(res => {
             this.setState({
                 // SLICE MEANS WE ONLY TAKE THE FIRST 3, THIS IS JUST FOR TESTING, CAN GET RID OF IT LATER
-                myCourses: res.data.slice(0,3)
+                myCourses: res.data
             })
         })
     }
@@ -27,9 +27,9 @@ class MyCourses extends Component {
         const coursesList = myCourses.length ? (
             myCourses.map(course => {
                 return (
-                    <Link to={'/Courses/' + course.id} className='regular-link' key={course.id}>
+                    <Link to={'/Courses/' + course._id.$oid} className='regular-link' key={course._id.$oid}>
                         <Card className="course-card">
-                            <Card.Title>{course.username}</Card.Title>
+                            <Card.Title>{course.courseName}</Card.Title>
                         </Card>
                     </Link>
                 )

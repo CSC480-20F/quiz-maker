@@ -7,7 +7,7 @@ import { CSVReader } from 'react-papaparse';
 
 const buttonRef = React.createRef()
 
-class CreateQuiz extends React.Component {
+class RosterUpload extends React.Component {
     constructor(props) {
             super(props);
             this.state = {
@@ -98,4 +98,4 @@ class CreateQuiz extends React.Component {
 
 }
 
-export default CreateQuiz;
+export default RosterUpload;
