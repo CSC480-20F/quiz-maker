@@ -44,9 +44,26 @@ import { Card,Form, Col } from "react-bootstrap";
 
 
   class CreateQuizForm extends React.Component{
+
+        
+
         state = {
+            "quiz_title":"",
+            "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
+
+            "courseID":"",
+            "topic":[],
+
             "index":0,
-            "questions":[],
+
+            // "questions":[
+            //   {question: "How?", 
+            //   answer:"Idk", 
+            //   incorrect_answers:{0: "the sun", 1:"the moon"}}, 
+            //   {question: "Why?", 
+            //   answer:"because", 
+            //   incorrect_answers:{0: "wolf", 1:"vampire"}}
+            // ],
             
             "question":"",
             "correct_answer":"",
@@ -55,32 +72,75 @@ import { Card,Form, Col } from "react-bootstrap";
             "incorrect_answer2":"",
             "incorrect_answer3":"",
 
-            "incorrect_answers":[]
+            "incorrect_answers":[],
+
+            "questions":[]
 
         }
 
+        
 
         handleSubmit(e) {
             e.preventDefault();
             // this.setState({ 
             //     incorrect_answers: this.state.incorrect_answers.concat([this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3])
             //)}
-            
             console.log(this.state)
+           
             this.setState({
                 counter:this.state.index + 1
+                
             })
-        axios.post(`http://localhost:9081/users/testing-input`, {
-            "question":this.state.question,
-            "correct_answer":this.state.correct_answer,
-            "incorrect_answers":[this.incorrect_answers]
-          })
-            .then(res => {
-              console.log(res);
-              console.log(res.data);
-            }).catch(error =>{
-              console.log(error.response);
-            })  
+
+            let a  = {...this.state.questions};//creates the clone of the state
+            a[0] = {question: this.state.question, answer: this.state.answer, incorrect_answers: this.state.incorrect_answers}
+            this.setState({questions: a});
+            console.log(this.state.questions)
+            this.setState({
+              quiz_title:"",
+              topic:"",
+              question:"",
+              correct_answers:"",
+              incorrect_answer1:"",
+              incorrect_answer2:"",
+              incorrect_answer3:""
+              
+              
+
+            })
+            
+            
+          //   axios.post(`http://localhost:9081/users/testing-input`, {
+          //   "quiz_title":this.state.quiz_title,
+          //   "creator":this.state.creator,
+          //   "courseID":this.state.courseID,
+          //   "topic":this.state.topic,
+          //   "question":this.state.question,
+          //   "correct_answer":this.state.correct_answer,
+          //   "incorrect_answers":[this.incorrect_answers]
+          // })
+          //   .then(res => {
+          //     console.log(res);
+          //     console.log(res.data);
+          //   }).catch(error =>{
+          //     console.log(error.response);
+          //   })  
+          }
+
+          onQuizTitleChange(event) {
+            this.setState({quiz_title: event.target.value})
+          }
+
+          onCreatorChange(event) {
+            this.setState({creator: event.target.value})
+          }
+
+          onCourseIDChange(event) {
+            this.setState({courseID: event.target.value})
+          }
+
+          onTopicChange(event) {
+            this.setState({topic: event.target.value})
           }
 
           onQuestionChange(event) {
@@ -96,6 +156,10 @@ import { Card,Form, Col } from "react-bootstrap";
             a[0] = event.target.value;
             this.setState({incorrect_answers: a, incorrect_answer1:event.target.value});
 
+
+            
+
+            //this.setState({questions: a, question:event.target.value, answer:event.target.value, })
            //this.setState({incorrect_answer1: event.target.value
                 
            // })
@@ -118,11 +182,7 @@ import { Card,Form, Col } from "react-bootstrap";
            // })
           }
 
-
-
-
-
-
+          
 
         //   onIncorrect_answerChange(event){
         //       this.setState(prevState => ({
@@ -136,12 +196,37 @@ import { Card,Form, Col } from "react-bootstrap";
             <div> 
             <TopNavbar/>
 
+            
+
             <h3 style={{display:'flex', justifyContent:'center', alignItems:'center'}} className="container">
             
             <Card style={{ width: '50rem', padding:'35px' }} className='rounded-corner'>
-
+            
+            
+            
             <Form id="quiz-form" onSubmit={this.handleSubmit.bind(this)}>
             
+            <Form.Row>
+            <Form.Label column="sm" sm={0.1}>
+            Quiz Title:
+            </Form.Label>
+            <Col>
+            <Form.Control size="sm" type="text" placeholder="Quiz Title..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
+            </Col>
+            </Form.Row>
+            <br/>
+
+            <Form.Row>
+            <Form.Label column="sm" sm={0.1}>
+            Topic:
+            </Form.Label>
+            <Col>
+            <Form.Control size="sm" type="text" placeholder="Topic Here" value={this.state.topic} onChange={this.onTopicChange.bind(this)}/>
+            </Col>
+            </Form.Row>
+            <br/>
+            
+
             <div>
             <Form.Label  column="lg" lg={3}>
             Question {this.state.index + 1}
@@ -200,16 +285,15 @@ import { Card,Form, Col } from "react-bootstrap";
             </Form.Row>
             <br/>
 
+            
+
             </Form.Group>
-            <button type="submit" className="btn btn-primary">Click here to create another question</button>
+            {/* <button type="submit" className="btn btn-info">Click here to create another question</button> */}
+            <button type="submit" className="btn btn-danger" style={{marginLeft:"200px"}}>Click here to submit this quiz</button>
             </Form>
             </Card>
             
             </h3>
-
-            
-           
-            
             </div>   
 
 
