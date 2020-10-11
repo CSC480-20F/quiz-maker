@@ -14,6 +14,7 @@ public class QuizMakerCourse {
     private String course_Teacher;
     private String[] course_Roster;
 
+    public QuizMakerCourse(){}
 
     public QuizMakerCourse(JsonObject course){
       setCourseTeacher(course.getString("teacher"));
