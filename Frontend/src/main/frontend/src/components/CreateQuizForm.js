@@ -92,7 +92,7 @@ class CreateQuizForm extends React.Component{
     }
 
     onTopicChange(event) {
-      this.setState({topic: event.target.value})
+      this.setState({topics: [...this.state.topics,event.target.value]})
     }
 
     onQuestionChange(event) {
