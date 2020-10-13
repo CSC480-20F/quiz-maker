@@ -107,7 +107,8 @@ const TakeQuiz = () => {
             setQuestions(response.results);
           })
           .catch(error => console.log(error));
-      });
+      }, []);
+
     
 
 	const handleAnswerOptionClick = (isCorrect) => {
@@ -121,7 +122,10 @@ const TakeQuiz = () => {
 		} else {
 			setShowScore(true);
 		}
-	};
+    };
+    
+    if(!questions.length) return (<span>loading...</span>);
+
 	return (
         <>
         <TopNavbar/>
@@ -137,12 +141,12 @@ const TakeQuiz = () => {
 						<div className='question-count'>
 							<span>Question {currentQuestion + 1}</span>/{questions.length}
 						</div>
-						{/* <div className='question-text'>{questions[currentQuestion].question}</div> */}
+						<div className='question-text'>{questions[currentQuestion].question}</div>
 					</div>
 					<div className='answer-section'>
-						{/* {questions[currentQuestion].incorrect_answers.map((answerOption) => (
+						{questions[currentQuestion].incorrect_answers.map((answerOption) => (
 							<button onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}>{answerOption}</button>
-						))} */}
+						))}
 					</div>
 				</>
 			)}
