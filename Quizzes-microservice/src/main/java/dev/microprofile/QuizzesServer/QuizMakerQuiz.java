@@ -3,18 +3,17 @@ package dev.microprofile.QuizzesServer;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 
 public class QuizMakerQuiz {
-    private String quiz_Name;
+    private String quizName;
     // private String course_ID;
-    private String quiz_Creator;
-    private String quiz_CourseID;
-    private String[] quiz_Topics;
-    private Questions[] quiz_Questions;
-    private int quiz_Rating;
+    private String quizCreator;
+    private String quizCourseID;
+    private JsonArray quizTopics;
+    private JsonArray quizQuestions;
+    private int quizRating;
     private boolean star;
 
     public QuizMakerQuiz(){}
@@ -23,36 +22,27 @@ public class QuizMakerQuiz {
       setQuizName(quiz.getString("quizName"));
       setQuizCreator(quiz.getString("quizCreator"));
       setQuizCourseID(quiz.getString("quizCourseID"));
-      setQuizTopics(quiz.getJSONArray("quizTopics"));
-      setQuizQuestions(quiz.getJSONArray("quizQuestions"));
-      this.quiz_Rating = 0;
-      this.star = false;
+      setQuizTopics(quiz.getJsonArray("quizTopics"));
+      setQuizQuestions(quiz.getJsonArray("quizQuestions"));
+      //this.quiz_Rating = 0;
+      //this.star = false;
     }
 
-    //Getters
+    //Setters
     public void setQuizName(String qName){
-      this.quiz_Name = qName;
+      this.quizName = qName;
     }
     public void setQuizCreator(String cName){
-      this.quiz_Creator = cName;
+      this.quizCreator = cName;
     }
     public void setQuizCourseID(String cID){
-      this.quiz_CourseID = cID;
+      this.quizCourseID = cID;
     }
-    public void setQuizTopics(JSONArray qTop){
-      this.quiz_Topics = new String[qTop.length()];
-      for(int index = 0; index<qTop.length(); index++){
-        this.quiz_Topics[index] = qTop.getString(index);
-      }
-    }
-    public void setQuizQuestions(JSONArray quests){
-      this.quiz_Questions = new Questions[quests.size()-1];
-      for(int index = 0; index<quests.size()-1; index++){
-        quiz_Questions[index] = new Question(quests.getJSONArray(index));
-      }
-    }
+    public void setQuizTopics(JsonArray quizTopics){this.quizTopics = quizTopics;}
+    public void setQuizQuestions(JsonArray questions){this.quizQuestions = questions;}
+    //Later this will happen
     public void setQuizRating(int r){
-      this.quiz_Rating += r;
+      this.quizRating += r;
     }
     public void setQuizStar(boolean s){
       this.star = s;
@@ -69,27 +59,27 @@ public class QuizMakerQuiz {
     // }
 
 
-    //Setters
+    //Getters
     public String getQuizName(){
-      return this.quiz_Name;
+      return this.quizName;
     }
     public String getQuizCreator(){
-      return this.quiz_Creator;
+      return this.quizCreator;
     }
     // public String getCourseID(){
     //   return this.course_ID
     // }
     public String getQuizCourseID(){
-      return this.quiz_CourseID;
+      return this.quizCourseID;
     }
-    public String[] getQuizTopics(){
-      return this.quiz_Topics;
+    public JsonArray getQuizTopics(){
+      return this.quizTopics;
     }
-    public Questions[] getQuizQuestions(){
-      return this.quiz_Questions;
+    public JsonArray getQuizQuestions(){
+      return this.quizQuestions;
     }
     public int getQuizRating(){
-      return this.quiz_Rating;
+      return this.quizRating;
     }
     public boolean getStar(){
       return this.star;
@@ -98,10 +88,23 @@ public class QuizMakerQuiz {
     public DBObject convertQuiztoDBobject(QuizMakerQuiz convertQuiz){
         return new BasicDBObject("quizName",convertQuiz.getQuizName())
         .append("quizCreator",convertQuiz.getQuizCreator())
-        .append("quizCourseID",convertQuiz.getQuizCourseID())
-        .append("quizTopics", convertQuiz.getQuizTopics())
-        .append("quizQuestions", convertQuiz.getQuizQuestions())
-        .append("quizRating", convertQuiz.getQuizRating())
-        .append("quizStar", convertQuiz.getStar());
+        .append("quizCourseID",convertQuiz.getQuizCourseID())       ;
+        //.append("quizTopics", convertQuiz.getQuizTopics())
+        //.append("quizQuestions", convertQuiz.getQuizQuestions());
+        //.append("quizRating", convertQuiz.getQuizRating())
+        //.append("quizStar", convertQuiz.getStar());
     }
+
+    //public void convertQuizTopics(JsonArray qTop){
+    //    this.quizTopics = new String[qTop.size() - 1];
+    //    for(int index = 0; index<qTop.size() - 1; index++){
+    //        this.quizTopics[index] = qTop.getString(index);
+    //    }
+    //}
+    //public void convertQuizQuestions(JsonArray quests){
+    //    Questions[] tempQuest = new Questions[quests.size() - 1];
+    //    for(int index = 0; index < quests.size() - 1; index++){
+    //        tempQuest[index] = new Questions(quests.getJsonObject(index));
+    //    }
+    //}
 }

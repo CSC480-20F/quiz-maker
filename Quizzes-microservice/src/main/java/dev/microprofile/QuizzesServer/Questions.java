@@ -1,8 +1,6 @@
 package dev.microprofile.QuizzesServer;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import javax.json.JsonArray;
 
 public class Questions{
   private String question;
@@ -11,20 +9,25 @@ public class Questions{
 
   public Questions(){}
 
-  public Questions(JSONArray quest){
+  public Questions(JsonArray quest){
     setQuestion(quest.getString(0));
     setCorrectAnswer(quest.getString(1));
-    setIncorrectAnswers(quest.getJSONArray(2));
+    convertIncorrectAnswers(quest.getJsonArray(2));
   }
 
   //setters
   public void setQuestion(String quest){this.question = quest;}
   public void setCorrectAnswer(String cAns){this.correct_Answer = cAns;}
-  public void setIncorrectAnswers(JSONArray iAns){
-    this.incorrect_Answers = new String[iAns.size() - 1];
+  public void setIncorrect_Answers(String[] incorrect_Answers) {
+    this.incorrect_Answers = incorrect_Answers;
+  }
+
+  public void convertIncorrectAnswers(JsonArray iAns){
+    String[] incorrect = new String[iAns.size() - 1];
     for(int index = 0; index<iAns.size()-1; index++){
-      this.incorrect_Answers[index] = iAns.getString(index);
+      incorrect[index] = iAns.getString(index);
     }
+    setIncorrect_Answers(incorrect);
   }
   //getters
   public String getQuestion(){return this.question;}
