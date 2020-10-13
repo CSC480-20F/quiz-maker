@@ -4,6 +4,7 @@ import TopNavbar from './TopNavbar';
 import axios from 'axios';
 import { Card,Form, Col } from "react-bootstrap";
 
+// 💅 Stylesheet for this babay
 
 // const Styles = styled.div`
 //     display: flex;
@@ -48,8 +49,9 @@ class CreateQuizForm extends React.Component{
   state = {
       "quiz_title":"",
       "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
-      "courseID":"",
-      "topic":[],
+      "courseID":"5f8252f30b39533192d24911",
+      "topics":[],
+      "topic": "",
       "index":0,
       "question":"",
       "correct_answer":"",
@@ -92,7 +94,12 @@ class CreateQuizForm extends React.Component{
     }
 
     onTopicChange(event) {
-      this.setState({topics: [...this.state.topics,event.target.value]})
+      this.setState({topic:event.target.value})
+    }
+
+    onSubmitTopic = (e) => {
+      e.preventDefault()
+      this.setState({topics: [...this.state.topics,this.state.topic], topic: ""})
     }
 
     onQuestionChange(event) {
@@ -123,19 +130,25 @@ class CreateQuizForm extends React.Component{
 
     onCreateQuiz = (e) => {
       e.preventDefault();
+      console.log(this.state);
       axios.post(`http://localhost:9081/users/testing-input`, {
         "quiz_title":this.state.quiz_title,
         "creator":this.state.creator,
         "courseID":this.state.courseID,
         "topic":this.state.topic,
-        "question":this.state.question,
-        "correct_answer":this.state.correct_answer,
-        "incorrect_answers":[this.incorrect_answers]
+        "questions":this.state.questions
       })
       .then(res => {
+        this.setState ({
+          "quiz_title":"",
+          "topic":"",
+          "index":0
+        })
+        window.alert("Quiz Posted! 🥳 ");
         console.log(res);
         console.log(res.data);
       }).catch(error =>{
+        window.alert("Problem posting the Quiz 😞" );
         console.log(error);
       })  
     }
@@ -168,6 +181,7 @@ class CreateQuizForm extends React.Component{
           </Form.Label>
           <Col>
           <Form.Control size="sm" type="text" placeholder="Topic Here" value={this.state.topic} onChange={this.onTopicChange.bind(this)}/>
+          <button className="btn btn-warning" onClick={this.onSubmitTopic}>Add Topic</button>
           </Col>
         </Form.Row>
         <br/>

@@ -138,6 +138,9 @@
   padding-bottom: 0.1px; */
 }
 
+.small-spacer {
+  padding: 1%;
+}
 
 .spacer {
   padding: 3%;

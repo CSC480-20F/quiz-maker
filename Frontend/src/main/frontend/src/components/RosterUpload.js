@@ -75,8 +75,10 @@ class RosterUpload extends React.Component {
     return (
       <>
         <TopNavbar/>
+        <div className="container-middle">
+        <h1 className="subtitle small-spacer">Upload the Class Roster</h1>
+        </div>
         <div className="container">
-        <h5>Click and Drag Upload the Class Roster</h5>
         <CSVReader
           config={{header: true, skipEmptyLines: true}}
           onDrop={this.handleOnDrop}
@@ -88,7 +90,9 @@ class RosterUpload extends React.Component {
         </CSVReader>
         <form id="course-form" onSubmit={this.handleSubmit.bind(this)}>
         <label htmlFor="course">Course Name</label>
+        <div className="small-spacer">
         <input type="text" className="form-control" value={this.state.course} onChange={this.onCourseChange.bind(this)} />
+        </div>
         <Button type="submit" className="btn-warning"> Add Roster </Button>
         </form>
         </div>

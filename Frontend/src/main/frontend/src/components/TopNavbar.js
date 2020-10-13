@@ -66,6 +66,7 @@ const TopNavbar = () => {
       <NavLink to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Create</NavLink>
       {/* <NavLink to="/CreateQuiz_v2" activeClassName="active" style={{ textDecoration: 'none' }}>Createv2</NavLink> */}
       <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none' }}>Upload Roster</NavLink>
+      <NavLink to="/TakingQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Take Quiz</NavLink>
       <NavLink to="/CreateQuizForm" activeClassName="active" style={{ textDecoration: 'none' }}>CreateForm</NavLink>
 
       

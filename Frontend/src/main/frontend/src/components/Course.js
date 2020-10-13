@@ -12,6 +12,7 @@ class Course extends Component {
 
     componentDidMount() {
         let id = this.props.match.params.course_id;
+        console.log(id);
         axios.get("https://jsonplaceholder.typicode.com/users/" + id).then(res => {
             this.setState({
                 post: res.data
