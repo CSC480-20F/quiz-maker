@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import TopNavbar from './TopNavbar';
+import Loading from './Loading';
 
 const Styles = styled.div`
         display: flex;
@@ -92,7 +93,7 @@ const Styles = styled.div`
 
 const TakeQuiz = () => {
 
-    const API_URL = 'https://opentdb.com/api.php?amount=10&type=multiple';
+    const API_URL = 'http://localhost:9084/quizzes/all';
     const [questions,setQuestions ]= useState({})
 	  const [currentQuestion, setCurrentQuestion] = useState(0);
 	  const [showScore, setShowScore] = useState(false);
@@ -104,7 +105,9 @@ const TakeQuiz = () => {
         )
           .then(res => res.json())
           .then(response => {
-            setQuestions(response.results);
+            // console.log(response[5])
+            setQuestions(response[5].quizQuestions);
+            // console.log(questions)
           })
           .catch(error => console.log(error));
       }, []);
@@ -124,7 +127,7 @@ const TakeQuiz = () => {
 		}
     };
     
-    if(!questions.length) return (<span>loading...</span>);
+    if(!questions.length) return (<Loading/>);
 
 	return (
         <>
@@ -144,11 +147,10 @@ const TakeQuiz = () => {
 						<div className='question-text'>{questions[currentQuestion].question}</div>
 					</div>
 					<div className='answer-section'>
-          <button onClick={() => handleAnswerOptionClick(true)}>{questions[currentQuestion].correct_answer}</button>
-						{questions[currentQuestion].incorrect_answers.map((answerOption) => (
-							<button onClick={() => handleAnswerOptionClick(false)}>{answerOption}</button>
-              
-						))}
+          <button onClick={() => handleAnswerOptionClick(true)}>{questions[currentQuestion].answer}</button>
+						{(questions[currentQuestion].incorrect_answers).map((answerOption) => {
+							return (<button key={Math.random()*5} onClick={() => handleAnswerOptionClick(false)}>{answerOption}</button>);
+            })}
 					</div>
 				</>
 			)}

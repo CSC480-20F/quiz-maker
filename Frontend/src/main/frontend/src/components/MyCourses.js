@@ -10,7 +10,7 @@ class MyCourses extends Component {
     }
 
     componentDidMount() {
-        axios.get('https://localhost:9083/courses/all').then(res => {
+        axios.get('http://localhost:9083/courses/all').then(res => {
             this.setState({
                 // SLICE MEANS WE ONLY TAKE THE FIRST 3, THIS IS JUST FOR TESTING, CAN GET RID OF IT LATER
                 myCourses: res.data
@@ -19,10 +19,6 @@ class MyCourses extends Component {
     }
 
     render () {
-        // const myCourses = ['Programming Languages', 
-        // 'Principles of Micro-Economics', 
-        // 'Data Structures and Algorithms',
-        // 'Western Intellectual History'];
         const { myCourses } = this.state;
         const coursesList = myCourses.length ? (
             myCourses.map(course => {

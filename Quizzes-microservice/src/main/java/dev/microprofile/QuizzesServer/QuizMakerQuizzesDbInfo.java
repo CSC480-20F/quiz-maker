@@ -65,7 +65,7 @@ public class QuizMakerQuizzesDbInfo {
         for (String key: test.keySet()){
             builder.add(key, test.get(key));
         } */
-        QuizMakerQuiz quiz = new QuizMakerQuiz(fuck);
+        // QuizMakerQuiz quiz = new QuizMakerQuiz(fuck);
         DBObject o = BasicDBObject.parse(fuck.toString());
         collection.save(o);
         return Response.ok().build();

@@ -65,20 +65,23 @@ class CreateQuizForm extends React.Component{
 
   handleSubmit(e) {
     e.preventDefault();
-
-    var obj = {question: this.state.question, answer: this.state.correct_answer, incorrect_answers: this.state.incorrect_answers};
-
     this.setState({
-      questions: [...this.state.questions, obj],
-      question:"",
-      correct_answer:"",
-      incorrect_answer1:"",
-      incorrect_answer2:"",
-      incorrect_answer3:"",
-      index:this.state.index + 1
+      incorrect_answers: [...this.state.incorrect_answers, this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3]
     }, () => {
-      console.log("after updating state: ", this.state);
-    });
+      var obj = {question: this.state.question, answer: this.state.correct_answer, incorrect_answers: this.state.incorrect_answers};
+      this.setState({
+        questions: [...this.state.questions, obj],
+        question:"",
+        correct_answer:"",
+        incorrect_answer1:"",
+        incorrect_answer2:"",
+        incorrect_answer3:"",
+        incorrect_answers:[],
+        index:this.state.index + 1
+      }, () => {
+        console.log("after updating state: ", this.state);
+      });
+    })
   }
 
     onQuizTitleChange(event) {
@@ -111,32 +114,26 @@ class CreateQuizForm extends React.Component{
     }
 
     onIncorrect_answerChange1(event){
-      let a = {...this.state.incorrect_answers};
-      a[0] = event.target.value;
-      this.setState({incorrect_answers: a, incorrect_answer1:event.target.value});
+      this.setState({incorrect_answer1:event.target.value});
     }
 
     onIncorrect_answerChange2(event){
-      let a = {...this.state.incorrect_answers};
-      a[1] = event.target.value;
-      this.setState({incorrect_answers: a, incorrect_answer2:event.target.value});
+      this.setState({incorrect_answer2:event.target.value});
     }
 
     onIncorrect_answerChange3(event){
-      let a = {...this.state.incorrect_answers};
-      a[2] = event.target.value;
-      this.setState({incorrect_answers: a, incorrect_answer3:event.target.value});
+      this.setState({incorrect_answer3:event.target.value});
     }
 
     onCreateQuiz = (e) => {
       e.preventDefault();
       console.log(this.state);
-      axios.post(`http://localhost:9081/users/testing-input`, {
-        "quiz_title":this.state.quiz_title,
+      axios.post(`http://localhost:9084/quizzes/testing-input`, {
+        "quizName":this.state.quiz_title,
         "creator":this.state.creator,
         "courseID":this.state.courseID,
-        "topic":this.state.topic,
-        "questions":this.state.questions
+        "quizTopics":this.state.topics,
+        "quizQuestions":this.state.questions
       })
       .then(res => {
         this.setState ({
@@ -247,7 +244,6 @@ class CreateQuizForm extends React.Component{
         
 
         </Form.Group>
-        {/* <button type="submit" className="btn btn-info">Click here to create another question</button> */}
         <button type="submit" className="btn btn-warning" style={{marginLeft:"200px"}}>Add Another Question</button>
         </Form>
 
