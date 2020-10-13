@@ -26,11 +26,11 @@ const Styles = styled.div`
         }
 
         .timer-text {
-        background: rgb(230, 153, 12);
+        background: rgb(0, 0, 0);
         padding: 15px;
         margin-top: 20px;
         margin-right: 20px;
-        border: 5px solid rgb(255, 189, 67);
+        border: 5px solid rgb(0, 0, 0);
         border-radius: 15px;
         text-align: center;
         }
@@ -47,22 +47,22 @@ const Styles = styled.div`
         width: 100%;
         font-size: 16px;
         color: #ffffff;
-        background-color: #252d4a;
+        background-color: black;
         border-radius: 15px;
         display: flex;
         padding: 5px;
         justify-content: flex-start;
         align-items: center;
-        border: 5px solid #234668;
+        border: 5px solid white;
         cursor: pointer;
         }
 
         .correct {
-        background-color: #2f922f;
+        background-color: white;
         }
 
         .incorrect {
-        background-color: #ff3333;
+        background-color: red;
         }
 
         button:hover {
@@ -94,8 +94,8 @@ const TakeQuiz = () => {
 
     const API_URL = 'https://opentdb.com/api.php?amount=10&type=multiple';
     const [questions,setQuestions ]= useState({})
-	const [currentQuestion, setCurrentQuestion] = useState(0);
-	const [showScore, setShowScore] = useState(false);
+	  const [currentQuestion, setCurrentQuestion] = useState(0);
+	  const [showScore, setShowScore] = useState(false);
     const [score, setScore] = useState(0);
 
     useEffect(() => {
@@ -144,8 +144,10 @@ const TakeQuiz = () => {
 						<div className='question-text'>{questions[currentQuestion].question}</div>
 					</div>
 					<div className='answer-section'>
+          <button onClick={() => handleAnswerOptionClick(true)}>{questions[currentQuestion].correct_answer}</button>
 						{questions[currentQuestion].incorrect_answers.map((answerOption) => (
-							<button onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}>{answerOption}</button>
+							<button onClick={() => handleAnswerOptionClick(false)}>{answerOption}</button>
+              
 						))}
 					</div>
 				</>

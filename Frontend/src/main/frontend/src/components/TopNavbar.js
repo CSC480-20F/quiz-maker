@@ -40,6 +40,12 @@ const Styles = styled.div`
   background-color:white;
   color:#235937;
 }
+  #toggle-dark-mode
+  {
+    background-color:white;
+    color:#235937;
+    
+  }
   
   }
 `;
@@ -78,6 +84,9 @@ const TopNavbar = () => {
       <img src={logo} alt="SUNY Oswego Logo" style={{width:98, height: 36, marginTop: -8}} />
       <NavDropdown className="justify-content-end" title={name} id="collasible-nav-dropdown">
       <NavDropdown.Item id="nav-drop-down-little-box" onClick={authInstance.signOut} href="/">Sign Out
+      <NavDropdown.Item id="toggle-dark-mode" onClick={"function here"} href="/"> Toggle Dark Mode
+
+      </NavDropdown.Item>
       </NavDropdown.Item>
       </NavDropdown>
 
