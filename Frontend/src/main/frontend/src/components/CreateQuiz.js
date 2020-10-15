@@ -45,7 +45,8 @@ class CreateQuiz extends Component {
     chosenCourseID:null,
     chosenCourse:[],
     topic: "",
-    topics: []
+    topics: [],
+    createQuizSection: false,
   }
 
   // TODO: Get the courses that this user is in
@@ -67,9 +68,7 @@ class CreateQuiz extends Component {
 
   quizCreation = (e) => {
     e.preventDefault();
-    return (
-      <h1 className="header"> CREATE A QUIZ PART </h1>
-    )
+    this.setState({createQuizSection: true})
   }
 
   // Once the User chooses the course to create the quiz for, store it so we can re-render
@@ -141,8 +140,11 @@ class CreateQuiz extends Component {
     <div className="container"></div>
   )
 
-    // Switch view depending on if a course has been choosen or not
-    const chosenCourseIDValue = (this.state.chosenCourseID !== null) ? (
+    // Switch view depending on if a course has been choosen or not, and if you have started creating a Quiz or Not
+    const createQuizPart = this.state.createQuizSection ? (
+      <CreateQuizForm courseID={this.state.chosenCourseID} topics={this.state.topics}/>
+    ):(
+      (this.state.chosenCourseID !== null) ? (
         <>
         <h1 className="subtitle" style={{paddingTop: '30px'}}> What is your quiz about? </h1>
         <Styles>
@@ -161,7 +163,6 @@ class CreateQuiz extends Component {
           {quizCreationButton}
         </Styles>
         <div className="small-spacer"></div>
-        
         </>
     ):(
       <>
@@ -173,13 +174,14 @@ class CreateQuiz extends Component {
       </Card>
       </>
     )
+    )
 
     return (
       <>
       <TopNavbar/>
         <div className="container-middle">
           <div className="small-spacer"></div>
-            {chosenCourseIDValue} 
+            {createQuizPart} 
         </div>  
       </>
     )

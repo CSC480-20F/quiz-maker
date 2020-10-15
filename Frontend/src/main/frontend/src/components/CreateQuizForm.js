@@ -45,13 +45,15 @@ import { Card,Form, Col } from "react-bootstrap";
 
 
 class CreateQuizForm extends React.Component{
+  constructor(props) {
+    super(props);
+  }
 
   state = {
       "quiz_title":"",
       "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
-      "courseID":"",
-      "topics":[],
-      "topic": "",
+      "courseID":this.props.courseID,
+      "topics":this.props.topics,
       "index":0,
       "question":"",
       "correct_answer":"",
@@ -86,23 +88,6 @@ class CreateQuizForm extends React.Component{
 
     onQuizTitleChange(event) {
       this.setState({quiz_title: event.target.value})
-    }
-
-    onCreatorChange(event) {
-      this.setState({creator: event.target.value})
-    }
-
-    onCourseIDChange(event) {
-      this.setState({courseID: event.target.value})
-    }
-
-    onTopicChange(event) {
-      this.setState({topic:event.target.value})
-    }
-
-    onSubmitTopic = (e) => {
-      e.preventDefault()
-      this.setState({topics: [...this.state.topics,this.state.topic], topic: ""})
     }
 
     onQuestionChange(event) {
@@ -150,11 +135,9 @@ class CreateQuizForm extends React.Component{
       })  
     }
       
-  
     render(){
       return (
         <div> 
-        <TopNavbar/>
         
         <h3 style={{display:'flex', justifyContent:'center', alignItems:'center'}} className="container">
         
@@ -168,17 +151,6 @@ class CreateQuizForm extends React.Component{
           </Form.Label>
           <Col>
           <Form.Control size="sm" type="text" placeholder="Quiz Title..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
-          </Col>
-        </Form.Row>
-        <br/>
-
-        <Form.Row>
-          <Form.Label column="sm" sm={0.1}>
-          Topic:
-          </Form.Label>
-          <Col>
-          <Form.Control size="sm" type="text" placeholder="Topic Here" value={this.state.topic} onChange={this.onTopicChange.bind(this)}/>
-          <button className="btn btn-warning" onClick={this.onSubmitTopic}>Add Topic</button>
           </Col>
         </Form.Row>
         <br/>
