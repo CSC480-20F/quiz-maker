@@ -1,8 +1,8 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card'
 import Font from '../App.css'
-import quizmakerlogo from './quizmakerloginlogo.png'
-import oswegologo from './non-invert-logo.png'
+import quizmakerlogo from '../assets/quizmakerloginlogo.png'
+import oswegologo from '../assets/non-invert-logo.png'
 
 class Login extends React.Component {
     componentDidMount() {
