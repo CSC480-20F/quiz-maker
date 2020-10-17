@@ -4,6 +4,7 @@ import TopNavbar from './TopNavbar';
 import { Button, Card, CardDeck, InputGroup, FormControl } from 'react-bootstrap';
 import styled from 'styled-components';
 import CreateQuizForm from './CreateQuizForm';
+import Loading from './Loading';
 
 // 💅 Styling  
 const Styles = styled.div`
@@ -41,6 +42,7 @@ const Styles = styled.div`
 
 class CreateQuiz extends Component {
   state = {
+    isLoading:true,
     courses: [],
     chosenCourseID:null,
     chosenCourse:[],
@@ -51,10 +53,11 @@ class CreateQuiz extends Component {
 
   // TODO: Get the courses that this user is in
   componentDidMount() {
-    axios.get('https://jsonplaceholder.typicode.com/users/').then(res => {
+    axios.get('http://localhost:9083/courses/all').then(res => {
         this.setState({
             // SLICE MEANS WE ONLY TAKE THE FIRST 3, THIS IS JUST FOR TESTING, CAN GET RID OF IT LATER
-            courses: res.data.slice(0,3)
+            courses: res.data,
+            isLoading: false
         })
     })
   }
@@ -63,7 +66,7 @@ class CreateQuiz extends Component {
 
   onSubmitTopic = (e) => {
     e.preventDefault()
-    this.setState({topics: [...this.state.topics,this.state.topic], topic: ""}, () => {console.log(this.state)})
+    this.setState({topics: [...this.state.topics,this.state.topic], topic: ""})
   }
 
   quizCreation = (e) => {
@@ -78,7 +81,7 @@ class CreateQuiz extends Component {
       chosenCourseID: id
     }, () => {
       const foundCourse = this.state.courses.filter(item => {
-        return item.id === this.state.chosenCourseID
+        return item._id.$oid === this.state.chosenCourseID
       })
       this.setState ({
         chosenCourse: foundCourse
@@ -87,13 +90,17 @@ class CreateQuiz extends Component {
   }
 
   render () {
+    if (this.state.isLoading) {
+      return <> <TopNavbar/> <div className="container-middle"><Loading type={'balls'} color={'#6495ED'}/> </div> </>
+    }
+
     // Once a specific course has been chosen, display this instead of all courses
     const specificCourse = this.state.chosenCourse.length ? (
       this.state.chosenCourse.map(course => {
           return (
-            <Styles>
-            <Card className="course-card specific-course-card" key={course.id}>
-                <Card.Title>{course.name}</Card.Title>
+            <Styles key={course._id.$oid}>
+            <Card className="course-card specific-course-card" key={course._id.$oid}>
+                <Card.Title>{course.courseName}</Card.Title>
             </Card>
             </Styles>
           )
@@ -106,8 +113,8 @@ class CreateQuiz extends Component {
     const coursesList = this.state.courses.length ? (
         this.state.courses.map(course => {
             return (
-              <Card className="course-card" key={course.id} onClick={e => this.courseChosen(course.id)}>
-                  <Card.Title>{course.name}</Card.Title>
+              <Card className="course-card" key={course._id.$oid} onClick={e => this.courseChosen(course._id.$oid)}>
+                  <Card.Title>{course.courseName}</Card.Title>
               </Card>
             )
         })
@@ -118,8 +125,8 @@ class CreateQuiz extends Component {
     const topics = this.state.topics.length ? (
       this.state.topics.map(topic => {
           return (
-            <Styles>
-            <Card key={Math.random()*5} className="topic-card">
+            <Styles key={Math.random()*3}>
+            <Card className="topic-card">
                 <Card.Footer>{topic}</Card.Footer>
             </Card>
             </Styles>

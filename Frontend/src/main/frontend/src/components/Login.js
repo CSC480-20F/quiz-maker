@@ -1,7 +1,8 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card'
 import Font from '../App.css'
-
+import quizmakerlogo from '../assets/quizmakerloginlogo.png'
+import oswegologo from '../assets/non-invert-logo.png'
 
 class Login extends React.Component {
     componentDidMount() {
@@ -12,13 +13,18 @@ class Login extends React.Component {
 
     render() {
         return (
-            <div className = "login">
-            <Card border="white" style={{ borderRadius: '20px', width: '25rem', height:'20rem', display: 'center', margin: 'auto' }}>
+            
+            <div className = "container-center">
+
+            <img className="login-oswego-logo" src={oswegologo}/>
+
+            <Card border="white" style={{ alignItems:'center',borderRadius: '20px', width: '25rem', height:'20rem', display: 'center', margin: 'auto'}}>
             {/* <Card.Header style ={{textAlign: "center", fontSize:"30px"}}><b>QuizMaker</b></Card.Header>  */}
-            <Card.Body style ={{textAlign: "center", color: '#235937' ,fontSize:"50px", height: '20rem', width: '24.5rem', fontFamily: Font}}><b>QuizMaker</b>
-              <Card.Text>
-              <div id="login-button" style = {{display: 'flex',  justifyContent:'center', alignItems: 'center', padding: '10%'}}>Sign in with Google</div>
-              </Card.Text>
+            <Card.Body>
+           
+            <img className="login-quizmaker-logo" src={quizmakerlogo} style={{display:"center"}}/>
+            <div id="login-button" style = {{display: 'flex',  justifyContent:'center', alignItems: 'center', paddingTop:'70px'}}>Sign in with Google</div>
+              
             </Card.Body>
           </Card>
           </div>

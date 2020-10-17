@@ -32,6 +32,26 @@
   font-family: Roboto;
 }
 
+.login-oswego-logo{
+    height: auto; 
+    width: auto; 
+    max-width:25%;
+    align-self: center;
+    padding-top: 90px;
+    
+
+}
+
+.login-quizmaker-logo{
+  height: auto; 
+  width: auto; 
+
+  align-self: center;
+ 
+  
+}
+
+
 .header {
   text-align: center;
   font-size: 50px;

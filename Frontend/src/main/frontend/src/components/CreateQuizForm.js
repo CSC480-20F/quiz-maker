@@ -1,5 +1,4 @@
 import React from 'react';
-import TopNavbar from './TopNavbar';
 // import styled from 'styled-components';
 import axios from 'axios';
 import { Card,Form, Col } from "react-bootstrap";
@@ -166,7 +165,7 @@ class CreateQuizForm extends React.Component{
           Q
           </Form.Label >
           <Col>
-          <Form.Control size="lg" type="text" placeholder="Enter your question here..." value={this.state.question} onChange={this.onQuestionChange.bind(this)}/>
+          <Form.Control size="lg" type="text" placeholder="Type your question..." value={this.state.question} onChange={this.onQuestionChange.bind(this)}/>
           </Col>
         </Form.Row>
         <br/>
@@ -178,7 +177,7 @@ class CreateQuizForm extends React.Component{
           A
           </Form.Label >
           <Col>
-          <Form.Control size="lg" type="text" placeholder="Enter correct answer here" value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
+          <Form.Control size="lg" type="text" placeholder="Type your correct answer here..." value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
           </Col>
         </Form.Row>
         <br/>
@@ -188,7 +187,7 @@ class CreateQuizForm extends React.Component{
           B
           </Form.Label>
           <Col>
-          <Form.Control size="lg" type="text" placeholder="Enter an incorrect answer here" value={this.state.incorrect_answer1} onChange={this.onIncorrect_answerChange1.bind(this)}/>
+          <Form.Control size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer1} onChange={this.onIncorrect_answerChange1.bind(this)}/>
           </Col>
         </Form.Row>
         <br/>
@@ -198,7 +197,7 @@ class CreateQuizForm extends React.Component{
           C
           </Form.Label>
           <Col>
-          <Form.Control size="lg" type="text" placeholder="Enter an incorrect answer here" value={this.state.incorrect_answer2} onChange={this.onIncorrect_answerChange2.bind(this)} />
+          <Form.Control size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer2} onChange={this.onIncorrect_answerChange2.bind(this)} />
           </Col>
         </Form.Row>
         <br/>
@@ -208,7 +207,7 @@ class CreateQuizForm extends React.Component{
           D
           </Form.Label>
           <Col>
-          <Form.Control size="lg" type="text" placeholder="Enter an incorrect answer here" value={this.state.incorrect_answer3} onChange={this.onIncorrect_answerChange3.bind(this)}/>
+          <Form.Control size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer3} onChange={this.onIncorrect_answerChange3.bind(this)}/>
           </Col>
         </Form.Row>
         <br/>

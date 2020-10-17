@@ -2,23 +2,43 @@ import React, { Component } from 'react';
 import { CardDeck, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Loading from './Loading';
 
 
 class MyCourses extends Component {
     state = {
-        myCourses: []
+        myCourses: [],
+        isLoading: true,
+        mounted: false,
     }
 
     componentDidMount() {
+        this.mounted = true;
         axios.get('http://localhost:9083/courses/all').then(res => {
+            if(this.mounted){
+                this.setState({
+                    // SLICE MEANS WE ONLY TAKE THE FIRST 3, THIS IS JUST FOR TESTING, CAN GET RID OF IT LATER
+                    myCourses: res.data,
+                    isLoading: false
+                })
+            }
+        }).catch(err => {
+            console.log(err);
             this.setState({
-                // SLICE MEANS WE ONLY TAKE THE FIRST 3, THIS IS JUST FOR TESTING, CAN GET RID OF IT LATER
-                myCourses: res.data
+                isLoading: false
             })
         })
     }
 
+    componentWillUnmount(){
+        this.mounted = false;
+      }
+
     render () {
+        if (this.state.isLoading) {
+            return <div className="container-middle"><Loading type={'balls'} color={'#6495ED'}/></div>
+        }
+
         const { myCourses } = this.state;
         const coursesList = myCourses.length ? (
             myCourses.map(course => {

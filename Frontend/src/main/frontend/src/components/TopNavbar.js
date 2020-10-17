@@ -3,7 +3,7 @@ import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 //import logo from '../pexels-anna-shvets-3683107.jpg';
 import styled from 'styled-components';
 import { NavLink, Link } from 'react-router-dom';
-import logo from './logo.png';
+import logo from '../assets/logo.png';
 
 
 const Styles = styled.div`
@@ -70,7 +70,7 @@ const TopNavbar = () => {
       <NavLink to="/Courses" activeClassName="active" style={{ textDecoration: 'none' }}>Courses</NavLink>
       <NavLink to="/Quizzes" activeClassName="active" style={{ textDecoration: 'none' }}>Quizzes</NavLink>
       <NavLink to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Create</NavLink>
-      <NavLink to="/CreateQuiz_v2" activeClassName="active" style={{ textDecoration: 'none' }}>Createv2</NavLink>
+      {/* <NavLink to="/CreateQuiz_v2" activeClassName="active" style={{ textDecoration: 'none' }}>Createv2</NavLink> */}
       <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none' }}>Upload Roster</NavLink>
       <NavLink to="/TakingQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Take Quiz</NavLink>
 
