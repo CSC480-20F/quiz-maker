@@ -44,21 +44,54 @@ class CreateQuiz extends Component {
   state = {
     isLoading:true,
     courses: [],
-    chosenCourseID:null,
+    courseIDs: [],
+    chosenCourseId:null,
     chosenCourse:[],
     topic: "",
     topics: [],
     createQuizSection: false,
   }
 
-  // TODO: Get the courses that this user is in
+
   componentDidMount() {
-    axios.get('http://localhost:9083/courses/all').then(res => {
+    const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
+    axios.get('http://localhost:9081/users/' + email).then(res => {
+      this.mounted = true;
+      if(this.mounted){
         this.setState({
-            // SLICE MEANS WE ONLY TAKE THE FIRST 3, THIS IS JUST FOR TESTING, CAN GET RID OF IT LATER
-            courses: res.data,
+            courseIDs: res.data,
+        }, () => {this.getCoursesFromDB()})
+      }
+    }).catch(err => {
+        console.log(err);
+        if (this.mounted) {
+          this.setState({
             isLoading: false
         })
+        }
+    })
+  }
+
+  componentWillUnmount(){
+    this.mounted = false;
+  }
+
+  getCoursesFromDB = () => {
+    const sendCourseIDs = this.state.courseIDs.toString().replace(/[\[\]']+/g,"").split(" ").join("");
+    axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
+        if(this.mounted){
+            this.setState({
+                courses: res.data,
+                isLoading: false
+            })
+        }
+    }).catch(err => {
+        if(this.mounted){
+            console.log(err);
+            this.setState({
+                isLoading: false
+            })
+        }
     })
   }
 
@@ -78,10 +111,10 @@ class CreateQuiz extends Component {
   // We will also use the ID to get more info on the course
   courseChosen = (id) => {
     this.setState({
-      chosenCourseID: id
+      chosenCourseId: id
     }, () => {
       const foundCourse = this.state.courses.filter(item => {
-        return item._id.$oid === this.state.chosenCourseID
+        return item.courseId === this.state.chosenCourseId
       })
       this.setState ({
         chosenCourse: foundCourse
@@ -91,15 +124,15 @@ class CreateQuiz extends Component {
 
   render () {
     if (this.state.isLoading) {
-      return <> <TopNavbar/> <div className="container-middle"><Loading type={'balls'} color={'#6495ED'}/> </div> </>
+      return <> <TopNavbar/> <div className="container-middle"><Loading type={'balls'} color={'#235937'}/> </div> </>
     }
 
     // Once a specific course has been chosen, display this instead of all courses
     const specificCourse = this.state.chosenCourse.length ? (
       this.state.chosenCourse.map(course => {
           return (
-            <Styles key={course._id.$oid}>
-            <Card className="course-card specific-course-card" key={course._id.$oid}>
+            <Styles key={course.courseId}>
+            <Card className="course-card specific-course-card" key={course.courseId}>
                 <Card.Title>{course.courseName}</Card.Title>
             </Card>
             </Styles>
@@ -113,7 +146,7 @@ class CreateQuiz extends Component {
     const coursesList = this.state.courses.length ? (
         this.state.courses.map(course => {
             return (
-              <Card className="course-card" key={course._id.$oid} onClick={e => this.courseChosen(course._id.$oid)}>
+              <Card className="course-card" key={course.courseId} onClick={e => this.courseChosen(course.courseId)}>
                   <Card.Title>{course.courseName}</Card.Title>
               </Card>
             )
@@ -149,9 +182,9 @@ class CreateQuiz extends Component {
 
     // Switch view depending on if a course has been choosen or not, and if you have started creating a Quiz or Not
     const createQuizPart = this.state.createQuizSection ? (
-      <CreateQuizForm courseID={this.state.chosenCourseID} topics={this.state.topics}/>
+      <CreateQuizForm courseID={this.state.chosenCourseId} topics={this.state.topics}/>
     ):(
-      (this.state.chosenCourseID !== null) ? (
+      (this.state.chosenCourseId !== null) ? (
         <>
         <h1 className="subtitle" style={{paddingTop: '30px'}}> What is your quiz about? </h1>
         <Styles>

@@ -66,7 +66,7 @@ const TopNavbar = () => {
       <Styles>
       <Navbar className = "nav-bar-style"  variant="dark" >
       <Navbar.Brand as={Link} to="/">
-      <img className="login-quizmaker-logo" src={quizmakerlogo} style={{maxWidth:'65%', paddingBottom:'20px'}}/>
+      <img className="login-quizmaker-logo" alt="QuizMaker Logo" src={quizmakerlogo} style={{maxWidth:'65%', paddingBottom:'20px'}}/>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Nav className="mr-auto">

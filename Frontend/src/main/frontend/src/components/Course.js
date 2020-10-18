@@ -4,18 +4,18 @@ import axios from 'axios';
 import QuizTable from './QuizTable';
 import { Button, Card } from "react-bootstrap";
 import TopQuizzes from './CourseTopQuizzes';
+import Loading from './Loading';
 
 class Course extends Component {
     state = {
-        post: null,
+        course: null,
     }
 
     componentDidMount() {
         let id = this.props.match.params.course_id;
-        console.log(id);
-        axios.get("https://jsonplaceholder.typicode.com/users/" + id).then(res => {
+        axios.get("http://localhost:9083/courses/get-courses/" + id).then(res => {
             this.setState({
-                post: res.data
+                course: res.data[0]
             })
         })
         
@@ -26,11 +26,11 @@ class Course extends Component {
     }
 
     render () {
-        const post = this.state.post ? (
+        const course = this.state.course ? (
             <div>
                 <TopNavbar/>
                 <div className='container-middle'> 
-                    <h1 className="center header">{this.state.post.name}</h1>
+                    <h1 className="center header">{this.state.course.courseName}</h1>
                     <div style={{padding: '10px'}}> </div>
                     <Button variant='light' className='create-quiz center' onClick={this.handleClick.bind(this)}>Create a Quiz</Button>
                 </div>
@@ -48,12 +48,12 @@ class Course extends Component {
             </div>
         ) : (
             <div> <TopNavbar/>
-            <div className="container"> Loading course...</div>
+            <div className="container-center"> <Loading type={'balls'} color={'#235937'}/></div>
             </div>
         )
         return(
             <div>
-                {post}
+                {course}
                 <h1 className='header'> {this.state.textID} </h1>
             </div>
         )

@@ -1,14 +1,14 @@
 /* @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext'); */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
-.container-middle{
+.container-middle {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-.container{
+.container {
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -22,33 +22,18 @@
   height: 75vh;
 }
 
-.login {
-  background:#f5f5f5;
-  /* display: center; */
-  /* justify-content: center;
-  align-items: center; */
-  /* flex-direction: column; */
-  padding: 13%;
-  font-family: Roboto;
-}
-
 .login-oswego-logo{
-    height: auto; 
-    width: auto; 
-    max-width:25%;
-    align-self: center;
-    padding-top: 90px;
-    
-
+  height: auto; 
+  width: auto; 
+  max-width:25%;
+  align-self: center;
+  padding-top: 90px;
 }
 
 .login-quizmaker-logo{
   height: auto; 
   width: auto; 
-
   align-self: center;
- 
-  
 }
 
 .login-border{
@@ -59,7 +44,6 @@
   border-width: .5px;
   border-style: solid;
   border-radius: 0ex;
-
   background-color: #ffffff;
 }
 
@@ -85,11 +69,11 @@
   border-radius: 20px;
   font-size: 20px;
   font-weight: 500;
-  background-color: purple;
+  background-color: #8F0047;
 }
 
 .create-quiz:hover{
-  background-color: purple;
+  background-color: #8F0047;
   color: white;
 }
 
@@ -114,9 +98,6 @@
   display: flex;
   justify-content: space-evenly;
   flex-direction: row;
-  /* background-color: black;
-  border:2px solid white;
-  border-radius: 20px; */
 }
 
 .card-deck .card{
@@ -140,7 +121,7 @@
   justify-content: center;
   text-align: center;
   color: white;
-  background-color:#EC7979;
+  background-color:#595959;
   /* background-color: black; */
 }
 
@@ -166,8 +147,6 @@
 
 .nav-bar-style .active{
   color: #FE9C02;
-  /* border-bottom: 3px solid #FE9C02;
-  padding-bottom: 0.1px; */
 }
 
 .small-spacer {

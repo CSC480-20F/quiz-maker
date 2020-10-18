@@ -30,9 +30,9 @@ public class QuizMakerCoursesDbInfo {
         //Creates a basic db object
         BasicDBObject searchQuery = new BasicDBObject();
         //declaring it a search variable and setting the parameter to look for
-        searchQuery.get("teacher");
+        // searchQuery.get("teacher");
         //Starting a cursor to search with our declared search variable
-        DBCursor cursor = collection.find(searchQuery);
+        DBCursor cursor = collection.find();
         //Iterate through each db hit and amend it to a string
         while (cursor.hasNext()) {
             dbInfo = dbInfo.concat(cursor.next().toString());
@@ -83,7 +83,7 @@ public class QuizMakerCoursesDbInfo {
             courseName = currentCourse.get("courseName");
             teacher = currentCourse.get("teacher");
 
-            courseOut = courseOut.concat("courseId : ").concat(course[i] + ",").concat("courseName : ").concat(courseName.toString() + ",").concat("teacher : " + teacher.toString());
+            courseOut = courseOut.concat("\"courseId\" : ").concat("\""+ course[i] + "\"" +  ",").concat("\"courseName\" : ").concat("\""+courseName.toString() + "\""+",").concat("\"teacher\" : " + "\""+teacher.toString()+"\"");
             courseOut = courseOut.concat("}");
         }
         courseOut = courseOut.concat("]");

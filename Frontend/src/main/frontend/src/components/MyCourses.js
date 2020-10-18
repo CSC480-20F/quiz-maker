@@ -8,42 +8,66 @@ import Loading from './Loading';
 class MyCourses extends Component {
     state = {
         myCourses: [],
+        coursesIDs: [],
         isLoading: true,
         mounted: false,
     }
 
     componentDidMount() {
         this.mounted = true;
-        axios.get('http://localhost:9083/courses/all').then(res => {
+        const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
+        axios.get('http://localhost:9081/users/' + email).then(res => {
             if(this.mounted){
                 this.setState({
-                    // SLICE MEANS WE ONLY TAKE THE FIRST 3, THIS IS JUST FOR TESTING, CAN GET RID OF IT LATER
+                    coursesIDs: res.data
+                })
+                if (this.state.coursesIDs.length !== 0) {
+                    this.getCoursesFromDB();
+                }
+            }
+        }).catch(err => {
+            if(this.mounted){
+                console.log(err);
+                this.setState({
+                    isLoading: false
+                })
+            }
+        })
+    }
+
+    getCoursesFromDB = () => {
+        const sendCourseIDs = this.state.coursesIDs.toString().replace(/[\[\]']+/g,"").split(" ").join("");
+        axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
+            if(this.mounted){
+                this.setState({
                     myCourses: res.data,
                     isLoading: false
                 })
             }
         }).catch(err => {
-            console.log(err);
-            this.setState({
-                isLoading: false
-            })
+            if(this.mounted){
+                console.log(err);
+                this.setState({
+                    isLoading: false
+                })
+            }
         })
     }
 
     componentWillUnmount(){
         this.mounted = false;
-      }
+    }
 
     render () {
         if (this.state.isLoading) {
-            return <div className="container-middle"><Loading type={'balls'} color={'#6495ED'}/></div>
+            return <div className="container-middle"><Loading type={'balls'} color={'#235937'}/></div>
         }
 
         const { myCourses } = this.state;
         const coursesList = myCourses.length ? (
             myCourses.map(course => {
                 return (
-                    <Link to={'/Courses/' + course._id.$oid} className='regular-link' key={course._id.$oid}>
+                    <Link to={'/Courses/' + course.courseId} className='regular-link' key={course.courseId}>
                         <Card className="course-card">
                             <Card.Title>{course.courseName}</Card.Title>
                         </Card>

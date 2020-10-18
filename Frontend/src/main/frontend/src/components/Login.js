@@ -1,6 +1,5 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card'
-import Font from '../App.css'
 import quizmakerlogo from '../assets/quizmakerloginlogo.png'
 // import quizmakerlogo from '../assets/Artboard22.png'
 
@@ -25,13 +24,13 @@ class Login extends React.Component {
             
             <div className = "container-center">
 
-            <img className="login-oswego-logo" src={oswegologo}/>
+            <img className="login-oswego-logo" alt="SUNY Oswego Logo" src={oswegologo}/>
 
             <Card border="white" style={{ alignItems:'center',borderRadius: '20px', width: '25rem', height:'20rem', display: 'center', margin: 'auto'}}>
             {/* <Card.Header style ={{textAlign: "center", fontSize:"30px"}}><b>QuizMaker</b></Card.Header>  */}
             <Card.Body>
            
-            <img className="login-quizmaker-logo" src={quizmakerlogo} style={{display:"center", paddingTop:'50px', paddingBottom:'50px'}}/>
+            <img className="login-quizmaker-logo" alt="QuizMaker Logo" src={quizmakerlogo} style={{display:"center", paddingTop:'50px', paddingBottom:'50px'}}/>
 
             <div>
             {/* <div style={{display: 'flex',  justifyContent:'center', alignItems: 'center'}}> </div> */}

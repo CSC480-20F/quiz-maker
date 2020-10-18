@@ -8,15 +8,17 @@ import { CSVReader } from 'react-papaparse';
 const buttonRef = React.createRef()
 
 class RosterUpload extends React.Component {
-    constructor(props) {
-            super(props);
-            this.state = {
-                "response": [],
-                "emails": [],
-                "course": "",
-                "professor": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
-            }
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+        "response": [],
+        "emails": [],
+        "names": [],
+        "course": "",
+        "professor": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
+        "courseID": ""
+    }
+  }
 
   handleOpenDialog = (e) => {
     if (buttonRef.current) {
@@ -31,6 +33,9 @@ class RosterUpload extends React.Component {
     this.setState({
       "emails": this.state.response.map(d => {
         return d.data.Emails;
+      }),
+      "names": this.state.response.map(d => {
+        return d.data.Name;
       })
     })
   }
@@ -53,22 +58,50 @@ class RosterUpload extends React.Component {
 	  this.setState({course: event.target.value})
   }
 
+  postToUsers = () => {
+    console.log("Posting to the User's DB");
+    axios.put(`http://localhost:9081/users/add-course`, {
+    "id": this.state.courseID,
+    "names": this.state.names,
+    "emails": this.state.emails
+    })
+    .then(res => {
+      console.log(res);
+      console.log(res.data);
+      this.setState({
+        course:""
+      })
+    }).catch(error =>{
+      console.log(error);
+      console.log(error.response);
+      window.alert("Problem creating the Course. Please try again 😞" );
+    })
+
+  }
+
   handleSubmit(e) {
     e.preventDefault();
-    axios.post(`http://localhost:9083/courses/testing-input`, {
-      "teacher": this.state.professor,
-      "courseName": this.state.course,
-      "courseRoster": this.state.emails
-    })
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.setState({
-          course:""
-        })
-      }).catch(error =>{
-        console.log(error.response);
+    const courseName = this.state.course.replace(/,/g,"");
+    const teacherEmail = this.state.professor;
+    const emails = this.state.emails.toString();
+    const sendString = teacherEmail + "," + courseName + "," + emails;
+    console.log(sendString);
+
+
+    if (this.state.emails.length === 0) {
+      window.alert("You need to upload a Roster! 😅"); 
+      return;
+    }
+
+    axios.get('http://localhost:9083/courses/create-course/' + sendString).then(res => {
+      this.setState({
+        courseID: res.data
       })
+      this.postToUsers();
+    }).catch(err => {
+      console.log(err);
+      window.alert("Problem creating the Course 😞" );
+    })
   }
 
   render() {
@@ -80,6 +113,7 @@ class RosterUpload extends React.Component {
         </div>
         <div className="container">
         <CSVReader
+          required
           config={{header: true, skipEmptyLines: true}}
           onDrop={this.handleOnDrop}
           onError={this.handleOnError}
@@ -91,7 +125,7 @@ class RosterUpload extends React.Component {
         <form id="course-form" onSubmit={this.handleSubmit.bind(this)}>
         <label htmlFor="course">Course Name</label>
         <div className="small-spacer">
-        <input type="text" className="form-control" value={this.state.course} onChange={this.onCourseChange.bind(this)} />
+        <input type="text" required className="form-control" value={this.state.course} onChange={this.onCourseChange.bind(this)} />
         </div>
         <Button type="submit" className="btn-warning"> Add Roster </Button>
         </form>

@@ -19,7 +19,7 @@ class ProtectedRoute extends React.Component {
     if (Condition === null) {
       return (
         <div className='container-center'>
-          <Loading type={'spin'} color={'#6495ED'}/>
+          <Loading type={'spin'} color={'#235937'}/>
         </div>
       )
     }
@@ -73,7 +73,7 @@ class App extends React.Component {
       if (this.state.isSignedIn === null) {
           return (
             <div className='container-center'>
-              <Loading type={'spin'} color={'#6495ED'}/>
+              <Loading type={'spin'} color={'#235937'}/>
             </div>
           )
       }

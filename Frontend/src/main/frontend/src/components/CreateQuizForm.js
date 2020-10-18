@@ -46,9 +46,8 @@ import { Card,Form, Col } from "react-bootstrap";
 class CreateQuizForm extends React.Component{
   constructor(props) {
     super(props);
-  }
 
-  state = {
+    this.state = {
       "quiz_title":"",
       "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
       "courseID":this.props.courseID,
@@ -61,6 +60,7 @@ class CreateQuizForm extends React.Component{
       "incorrect_answer3":"",
       "incorrect_answers":[],
       "questions":[]
+    }
   }
         
 

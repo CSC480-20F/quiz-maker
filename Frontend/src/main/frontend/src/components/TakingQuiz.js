@@ -80,16 +80,16 @@ const Styles = styled.div`
 
         `;
 
-        const Button = styled.button`
-        display: inline-block;
-        color: palevioletred;
-        font-size: 1em;
-        margin: 1em;
-        padding: 0.25em 1em;
-        border: 2px solid palevioletred;
-        border-radius: 3px;
-        display: block;
-        `;
+        // const Button = styled.button`
+        // display: inline-block;
+        // color: palevioletred;
+        // font-size: 1em;
+        // margin: 1em;
+        // padding: 0.25em 1em;
+        // border: 2px solid palevioletred;
+        // border-radius: 3px;
+        // display: block;
+        // `;
 
 const TakeQuiz = () => {
 
@@ -127,7 +127,7 @@ const TakeQuiz = () => {
 		}
     };
     
-    if(!questions.length) return (<Loading/>);
+    if(!questions.length) return (<div className="container-middle"><Loading type={'balls'} color={'#235937'}/></div>);
 
 	return (
         <>
