@@ -51,6 +51,18 @@
   
 }
 
+.login-border{
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  border-color: black;
+  border-width: .5px;
+  border-style: solid;
+  border-radius: 0ex;
+
+  background-color: #ffffff;
+}
+
 
 .header {
   text-align: center;
@@ -128,7 +140,7 @@
   justify-content: center;
   text-align: center;
   color: white;
-  background-color:#595959;
+  background-color:#EC7979;
   /* background-color: black; */
 }
 

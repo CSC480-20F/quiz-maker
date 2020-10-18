@@ -4,6 +4,8 @@ import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
 import { NavLink, Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import DarkModeToggle from './DarkModeToggle';
+import quizmakerlogo from '../assets/Final_Dark_Background.png'
 
 
 const Styles = styled.div`
@@ -63,7 +65,9 @@ const TopNavbar = () => {
       <>
       <Styles>
       <Navbar className = "nav-bar-style"  variant="dark" >
-      <Navbar.Brand as={Link} to="/">QuizMaker</Navbar.Brand>
+      <Navbar.Brand as={Link} to="/">
+      <img className="login-quizmaker-logo" src={quizmakerlogo} style={{maxWidth:'65%', paddingBottom:'20px'}}/>
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Nav className="mr-auto">
       <NavLink exact to="/" activeClassName="active" style={{ textDecoration: 'none' }}> Home </NavLink>
@@ -74,12 +78,13 @@ const TopNavbar = () => {
       <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none' }}>Upload Roster</NavLink>
       <NavLink to="/TakingQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Take Quiz</NavLink>
 
-      
+      {/* <DarkModeToggle/> */}
       {/* <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />
       <Button variant="dark">Search</Button>
       </Form> */}
       </Nav>
+      
       <img src={logo} alt="SUNY Oswego Logo" style={{width:98, height: 36, marginTop: -8}} />
       <NavDropdown className="justify-content-end" title={name} id="collasible-nav-dropdown">
       <NavDropdown.Item id="nav-drop-down-little-box" onClick={authInstance.signOut} href="/">Sign Out

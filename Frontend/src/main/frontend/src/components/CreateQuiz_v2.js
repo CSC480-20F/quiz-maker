@@ -33,11 +33,6 @@ const Button = styled.button`
 
 class CreateQuiz_v2 extends React.Component{
 
-
-  
-    
-    
-
         state = {
             "question":"",
             "correct_answer":"",
