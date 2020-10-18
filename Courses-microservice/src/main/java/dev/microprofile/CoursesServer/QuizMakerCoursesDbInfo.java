@@ -1,11 +1,9 @@
 package dev.microprofile.CoursesServer;
 
 import com.mongodb.*;
+import org.bson.types.ObjectId;
 
-import javax.json.Json;
 import javax.json.JsonObject;
-
-import javax.json.JsonObjectBuilder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -59,6 +57,23 @@ public class QuizMakerCoursesDbInfo {
         } */
         QuizMakerCourse course = new QuizMakerCourse(test);
         collection.save(course.convertCoursetoDBobject(course));
+        return Response.ok().build();
+    }
+
+    @Path("/get-courses/{courseId}")
+    @GET
+    @Consumes("application/json")
+    public Response getCourseNames(@PathParam("courseId") String courseId){
+        DBCollection collection = database.getCollection("courses");
+        BasicDBObject courseList = new BasicDBObject();
+        //Start loop
+        //parse couresId
+        DBObject currentCourse = collection.findOne(new ObjectId(courseId));
+        currentCourse.get("courseName");
+        currentCourse.get("profName");
+        //append above info to out going string
+        //finish loop
+        //send out going string
         return Response.ok().build();
     }
 
