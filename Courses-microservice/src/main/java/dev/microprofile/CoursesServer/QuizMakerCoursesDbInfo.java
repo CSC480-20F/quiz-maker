@@ -3,7 +3,6 @@ package dev.microprofile.CoursesServer;
 import com.mongodb.*;
 import org.bson.types.ObjectId;
 
-import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -46,35 +45,52 @@ public class QuizMakerCoursesDbInfo {
 
     }
 
-    @Path("/testing-input")
-    @POST
+    //cN: 0,t: 1, eL:[one,two,three]
+
+    @Path("/create-course/{course}")
+    @GET
     @Consumes("application/json")
-    public Response testingInput(JsonObject test){
+    public Response testingInput(@PathParam("course") String incoming){
+        //Create a course
         DBCollection collection = database.getCollection("courses");
-       /* JsonObjectBuilder builder = Json.createObjectBuilder();
-        for (String key: test.keySet()){
-            builder.add(key, test.get(key));
-        } */
-        QuizMakerCourse course = new QuizMakerCourse(test);
-        collection.save(course.convertCoursetoDBobject(course));
-        return Response.ok().build();
+        QuizMakerCourse currentCourse = new QuizMakerCourse(incoming);
+        DBObject courseIn = currentCourse.convertCourse(currentCourse);
+        //Save and send course id back
+        collection.save(courseIn);
+        ObjectId id = (ObjectId)courseIn.get("_id");
+
+        return Response.ok(id.toString(), MediaType.APPLICATION_JSON).build();
     }
 
     @Path("/get-courses/{courseId}")
     @GET
     @Consumes("application/json")
     public Response getCourseNames(@PathParam("courseId") String courseId){
+
         DBCollection collection = database.getCollection("courses");
-        BasicDBObject courseList = new BasicDBObject();
-        //Start loop
-        //parse couresId
-        DBObject currentCourse = collection.findOne(new ObjectId(courseId));
-        currentCourse.get("courseName");
-        currentCourse.get("profName");
+        String[] course = courseId.split(",");
+        String courseOut = "[{";
+        Object courseName;
+        Object teacher;
+
+        for (int i = 0; i < course.length; i++) {
+            DBObject currentCourse = collection.findOne(new ObjectId(course[i]));
+
+            if(i > 0){
+                courseOut = courseOut.concat(",{");
+            }
+
+            courseName = currentCourse.get("courseName");
+            teacher = currentCourse.get("teacher");
+
+            courseOut = courseOut.concat("courseId : ").concat(course[i] + ",").concat("courseName : ").concat(courseName.toString() + ",").concat("teacher : " + teacher.toString());
+            courseOut = courseOut.concat("}");
+        }
+        courseOut = courseOut.concat("]");
         //append above info to out going string
         //finish loop
         //send out going string
-        return Response.ok().build();
+        return Response.ok(courseOut, MediaType.APPLICATION_JSON).build();
     }
 
 }

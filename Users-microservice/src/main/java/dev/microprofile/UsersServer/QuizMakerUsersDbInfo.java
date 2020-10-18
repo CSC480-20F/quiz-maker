@@ -2,6 +2,7 @@ package dev.microprofile.UsersServer;
 
 import com.mongodb.*;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -41,20 +42,6 @@ public class QuizMakerUsersDbInfo {
 
     }
 
-    @Path("/testing-input")
-    @POST
-    @Consumes("application/json")
-    public Response testingInput(JsonObject test) {
-        DBCollection collection = database.getCollection("users");
-       /* JsonObjectBuilder builder = Json.createObjectBuilder();
-        for (String key: test.keySet()){
-            builder.add(key, test.get(key));
-        } */
-        QMUser user = new QMUser(test);
-        collection.save(user.convertUsertoDBobject(user));
-        return Response.ok().build();
-    }
-
     @Path("/{email}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -69,5 +56,41 @@ public class QuizMakerUsersDbInfo {
         Object o = currentUser.get("courseId");
 
         return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
+    }
+
+    @Path("/add-course")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addCourse(JsonObject register){
+        DBCollection collection = database.getCollection("users");
+        String courseId;
+        JsonArray names;
+        JsonArray emails;
+
+        courseId = register.getString("id");
+        names = register.getJsonArray("names");
+        emails = register.getJsonArray("emails");
+
+        for (int i = 0; i <= emails.size() - 1; i++) {
+            BasicDBObject query = new BasicDBObject();
+            query.put("email",emails.getString(i));
+            DBObject found = collection.findOne(query);
+            //System.out.println("Current db object -> " + found.toString());
+            if(found == null){
+                QMUser freshUser = new QMUser(names.getString(i),emails.getString(i),courseId);
+                collection.save(freshUser.convertUsertoDBobject(freshUser));
+            }else {
+                BasicDBList list = (BasicDBList)found.get("courseId");
+                list.add(courseId);
+
+                BasicDBObject foundUser = new BasicDBObject();
+                DBObject update = found;
+                update.put("name", found.get("name"));
+                found.put("courseId", list);
+                System.out.println(collection.findAndModify(foundUser, update));
+            }
+        }
+
+        return Response.ok().build();
     }
 }

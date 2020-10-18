@@ -3,54 +3,47 @@ package dev.microprofile.UsersServer;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import java.util.ArrayList;
 
 public class QMUser {
-    private String fname;
-    private String lname;
-    private int age;
-    private String major;
+    private String name;
+    private String email;
+    private ArrayList<String> courseId = new ArrayList<>();
 
-    public QMUser(){
-    }
+    public QMUser(String name, String email, String courseId){
+        this.name = name;
+        this.email = email;
+        this.courseId.add(courseId);
 
-    public QMUser(JsonObject user){
-        this.fname = user.getString("fname");
-        this.lname = user.getString("lname");
-        this.age = user.getInt("age");
-        this.major = user.getString("major");
     }
 
-    public String getFname(){
-        return fname;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLname(){
-        return lname;
-    }
-    public int getAge(){
-        return age;
-    }
-    public String getMajor(){
-        return major;
-    }
-    public void setFname(String fname){
-        this.fname = fname;
-    }
-    public void setLname(String lname){
-        this.lname = lname;
-    }
-    public void setAge(int age){
-        this.age = age;
-    }
-    public void setMajor(String major){
-        this.major = major;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
+    public void addCourseId(String id){
+        this.courseId.add(id);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public ArrayList<String> getCourseId() {
+        return courseId;
+    }
 
     public DBObject convertUsertoDBobject(QMUser convertUser){
-        return new BasicDBObject("fname",convertUser.getFname()).append("lname",convertUser.getLname()).append("age", convertUser.getAge()).append("major", convertUser.getMajor());
+        return new BasicDBObject().append("name", this.name)
+                .append("email", this.email)
+                .append("courseId", this.courseId);
     }
 }
