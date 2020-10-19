@@ -80,17 +80,6 @@ const Styles = styled.div`
 
         `;
 
-        // const Button = styled.button`
-        // display: inline-block;
-        // color: palevioletred;
-        // font-size: 1em;
-        // margin: 1em;
-        // padding: 0.25em 1em;
-        // border: 2px solid palevioletred;
-        // border-radius: 3px;
-        // display: block;
-        // `;
-
 const TakeQuiz = () => {
 
     const API_URL = 'http://localhost:9084/quizzes/all';

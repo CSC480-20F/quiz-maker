@@ -18,9 +18,15 @@ class MyCourses extends Component {
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
         axios.get('http://localhost:9081/users/' + email).then(res => {
             if(this.mounted){
-                this.setState({
-                    coursesIDs: res.data
-                })
+                if (this.props.limit === "null" || res.data.split(",").length < 3) {
+                    this.setState({
+                        coursesIDs: res.data
+                    })
+                } else if (this.props.limit !== "null" && res.data.split(",").length >= 3) {
+                    this.setState({
+                        coursesIDs: res.data.split(",").slice(0,3)
+                    })
+                }
                 if (this.state.coursesIDs.length !== 0) {
                     this.getCoursesFromDB();
                 }
@@ -36,7 +42,7 @@ class MyCourses extends Component {
     }
 
     getCoursesFromDB = () => {
-        const sendCourseIDs = this.state.coursesIDs.toString().replace(/[\[\]']+/g,"").split(" ").join("");
+        const sendCourseIDs = this.state.coursesIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
         axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
             if(this.mounted){
                 this.setState({

@@ -66,14 +66,13 @@ class RosterUpload extends React.Component {
     "emails": this.state.emails
     })
     .then(res => {
-      console.log(res);
-      console.log(res.data);
       this.setState({
         course:""
       })
+      window.alert("Course created! 🥳 " );
+      this.props.history.push('/');
     }).catch(error =>{
       console.log(error);
-      console.log(error.response);
       window.alert("Problem creating the Course. Please try again 😞" );
     })
 
@@ -89,7 +88,7 @@ class RosterUpload extends React.Component {
 
 
     if (this.state.emails.length === 0) {
-      window.alert("You need to upload a Roster! 😅"); 
+      window.alert("You need to upload a Roster properly! 😅"); 
       return;
     }
 

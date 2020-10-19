@@ -13,7 +13,7 @@ const Courses = () => {
             <div style={{padding: '10px'}}> </div>
                 <div className='container'>
                     <h1 className='subtitle'> Courses where I am a student </h1>
-                    <MyCourses />
+                    <MyCourses limit="null"/>
                     <div style={{padding: '10px'}}></div>
                 </div>
     

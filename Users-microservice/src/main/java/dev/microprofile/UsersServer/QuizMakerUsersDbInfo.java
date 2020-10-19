@@ -85,7 +85,7 @@ public class QuizMakerUsersDbInfo {
 
                 BasicDBObject foundUser = new BasicDBObject();
                 DBObject update = found;
-                foundUser.put("email", found.getString("email"));
+                foundUser.put("email", found.get("email").toString());
                 update.put("courseId", list);
                 collection.findAndModify(foundUser, update);
             }

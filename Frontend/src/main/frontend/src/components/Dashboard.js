@@ -27,7 +27,7 @@ const Dashboard = () => {
             <Button variant="light" className='create-quiz'>Create a Quiz</Button>
                 <div className='container'>
                     <h1 className='subtitle'> My Courses </h1>
-                    <MyCourses />
+                    <MyCourses limit="3"/>
                     <div className="spacer"></div>
                     <h1 className='subtitle'> My Recently Created Quizzes </h1>
                     <RecentQuizzes/>
