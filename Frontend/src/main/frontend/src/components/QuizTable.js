@@ -26,35 +26,35 @@ componentDidMount() {
       const data = this.state.posts;
 
        const columns = [
-         {
-          Header: 'Name',
-          accessor: 'userID'
-         },
+          {
+            Header: 'Name',
+            accessor: 'userID'
+          },
 
-         {
-         Header: 'Author',
-         accessor: 'id'
-         },
+          {
+            Header: 'Author',
+            accessor: 'id'
+          },
 
-         {
-          Header: 'Topic',
-          accessor: 'title'
+          {
+            Header: 'Topic',
+            accessor: 'title'
           },
 
           {
             Header: 'Questions',
             accessor: 'body'
-            },
+          },
 
-            {
-              Header: 'Date',
-              accessor: 'date'
-              },
+          {
+            Header: 'Date',
+            accessor: 'date'
+          },
 
-              {
-                Header: 'Rating',
-                accessor: 'rating'
-                },
+          {
+            Header: 'Rating',
+            accessor: 'rating'
+          },
 
 
 
