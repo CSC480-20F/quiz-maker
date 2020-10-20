@@ -83,8 +83,8 @@ const Style = styled.div`
 
     .quiz-question {
       padding: 20px;
-      min-width: 75rem;
-      max-width: 85rem;
+      min-width: 70rem;
+      max-width: 80rem;
     }
 `;
 
@@ -174,7 +174,9 @@ class CreateQuizForm extends React.Component{
         "creator":this.state.creator,
         "courseID":this.state.courseID,
         "quizTopics":this.state.topics,
-        "quizQuestions":this.state.questions
+        "quizQuestions":this.state.questions,
+        "rating": 0,
+        "starred": false
       })
       .then(res => {
         this.setState ({
