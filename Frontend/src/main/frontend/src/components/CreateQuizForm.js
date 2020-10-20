@@ -1,222 +1,304 @@
 import React from 'react';
-import TopNavbar from './TopNavbar';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Button, Card,Form, Col } from "react-bootstrap";
+import {Modal, Button, Card, Form, Col } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
 
+// 💅 Stylesheet for this babay
+const Style = styled.div`
+    .edit {
+      max-height: 20%;
+    }
 
-const Styles = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding-top: 100px;
-    background-color:;
+    .header {
+      background-color:#F2F2F2;
+    }
 
+    .label {
+      border: 1px;
+      border-radius: 15px;
+      padding-left: 15px;
+      padding-right: 15px;
+      border-color: white;
+      box-shadow: 0 3px 3px 0 #ECECEC, 0 6px 6px 0 #ECECEC;
+      border-style: solid;
+      margin-right: 0px;
+    }
+
+    .answer-field {
+      box-shadow: 3px 3px 3px #ECECEC;
+      border-color: #F5F3F3;
+      border-radius: 15px;
+      margin-left: 0px;
+    }
+
+    .no-border {
+      border: 0;
+      box-shadow: none;
+    }
+
+    .description {
+      font-family: Roboto;
+      font-size: 20px;
+      max-width: 85rem;
+    }
+
+    .topicsColor {
+      color: #8F0047;
+      max-width: 30rem;
+    }
+
+    .center {
+      margin-left: 20px;
+    }
+
+    .delete-quiz-button {
+      float: right;
+      padding: 18px;
+      margin-right: 15px;
+      color: white;
+      background-color:#E93232;
+    }
+
+    .publish-quiz-button {
+      float: right;
+      padding: 18px;
+      color: white;
+      background-color: #1C9B2F;
+    }
+
+    .add-topic-button {
+      background-color: #8F0047;
+      color: white;
+      font-family: Roboto;
+      min-width: 15%
+    }
+
+    .add-question-button {
+      background-color: #8F0047;
+      color: white;
+      font-family: Roboto;
+      min-width: 25%
+    }
+
+    .quiz-question {
+      padding: 20px;
+      min-width: 75rem;
+      max-width: 85rem;
+    }
 `;
 
-// const Button = styled.button`
-//     color: black;
-//     font-size: 1em;
-//     margin: 1em;
-//     padding: 0.25em 1em;
-//     border: 2px solid palevioletred;
-//     border-radius: 3px;
-//     display: block;
-// `;
 
-const Input = styled.input.attrs(props => ({
-    // we can define static props
-    type: "question",
-  
-    // or we can define dynamic ones
-    size: props.size || "1em",
-  }))`
-    color: palevioletred;
-    font-size: 1em;
-    border: 2px solid palevioletred;
-    border-radius: 3px;
-  
-    /* here we use the dynamically computed prop */
-    margin: ${props => props.size};
-    padding: ${props => props.size};
-  `;
+class CreateQuizForm extends React.Component{
+  constructor(props) {
+    super(props);
+    const firstName = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getGivenName()
+    this.state = {
+      "quiz_title":firstName + "'s Quiz",
+      "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
+      "courseID":this.props.courseID,
+      "topics":this.props.topics,
+      "index":0,
+      "question":"",
+      "correct_answer":"",
+      "incorrect_answer1":"",
+      "incorrect_answer2":"",
+      "incorrect_answer3":"",
+      "incorrect_answer4":"",
+      "incorrect_answers":[],
+      "questions":[],
+      "show": false
+    }
+  }
+        
 
+  handleSubmit(e) {
+    e.preventDefault();
+    this.setState({
+      incorrect_answers: [...this.state.incorrect_answers, this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3, this.state.incorrect_answer4]
+    }, () => {
+      var obj = {question: this.state.question, answer: this.state.correct_answer, incorrect_answers: this.state.incorrect_answers};
+      this.setState({
+        questions: [...this.state.questions, obj],
+        question:"",
+        correct_answer:"",
+        incorrect_answer1:"",
+        incorrect_answer2:"",
+        incorrect_answer3:"",
+        incorrect_answer4:"",
+        incorrect_answers:[],
+        index:this.state.index + 1
+      }, () => {
+        console.log("after updating state: ", this.state);
+      });
+    })
+  }
 
-  class CreateQuizForm extends React.Component{
+    onQuizTitleChange(event) {
+      this.setState({quiz_title: event.target.value})
+    }
 
-        state = {
-            "counter":0,
-            "questions":[],
+    onQuestionChange(event) {
+      this.setState({question: event.target.value})
+    }
 
-            "question":"",
-            "correct_answer":"",
+    onCorrect_answerChange(event){
+      this.setState({correct_answer: event.target.value})
+    }
 
-            "incorrect_answer1":"",
-            "incorrect_answer2":"",
-            "incorrect_answer3":"",
+    onIncorrect_answerChange1(event){
+      this.setState({incorrect_answer1:event.target.value});
+    }
 
-            "incorrect_answers":[]
+    onIncorrect_answerChange2(event){
+      this.setState({incorrect_answer2:event.target.value});
+    }
 
-        }
+    onIncorrect_answerChange3(event){
+      this.setState({incorrect_answer3:event.target.value});
+    }
 
+    onIncorrect_answerChange4(event){
+      this.setState({incorrect_answer4:event.target.value});
+    }
 
-        handleSubmit(e) {
-            e.preventDefault();
-            // this.setState({ 
-            //     incorrect_answers: this.state.incorrect_answers.concat([this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3])
-            //)}
-            
-            console.log(this.state)
-            this.setState({
-                counter:this.state.counter + 1
-            })
-        axios.post(`http://localhost:9081/users/testing-input`, {
-            "question":this.state.question,
-            "correct_answer":this.state.correct_answer,
-            "incorrect_answers":[this.incorrect_answers]
-          })
-            .then(res => {
-              console.log(res);
-              console.log(res.data);
-            }).catch(error =>{
-              console.log(error.response);
-            })  
-          }
+    onCreateQuiz = (e) => {
+      e.preventDefault();
+      console.log(this.state);
+      if (this.state.questions.length === 0) {
+        window.alert("You need to add at least one question! 😅");
+        return; 
+      }
+      axios.post(`http://localhost:9084/quizzes/testing-input`, {
+        "quizName":this.state.quiz_title,
+        "creator":this.state.creator,
+        "courseID":this.state.courseID,
+        "quizTopics":this.state.topics,
+        "quizQuestions":this.state.questions
+      })
+      .then(res => {
+        this.setState ({
+          "quiz_title":"",
+          "topic":"",
+          "index":0
+        })
+        window.alert("Quiz Posted! 🥳 ");
+        this.props.history.push('/Courses/' + this.state.courseID);
+        console.log(res);
+        console.log(res.data);
+      }).catch(error =>{
+        window.alert("Problem posting the Quiz 😞" );
+        console.log(error);
+      })  
+    }
 
-          onQuestionChange(event) {
-            this.setState({question: event.target.value})
-          }
+    handleClose = () => {this.setState({show: false})}
+    handleShow = () => {this.setState({show: true})};
 
-          onCorrect_answerChange(event){
-            this.setState({correct_answer: event.target.value})
-          }
-          onIncorrect_answerChange1(event){
-
-            let a = {...this.state.incorrect_answers};//creates the clone of the state
-            a[0] = event.target.value;
-            this.setState({incorrect_answers: a, incorrect_answer1:event.target.value});
-
-           //this.setState({incorrect_answer1: event.target.value
-                
-           // })
-
-          }
-
-          onIncorrect_answerChange2(event){
-            let a = {...this.state.incorrect_answers};//creates the clone of the state
-            a[1] = event.target.value;
-            this.setState({incorrect_answers: a, incorrect_answer2:event.target.value});
-            //this.setState({incorrect_answer2: event.target.value
-            //})
-          }
-
-          onIncorrect_answerChange3(event){
-            let a = {...this.state.incorrect_answers};//creates the clone of the state
-            a[2] = event.target.value;
-            this.setState({incorrect_answers: a, incorrect_answer3:event.target.value});
-            //this.setState({incorrect_answer3: event.target.value
-           // })
-          }
-
-
-
-
-
-
-
-        //   onIncorrect_answerChange(event){
-        //       this.setState(prevState => ({
-        //           incorrect_answers:[...prevState.incorrect_answers, event.target.value]
-        //       }))
-        //   }
+    onDeleteQuiz = (e) => {
+      e.preventDefault();
+      this.props.history.push('/');
+    }
       
-    
-
     render(){
-        return (
-            <div> 
-            <TopNavbar/>
+      return (
+        <Style>
+        <div className="container-middle">
+        <Form id="quiz-form" onSubmit={this.handleSubmit.bind(this)}>
+          <Form.Row>
+          <Form.Control required className="header no-border" size="sm" type="text" placeholder="Quiz Title..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
+          </Form.Row>
 
-            <h3 style={{display:'flex', justifyContent:'center', alignItems:'center'}} className="container">
-            
-            <Card style={{ width: '50rem', padding:'35px' }} className='rounded-corner'>
+          <div className="spacer"></div>
 
-            <Form id="quiz-form" onSubmit={this.handleSubmit.bind(this)}>
-            
-            <div>
-            <Form.Label  column="lg" lg={3}>
-            Question {this.state.counter + 1}
-            </Form.Label>
-            
-            
-            <Form.Row>
-            <Form.Label style={{visibility: "hidden"}} column="lg" sm={0.1}>
-            Q
-            </Form.Label >
+          <div className="description"> {this.state.quiz_title} is about: 
+            <span className="topicsColor"> {this.state.topics.join(', ')}</span>.
+            <Button variant="light" className="publish-quiz-button rounded-corner" onClick={this.onCreateQuiz}> Publish Quiz </Button>
+            <Button variant="light" className="delete-quiz-button rounded-corner" onClick={this.handleShow}> Delete Quiz </Button> 
+          </div>
+
+          <Modal show={this.state.show} onHide={this.handleClose} backdrop="static">
+            <Modal.Header closeButton> <Modal.Title> Delete Quiz </Modal.Title> </Modal.Header>
+            <Modal.Body>Are you sure you want to discard this quiz?</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleClose}> Cancel </Button>
+              <Button variant="primary" onClick={this.onDeleteQuiz}> Yes </Button>
+            </Modal.Footer>
+          </Modal>
+
+          <div className="small-spacer"> 
+            <Button variant="light" className="add-topic-button rounded-corner"> Add Topic </Button> 
+          </div>
+
+          <div className="spacer"></div>
+
+          <Card className="quiz-question rounded-corner">
+
+          <div>
+          <Form.Label className="description center" column="lg" lg={3}> Question {this.state.index + 1} </Form.Label>
+          <Form.Row>
+            <Form.Label style={{visibility: "hidden"}} column="lg" sm={0.5}> Q </Form.Label >
             <Col>
-            <Form.Control size="lg" type="text" placeholder="Enter your question here..." value={this.state.question} onChange={this.onQuestionChange.bind(this)}/>
+            <Form.Control required className="no-border" size="lg" type="text" placeholder="Click to write your question..." value={this.state.question} onChange={this.onQuestionChange.bind(this)}/>
             </Col>
-            </Form.Row>
-            <br/>
-            </div>
-            
-            <Form.Group>
-            <Form.Row>
-            <Form.Label column="lg" sm={0.1}>
-            A
-            </Form.Label >
+          </Form.Row>
+          <br/>
+          </div>
+        
+          <Form.Group>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label >
             <Col>
-            <Form.Control size="lg" type="text" placeholder="Enter correct answer here" value={this.state.correct_answers} onChange={this.onCorrect_answerChange.bind(this)}/>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type your correct answer here..." value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
             </Col>
-            </Form.Row>
-            <br/>
-            
-            <Form.Row>
-            <Form.Label column="lg" sm={0.1}>
-            B
-            </Form.Label>
+          </Form.Row>
+          <br/>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label >
             <Col>
-            <Form.Control size="lg" type="text" placeholder="Enter an incorrect answer here" value={this.state.incorrect_answer1} onChange={this.onIncorrect_answerChange1.bind(this)}/>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer1} onChange={this.onIncorrect_answerChange1.bind(this)}/>
             </Col>
-            </Form.Row>
-            <br/>
+          </Form.Row>
+          <br/>
 
-            <Form.Row>
-            <Form.Label column="lg" sm={0.1}>
-            C
-            </Form.Label>
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label >
             <Col>
-            <Form.Control size="lg" type="text" placeholder="Enter an incorrect answer here" value={this.state.incorrect_answer2} onChange={this.onIncorrect_answerChange2.bind(this)} />
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer2} onChange={this.onIncorrect_answerChange2.bind(this)}/>
             </Col>
-            </Form.Row>
-            <br/>
-            
-            <Form.Row>
-            <Form.Label column="lg" sm={0.1}>
-            D
-            </Form.Label>
+          </Form.Row>
+          <br/>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label >
             <Col>
-            <Form.Control size="lg" type="text" placeholder="Enter an incorrect answer here" value={this.state.incorrect_answer3} onChange={this.onIncorrect_answerChange3.bind(this)}/>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer3} onChange={this.onIncorrect_answerChange3.bind(this)}/>
             </Col>
-            </Form.Row>
-            <br/>
+          </Form.Row>
+          <br/>
 
-            </Form.Group>
-            <button type="submit" className="btn btn-primary">Click here to create another question</button>
-            </Form>
-            </Card>
-            
-            </h3>
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label >
+            <Col>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer4} onChange={this.onIncorrect_answerChange4.bind(this)}/>
+            </Col>
+          </Form.Row>
+          <br/>
 
-            
-           
-            
-            </div>   
+          </Form.Group>
+          </Card>
 
-
-        )
+          <div className="container-middle small-spacer"> 
+            <Button type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> 
+          </div>
+          
+        </Form>
+        </div>
+        </Style>
+      )
     }
   }
 
-  export default CreateQuizForm;
+  export default withRouter(CreateQuizForm);

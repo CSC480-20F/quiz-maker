@@ -1,14 +1,14 @@
 /* @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext'); */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
-.container-middle{
+.container-middle {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-.container{
+.container {
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -22,19 +22,31 @@
   height: 75vh;
 }
 
-.login {
-  background:#f5f5f5;
-  /* display: center; */
-  /* justify-content: center;
-  align-items: center; */
-  /* flex-direction: column; */
-  padding: 13%;
+.login-oswego-logo{
+  height: auto; 
+  width: auto; 
+  max-width:25%;
+  align-self: center;
+  padding-top: 90px;
 }
 
-.home-logo {
-  max-height: 35px;
-  max-width: 145px;
+.login-quizmaker-logo{
+  height: auto; 
+  width: auto; 
+  align-self: center;
 }
+
+.login-border{
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  border-color: black;
+  border-width: .5px;
+  border-style: solid;
+  border-radius: 0ex;
+  background-color: #ffffff;
+}
+
 
 .header {
   text-align: center;
@@ -47,21 +59,29 @@
 
 .light-text {
   color: #808080;
+  font-family: Roboto;
 }
 
 .create-quiz {
+  font-family: Roboto;
   min-width: 20%;
   color: white;
-  border-radius: 15px;
+  border-radius: 20px;
   font-size: 20px;
   font-weight: 500;
-  background-color: #FE9C02;
+  background-color: #8F0047;
+}
+
+.create-quiz:hover{
+  background-color: #8F0047;
+  color: white;
 }
 
 .subtitle {
+  font-family: Roboto;
   color: #235937;
-  font-size: 35px;
-  font-weight: 650;
+  font-size: 30px;
+  font-weight: bolder;
   margin-left: 10px;
   padding-bottom: 5px;
 }
@@ -78,12 +98,10 @@
   display: flex;
   justify-content: space-evenly;
   flex-direction: row;
-  /* background-color: black;
-  border:2px solid white;
-  border-radius: 20px; */
 }
 
 .card-deck .card{
+  font-family: Roboto;
   margin: 20px;
   margin: 20px;
   flex: 1;
@@ -92,6 +110,7 @@
 }
 
 .course-card {
+  font-family: Roboto;
   min-width: 240px;
   min-height: 150px;
   border-radius: 10px;
@@ -107,6 +126,7 @@
 }
 
 .regular-link {
+  font-family: Roboto;
   text-decoration: none;
   color: white;
 }
@@ -122,13 +142,15 @@
   padding-left: 50px;
   padding-right: 50px;
   font-family: Roboto;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .nav-bar-style .active{
   color: #FE9C02;
-  /* border-bottom: 3px solid #FE9C02;
-  padding-bottom: 0.1px; */
+}
+
+.small-spacer {
+  padding: 1%;
 }
 
 .spacer {
@@ -137,6 +159,10 @@
 
 .quiztable{
   background: #f2f2f2;
+  font-family: Roboto;
+  font-weight: 100;
 }
+
+
 
 

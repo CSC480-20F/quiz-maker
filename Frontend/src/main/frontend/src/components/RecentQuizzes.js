@@ -28,6 +28,7 @@ class RecentQuizzes extends Component {
                         <Link to={'/Quizzes/' + quiz.id} className='regular-link' key={quiz.id}>
                         <Card className="course-card">
                             <Card.Title>{quiz.name}</Card.Title>
+                            <Card.Footer> Name of the Course </Card.Footer>
                         </Card>
                         </Link>
                 )

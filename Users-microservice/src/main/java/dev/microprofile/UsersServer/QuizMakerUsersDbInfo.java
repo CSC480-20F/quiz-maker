@@ -2,10 +2,8 @@ package dev.microprofile.UsersServer;
 
 import com.mongodb.*;
 
-import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
-
-import javax.json.JsonObjectBuilder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -16,7 +14,7 @@ public class QuizMakerUsersDbInfo {
     // Creates login username and password
     MongoCredential adminAuth = MongoCredential.createScramSha256Credential("superuser", "admin", "AdminPassword123".toCharArray());
     // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
-    ServerAddress serverAddress = new ServerAddress("68.172.33.6", 27017);
+    ServerAddress serverAddress = new ServerAddress("129.3.20.26", 27017);
     MongoClient mongoClient = new MongoClient(serverAddress);
     //MongoClient mongoClient = new MongoClient();
     //Connects to the specific db we want;
@@ -25,22 +23,17 @@ public class QuizMakerUsersDbInfo {
     @Path("/all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response dbDump(){
+    public Response dbDump() {
         //Variable decelerations
-        String dbInfo="";
+        String dbInfo = "[";
         //Gathers the specific collection we want
         DBCollection collection = database.getCollection("users");
         //Creates a basic db object
-        BasicDBObject searchQuery = new BasicDBObject();
-        //declaring it a search variable and setting the parameter to look for
-        searchQuery.get("Matt");
-        //Starting a cursor to search with our declared search variable
-        DBCursor cursor = collection.find(searchQuery);
+        DBCursor cursor = collection.find();
         //Iterate through each db hit and amend it to a string
-        dbInfo = dbInfo.concat("[");
         while (cursor.hasNext()) {
             dbInfo = dbInfo.concat(cursor.next().toString());
-            if (cursor.hasNext()){
+            if (cursor.hasNext()) {
                 dbInfo = dbInfo.concat(",");
             }
         }
@@ -49,18 +42,55 @@ public class QuizMakerUsersDbInfo {
 
     }
 
-    @Path("/testing-input")
-    @POST
-    @Consumes("application/json")
-    public Response testingInput(JsonObject test){
+    @Path("/{email}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response usersCoursesList(@PathParam("email") String email) {
+        //db connection and local var statements
         DBCollection collection = database.getCollection("users");
-       /* JsonObjectBuilder builder = Json.createObjectBuilder();
-        for (String key: test.keySet()){
-            builder.add(key, test.get(key));
-        } */
-        QMUser user = new QMUser(test);
-        collection.save(user.convertUsertoDBobject(user));
-        return Response.ok().build();
+        BasicDBObject query = new BasicDBObject();
+
+        query.put("email", email);
+
+        DBObject currentUser = collection.findOne(query);
+        Object o = currentUser.get("courseId");
+
+        return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
 
+    @Path("/add-course")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addCourse(JsonObject register){
+        DBCollection collection = database.getCollection("users");
+        String courseId;
+        JsonArray names;
+        JsonArray emails;
+
+        courseId = register.getString("id");
+        names = register.getJsonArray("names");
+        emails = register.getJsonArray("emails");
+
+        for (int i = 0; i <= emails.size() - 1; i++) {
+            BasicDBObject query = new BasicDBObject();
+            query.put("email",emails.getString(i));
+            DBObject found = collection.findOne(query);
+            //System.out.println("Current db object -> " + found.toString());
+            if(found == null){
+                QMUser freshUser = new QMUser(names.getString(i),emails.getString(i),courseId);
+                collection.save(freshUser.convertUsertoDBobject(freshUser));
+            }else {
+                BasicDBList list = (BasicDBList)found.get("courseId");
+                list.add(courseId);
+
+                BasicDBObject foundUser = new BasicDBObject();
+                DBObject update = found;
+                foundUser.put("email", found.get("email").toString());
+                update.put("courseId", list);
+                collection.findAndModify(foundUser, update);
+            }
+        }
+
+        return Response.ok().build();
+    }
 }

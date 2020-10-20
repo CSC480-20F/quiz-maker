@@ -8,8 +8,8 @@ import Course from './components/Course';
 import CreateQuiz from './components/CreateQuiz';
 import Courses from './components/Courses';
 import Quizzes from './components/Quizzes';
-import CreateQuiz_v2 from './components/CreateQuiz_v2';
-import CreateQuizForm from './components/CreateQuizForm';
+import TakeQuiz from './components/TakingQuiz';
+import RosterUpload from './components/RosterUpload';
 
 class ProtectedRoute extends React.Component {
   render() {
@@ -18,7 +18,7 @@ class ProtectedRoute extends React.Component {
     if (Condition === null) {
       return (
         <div className='container-center'>
-          <Loading type={'spin'} color={'#6495ED'}/>
+          <Loading type={'spin'} color={'#235937'}/>
         </div>
       )
     }
@@ -72,7 +72,7 @@ class App extends React.Component {
       if (this.state.isSignedIn === null) {
           return (
             <div className='container-center'>
-              <Loading type={'spin'} color={'#6495ED'}/>
+              <Loading type={'spin'} color={'#235937'}/>
             </div>
           )
       }
@@ -90,8 +90,8 @@ class App extends React.Component {
                   <ProtectedRoute path="/CreateQuiz" condition={this.state.isSignedIn} component={CreateQuiz}/>
                   <ProtectedRoute exact path="/Courses" condition={this.state.isSignedIn} component={Courses}/>
                   <ProtectedRoute exact path="/Quizzes" condition={this.state.isSignedIn} component={Quizzes}/>
-                  <ProtectedRoute path="/CreateQuiz_v2" condition={this.state.isSignedIn} component={CreateQuiz_v2}/>
-                  <ProtectedRoute path="/CreateQuizForm" condition={this.state.isSignedIn} component={CreateQuizForm}/>
+                  <ProtectedRoute path="/TakingQuiz" condition={this.state.isSignedIn} component={TakeQuiz}/>
+                  <ProtectedRoute path="/RosterUpload" condition={this.state.isSignedIn} component={RosterUpload}/>
 
                   
                   {/* <Route path="/dashboard" render={() => this.ifUserSignedIn(Dashboard)}/> */}

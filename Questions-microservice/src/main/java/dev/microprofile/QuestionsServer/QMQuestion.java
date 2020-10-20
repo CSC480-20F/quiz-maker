@@ -29,7 +29,7 @@ public class QMQuestion {
       this.student = quest.getString("student");
       this.quiz_Name = quest.getString("quiz_Name");
       this.quiz_ID = quest.getString("quiz_ID");
-      setIncorrectAnswers(quest.getJSONArray('incorrect_answer'));
+      setIncorrectAnswers(quest.getJSONArray("incorrect_answer"));
       this.starred = quest.getBoolean("star");
       this.rating = quest.getInt("rating");
     }

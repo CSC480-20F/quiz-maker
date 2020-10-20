@@ -3,20 +3,25 @@ import TopNavbar from './TopNavbar';
 import axios from 'axios';
 import QuizTable from './QuizTable';
 import { Button, Card } from "react-bootstrap";
+import TopQuizzes from './CourseTopQuizzes';
+import Loading from './Loading';
 
 class Course extends Component {
     state = {
-        post: null,
+        course: null,
+        quizData: []
     }
 
     componentDidMount() {
         let id = this.props.match.params.course_id;
-        axios.get("https://jsonplaceholder.typicode.com/users/" + id).then(res => {
+        axios.get("http://localhost:9083/courses/get-courses/" + id).then(res => {
             this.setState({
-                post: res.data
+                course: res.data[0]
             })
         })
-        
+        fetch("https://jsonplaceholder.typicode.com/posts", {method: 'GET',}).then(response => response.json()).then(posts => {
+            this.setState({quizData: posts})
+        })
     }
 
     handleClick(e) {
@@ -24,34 +29,34 @@ class Course extends Component {
     }
 
     render () {
-        const post = this.state.post ? (
+        const course = this.state.course ? (
             <div>
                 <TopNavbar/>
                 <div className='container-middle'> 
-                    <h1 className="center header">{this.state.post.name}</h1>
+                    <h1 className="center header">{this.state.course.courseName}</h1>
                     <div style={{padding: '10px'}}> </div>
-                    <Button className ='center' variant='warning' className='create-quiz' onClick={this.handleClick.bind(this)}>Create a Quiz</Button>
+                    <Button variant='light' className='create-quiz center' onClick={this.handleClick.bind(this)}>Create a Quiz</Button>
                 </div>
 
                 <div className='container'>
-                    {/* <div style={{padding: '10px'}}> </div>
-                    <TopQuizzes /> */}
+                    <h1 className='subtitle'> Top Rated Quizzes </h1>
+                    <TopQuizzes />
 
                     <div className="spacer"></div>
-                    <h1 className='subtitle'> Quizzes </h1>
+                    <h1 className='subtitle'> Course Quizzes </h1>
                     <Card className='rounded-corner'>
-                        <QuizTable />
+                        <QuizTable data={this.state.quizData}/>
                     </Card>
                 </div>
             </div>
         ) : (
             <div> <TopNavbar/>
-            <div className="container"> Loading course...</div>
+            <div className="container-center"> <Loading type={'balls'} color={'#235937'}/></div>
             </div>
         )
         return(
             <div>
-                {post}
+                {course}
                 <h1 className='header'> {this.state.textID} </h1>
             </div>
         )
