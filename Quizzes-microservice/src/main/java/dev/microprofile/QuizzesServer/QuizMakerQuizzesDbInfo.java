@@ -4,6 +4,7 @@ import com.mongodb.*;
 import com.mongodb.client.MongoDatabase;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.types.ObjectId;
 
 import javax.json.JsonObject;
 import javax.ws.rs.*;
@@ -39,7 +40,7 @@ public class QuizMakerQuizzesDbInfo {
         //Gathers the specific collection we want
         DBCollection collection = database.getCollection("quizzes");
         //Starting a cursor to search with our declared search variable
-        DBCursor cursor = collection.find(searchQuery);
+        DBCursor cursor = collection.find();
         //Iterate through each db hit and amend it to a string
         dbInfo = dbInfo.concat("[");
         while (cursor.hasNext()) {
@@ -58,7 +59,7 @@ public class QuizMakerQuizzesDbInfo {
     @Path("/get-created-quizzes/{email}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response usersCoursesList(@PathParam("email") String email) {
+    public Response usersCreatedQuizzesList(@PathParam("email") String email) {
         //db connection and local var statements
         DBCollection collection = database.getCollection("quizzes");
         BasicDBObject query = new BasicDBObject();
@@ -110,12 +111,12 @@ public class QuizMakerQuizzesDbInfo {
     @Path("/get-quizzes/{quizIds}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response usersCoursesList(@PathParam("quizIds") String quizIds) {
+    public Response quizzesList(@PathParam("quizIds") String quizIds) {
         //db connection and local var statements
         DBCollection collection = database.getCollection("quizzes");
         String[] quizArray = quizIds.split(",");
         ArrayList<DBObject> quizList = new ArrayList<>();
-        for (int index = 0; index < quizArray.length(); index++){
+        for (int index = 0; index < quizArray.length; index++){
           //search for quiz id
           DBObject quiz = collection.findOne(new ObjectId(quizArray[index]));
           //gets quiz id in DBObject quiz
@@ -123,7 +124,7 @@ public class QuizMakerQuizzesDbInfo {
           int questSize = questions.size();
           quiz.removeField("questions");
           quiz.put("quiz-length", questSize);
-          quizList.add(cq);
+          quizList.add(quiz);
         }
         return Response.ok(quizList.toString(), MediaType.APPLICATION_JSON).build();
     }
@@ -133,7 +134,7 @@ public class QuizMakerQuizzesDbInfo {
     @Path("/get-quiz/{quizId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response usersCoursesList(@PathParam("quizId") String quizId) {
+    public Response getOneQuiz(@PathParam("quizId") String quizId) {
         //db connection and local var statements
         DBCollection collection = database.getCollection("quizzes");
         DBObject quiz = collection.findOne(new ObjectId(quizId));
