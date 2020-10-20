@@ -4,13 +4,12 @@ import com.mongodb.*;
 import com.mongodb.client.MongoDatabase;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
-import org.bson.types.ObjectId;
 
-import java.util.*;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -58,7 +57,7 @@ public class QuizMakerQuizzesDbInfo {
 
     }
 
-    @Path("/get-course/{courseId}")
+    @Path("/get-quizzes/{courseId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response usersCoursesList(@PathParam("courseId") String courseId) {
@@ -72,11 +71,10 @@ public class QuizMakerQuizzesDbInfo {
 
         while (currentQuiz.hasNext()) {
           DBObject cq = currentQuiz.next();
-          ObjectId id = (ObjectId)cq.get("_id");
-          //int d = id.getTimestamp();
-          Date date = new Date(Integer.parseInt(id.substring(0, 8), 16) * 1000);  //1602627005
-          cq.put("Date" , date);
-          System.out.println(date);
+          BasicDBList questions = (BasicDBList) cq.get("questions");
+          //int questSize = questions.size() - 1;
+          cq.removeField("questions");
+          //cq.put("quiz-length", questSize);
           quizList.add(cq);
         }
 

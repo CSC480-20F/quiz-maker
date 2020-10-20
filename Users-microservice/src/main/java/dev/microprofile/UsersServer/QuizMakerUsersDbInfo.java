@@ -73,9 +73,10 @@ public class QuizMakerUsersDbInfo {
 
         for (int i = 0; i <= emails.size() - 1; i++) {
             BasicDBObject query = new BasicDBObject();
-            query.put("email",emails.getString(i));
+            System.out.println(emails.getString(i));
+            query.put("email",emails.get(i).toString());
             DBObject found = collection.findOne(query);
-            //System.out.println("Current db object -> " + found.toString());
+            System.out.println("Current db object -> " + found.toString());
             if(found == null){
                 QMUser freshUser = new QMUser(names.getString(i),emails.getString(i),courseId);
                 collection.save(freshUser.convertUsertoDBobject(freshUser));
