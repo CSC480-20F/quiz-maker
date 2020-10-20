@@ -63,7 +63,7 @@ const Style = styled.div`
     .publish-quiz-button {
       float: right;
       padding: 18px;
-      color: white;
+      color: white; 
       background-color: #1C9B2F;
     }
 
@@ -94,10 +94,12 @@ class CreateQuizForm extends React.Component{
     super(props);
     const firstName = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getGivenName()
     this.state = {
-      "quiz_title":firstName + "'s Quiz",
+      "quiz_title":"",
       "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
-      "courseID":this.props.courseID,
-      "topics":this.props.topics,
+      
+      // "courseID":this.props.courseID,
+      // "topics":this.props.topics,
+      "topics":["asd","asdasdsadsadsa"],
       "index":0,
       "question":"",
       "correct_answer":"",

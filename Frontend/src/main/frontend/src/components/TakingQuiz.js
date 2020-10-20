@@ -4,6 +4,8 @@ import TopNavbar from './TopNavbar';
 import Loading from './Loading';
 import axios from 'axios';
 import {Card, ProgressBar, Form, Col, Button} from 'react-bootstrap';
+import { FcCheckmark, FcCancel } from "react-icons/fc"; //https://react-icons.github.io/react-icons/icons?name=fc
+import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai"; //https://react-icons.github.io/react-icons/icons?name=ai
 
 const Styles = styled.div`
         ${'' /* display: flex;
@@ -142,6 +144,29 @@ const Styles = styled.div`
     color: white;
   }
 
+  .score-card{
+    padding: 50px;
+    font-size: 50px;
+
+  }
+
+  .score-properties{
+ 
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+
+  }
+
+  .correct-answer{
+   float: left;
+  
+  }
+
+  .incorrect-answer{
+    float: left;
+  }
+
 `;
 
 class TakeQuiz extends Component {
@@ -158,13 +183,26 @@ class TakeQuiz extends Component {
       "showScore": false,
       "selectedID": "",
       "selected": false,
-      "allAnswers": []
+      "allAnswers": [],
+      "setScore":[],
+      "count":0
     }
+
+    this.increment = this.increment.bind(this)
+    this.decrement = this.decrement.bind(this)
+  }
+
+  increment(){
+    this.setState({count:this.state.count +1})
+  }
+
+  decrement(){
+    this.setState({count:this.state.count -1})
   }
 
   componentDidMount () {
     this.mounted = true;
-    axios.get('https://opentdb.com/api.php?amount=10&type=multiple').then(res => {
+    axios.get('https://opentdb.com/api.php?amount=5&type=multiple').then(res => {
       if(this.mounted){
         this.setState({
           questions: res.data.results,
@@ -220,7 +258,10 @@ class TakeQuiz extends Component {
   handleAnswerClick = (chosenAnswer) => {
     this.setState({selectedID: chosenAnswer, selected: true})
     if (this.state.questions[this.state.currentQuestion].correct_answer === chosenAnswer) {
-      this.setState({score: this.state.score + 1})
+      this.setState({score: this.state.score + 1, setScore: [...this.state.setScore, true]})
+      
+    } else {
+      this.setState({setScore:[...this.state.setScore, false]})
     }
   }
 
@@ -263,9 +304,26 @@ class TakeQuiz extends Component {
       ):(
         <h1 style={{visibility: "hidden"}}> hehe </h1>
       )
+
+
+      const scoreTally = this.state.setScore.map((score,i) => {
+        if (score) {
+          return (<div style={{display:"inline-block", margin:"80px"}} key = {i} > Q{i+1}   <FcCheckmark style={{display:"inline-block", margin:"2px"}} className="correct-answer-icon"/> </div>)
+        } else {
+          return (<div style={{display:"inline-block", margin:"80px"}}  key = {i}> Q{i+1}  <FcCancel style={{display:"inline-block", margin:"2px"}} className="incorrect-answer-icon"/> </div>)
+        }
+        
+      })
     
     const takingQuiz = this.state.showScore ? (
-      <h1> You scored: {this.state.score}/{questions.length} </h1>
+      <>
+      <div className="subtitle">My Score</div>
+      <Card className="score-card rounded-corner" >
+      <h1 className="score-properties"> <span style={{color:"#1C9B2F", marginRight:"10px"}}>{this.state.score}</span> out of {questions.length} </h1>
+      <div>{scoreTally}</div>
+
+      </Card>
+      </>
     ):(
       <>
       <div className="spacer">{this.state.quizTitle} is about: <span className="topics"> {this.state.topics.join(', ')}. </span></div>
@@ -274,7 +332,11 @@ class TakeQuiz extends Component {
           <div className="small-spacer"></div>
           
           <Card className="whole-question-card rounded-corner">
-            <h1 className="subtitle">Question {currentQuestion + 1} </h1>
+            <h1 className="subtitle">Question {currentQuestion + 1} 
+            <AiOutlineLike style={{display:"inline-block", margin:"2px"}} onClick={this.increment}/>
+            <AiOutlineDislike style={{display:"inline-block", margin:"2px"}} onClick={this.decrement}/>   counter: {this.state.count}
+            
+            </h1>
 
             <div className="small-spacer" dangerouslySetInnerHTML={{__html: questions[currentQuestion].question}}></div>
             <Form.Group>
@@ -289,12 +351,15 @@ class TakeQuiz extends Component {
     )
 
     return (
+      <>
+      <TopNavbar/>
       <Styles>
       <div className="container">
         <h1 className="header">{this.state.quizTitle}</h1>
         {takingQuiz}
       </div>
       </Styles>
+      </>
     )
   }
 }
