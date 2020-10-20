@@ -20,6 +20,7 @@ public class QuizMakerUsersDbInfo {
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("testing");
 
+    //Dumps whole db
     @Path("/all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -42,6 +43,7 @@ public class QuizMakerUsersDbInfo {
 
     }
 
+    //receives users email and returns list of courseIDs they are in
     @Path("/{email}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -58,6 +60,7 @@ public class QuizMakerUsersDbInfo {
         return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
 
+    //adds course to courselist for all users in that class
     @Path("/add-course")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -73,10 +76,9 @@ public class QuizMakerUsersDbInfo {
 
         for (int i = 0; i <= emails.size() - 1; i++) {
             BasicDBObject query = new BasicDBObject();
-            System.out.println(emails.getString(i));
-            query.put("email",emails.get(i).toString());
+            query.put("email",emails.getString(i));
             DBObject found = collection.findOne(query);
-            System.out.println("Current db object -> " + found.toString());
+            //System.out.println("Current db object -> " + found.toString());
             if(found == null){
                 QMUser freshUser = new QMUser(names.getString(i),emails.getString(i),courseId);
                 collection.save(freshUser.convertUsertoDBobject(freshUser));
@@ -94,4 +96,15 @@ public class QuizMakerUsersDbInfo {
 
         return Response.ok().build();
     }
+
+    //PUT gets email and quizID
+    
+
+
+    //GET passes in the user email gets all taken quizzes
+
+
+
+
+
 }

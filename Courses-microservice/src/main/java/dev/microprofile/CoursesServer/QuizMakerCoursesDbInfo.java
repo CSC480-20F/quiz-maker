@@ -15,10 +15,10 @@ public class QuizMakerCoursesDbInfo {
     // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
     ServerAddress serverAddress = new ServerAddress("129.3.20.26", 27018);
     MongoClient mongoClient = new MongoClient(serverAddress);
-    //MongoClient mongoClient = new MongoClient(27018);
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("coursesDB");
 
+    //Dumps whole db
     @Path("/all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -27,11 +27,6 @@ public class QuizMakerCoursesDbInfo {
         String dbInfo="[";
         //Gathers the specific collection we want
         DBCollection collection = database.getCollection("courses");
-        //Creates a basic db object
-        BasicDBObject searchQuery = new BasicDBObject();
-        //declaring it a search variable and setting the parameter to look for
-        // searchQuery.get("teacher");
-        //Starting a cursor to search with our declared search variable
         DBCursor cursor = collection.find();
         //Iterate through each db hit and amend it to a string
         while (cursor.hasNext()) {
@@ -42,11 +37,9 @@ public class QuizMakerCoursesDbInfo {
         }
         dbInfo = dbInfo.concat("]");
         return Response.ok(dbInfo, MediaType.APPLICATION_JSON).build();
-
     }
 
-    //cN: 0,t: 1, eL:[one,two,three]
-
+    //Creates Course and send back courseID
     @Path("/create-course/{course}")
     @GET
     @Consumes("application/json")
@@ -62,6 +55,7 @@ public class QuizMakerCoursesDbInfo {
         return Response.ok(id.toString(), MediaType.APPLICATION_JSON).build();
     }
 
+    //Recieves list of courseIDs and returns those courses
     @Path("/get-courses/{courseId}")
     @GET
     @Consumes("application/json")
@@ -87,9 +81,6 @@ public class QuizMakerCoursesDbInfo {
             courseOut = courseOut.concat("}");
         }
         courseOut = courseOut.concat("]");
-        //append above info to out going string
-        //finish loop
-        //send out going string
         return Response.ok(courseOut, MediaType.APPLICATION_JSON).build();
     }
 
