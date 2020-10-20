@@ -71,9 +71,10 @@ public class QuizMakerQuizzesDbInfo {
 
         while (currentQuiz.hasNext()) {
           DBObject quiz = currentQuiz.next();
-          BasicDBList questions = (BasicDBList) quiz.get("questions");
+          BasicDBList questions = (BasicDBList) quiz.get("quizQuestions");
+          //System.out.println(questions.toString());
           int questSize = questions.size();
-          quiz.removeField("questions");
+          quiz.removeField("quizQuestions");
           quiz.put("quiz-length", questSize);
           quizList.add(quiz);
         }
@@ -82,7 +83,7 @@ public class QuizMakerQuizzesDbInfo {
     }
 
     //GET passes a courseID returns all quizzes in that course
-    @Path("/get-quizzes/{courseId}")
+    @Path("/get-course/{courseId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response usersCoursesList(@PathParam("courseId") String courseId) {
@@ -120,9 +121,9 @@ public class QuizMakerQuizzesDbInfo {
           //search for quiz id
           DBObject quiz = collection.findOne(new ObjectId(quizArray[index]));
           //gets quiz id in DBObject quiz
-          BasicDBList questions = (BasicDBList) quiz.get("questions");
+          BasicDBList questions = (BasicDBList) quiz.get("quizQuestions");
           int questSize = questions.size();
-          quiz.removeField("questions");
+          quiz.removeField("quizQuestions");
           quiz.put("quiz-length", questSize);
           quizList.add(quiz);
         }
