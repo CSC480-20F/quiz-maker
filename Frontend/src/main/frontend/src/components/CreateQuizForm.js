@@ -40,12 +40,12 @@ const Style = styled.div`
     .description {
       font-family: Roboto;
       font-size: 20px;
-      max-width: 50rem;
+      max-width: 85rem;
     }
 
     .topicsColor {
       color: #8F0047;
-      max-width: 40rem;
+      max-width: 30rem;
     }
 
     .center {
@@ -183,6 +183,7 @@ class CreateQuizForm extends React.Component{
           "index":0
         })
         window.alert("Quiz Posted! 🥳 ");
+        this.props.history.push('/Courses/' + this.state.courseID);
         console.log(res);
         console.log(res.data);
       }).catch(error =>{
