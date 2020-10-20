@@ -132,8 +132,14 @@ const Styles = styled.div`
     background-color: #FBD9D9;
   }
 
-  .next-question-button {
-    
+  .next-question{
+    float: right;
+  }
+
+  .next-question-button{
+    float: right;
+    background-color: #8F0047;
+    color: white;
   }
 
 `;
@@ -185,15 +191,13 @@ class TakeQuiz extends Component {
   }
 
   createRandom = (arr) => {
-    let myArr = [...arr];  //copy arr we pass in
-    let randomizedArr = []; //gets popuated by loop
-
+    let myArr = [...arr];
+    let randomizedArr = [];
     while (myArr.length > 0) {
-       var randomIndex = Math.floor(Math.random() * myArr.length); //create random number
-       randomizedArr.push(myArr[randomIndex]); //add choice randomly to arr
-       myArr.splice(randomIndex, 1); //cut out a piece of the array then resart loop
+       var randomIndex = Math.floor(Math.random() * myArr.length);
+       randomizedArr.push(myArr[randomIndex]);
+       myArr.splice(randomIndex, 1);
     }
-    //when loop has finished, return random array
     return randomizedArr;
   }
 
@@ -216,7 +220,6 @@ class TakeQuiz extends Component {
   handleAnswerClick = (chosenAnswer) => {
     this.setState({selectedID: chosenAnswer, selected: true})
     if (this.state.questions[this.state.currentQuestion].correct_answer === chosenAnswer) {
-      console.log("WOW, THIS IS CORRECT");
       this.setState({score: this.state.score + 1})
     }
   }
@@ -231,7 +234,7 @@ class TakeQuiz extends Component {
     const questions = this.state.questions;
     const currentQuestion = this.state.currentQuestion;
 
-    const currentPlace = (currentQuestion/questions.length) * 100;
+    const currentPlace = ((currentQuestion+1)/questions.length) * 100;
 
     const allAnswers = this.state.allAnswers;
 
@@ -241,7 +244,6 @@ class TakeQuiz extends Component {
         <Form.Row key={i}>
             <Form.Label className="label" column="lg" sm={0.5}> {answerLabels[i]} </Form.Label >
             <Col>
-            {/* TODO: FIX THE LOGIC BELOW SO THAT THE RIGHT ANSWER IS HIGHLIGHTED WHEN THE WRONG ANSWER IS CLICKED */}
             <Form.Control className={this.state.selected ? 
             ((answer === questions[currentQuestion].correct_answer) ? ("answer-field-correct"):(
               (answer === this.state.selectedID && answer !== questions[currentQuestion].correct_answer)?("answer-field-incorrect"):("answer-field"))
@@ -256,11 +258,11 @@ class TakeQuiz extends Component {
       )
     })
 
-    // const nextQuestionButton = this.state.selected ? (
-    //     <Button variant="light" type="button" className="next-question-button" onClick={this.goToNextQuestion()}>Next Question</Button>
-    //   ):(
-    //     <></>
-    //   )
+    const nextQuestionButton = this.state.selected ? (
+      <Button variant="light" type="button" className="next-question-button" onClick={() => { this.goToNextQuestion()}}>Next Question</Button>
+      ):(
+        <h1 style={{visibility: "hidden"}}> hehe </h1>
+      )
     
     const takingQuiz = this.state.showScore ? (
       <h1> You scored: {this.state.score}/{questions.length} </h1>
@@ -280,7 +282,8 @@ class TakeQuiz extends Component {
             </Form.Group>
 
           </Card>
-          <Button variant="dark" type="button" className="next-question-button" onClick={() => { this.goToNextQuestion()}}>Next Question</Button>
+          <div className="small-spacer"></div>
+          <div className="next-question">{nextQuestionButton} </div>
         </Card>
       </>
     )
