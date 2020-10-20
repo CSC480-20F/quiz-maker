@@ -4,7 +4,9 @@ import com.mongodb.*;
 import com.mongodb.client.MongoDatabase;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.types.ObjectId;
 
+import java.util.*;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -56,6 +58,31 @@ public class QuizMakerQuizzesDbInfo {
 
     }
 
+    @Path("/get-course/{courseId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response usersCoursesList(@PathParam("courseId") String courseId) {
+        //db connection and local var statements
+        DBCollection collection = database.getCollection("quizzes");
+        BasicDBObject query = new BasicDBObject();
+
+        query.put("courseID", courseId);
+        DBCursor currentQuiz = collection.find(query);
+        ArrayList<DBObject> quizList = new ArrayList<>();
+
+        while (currentQuiz.hasNext()) {
+          DBObject cq = currentQuiz.next();
+          ObjectId id = (ObjectId)cq.get("_id");
+          //int d = id.getTimestamp();
+          Date date = new Date(Integer.parseInt(id.substring(0, 8), 16) * 1000);  //1602627005
+          cq.put("Date" , date);
+          System.out.println(date);
+          quizList.add(cq);
+        }
+
+        return Response.ok(quizList.toString(), MediaType.APPLICATION_JSON).build();
+    }
+
     @Path("/testing-input")
     @POST
     @Consumes("application/json")
@@ -66,6 +93,8 @@ public class QuizMakerQuizzesDbInfo {
             builder.add(key, test.get(key));
         } */
         // QuizMakerQuiz quiz = new QuizMakerQuiz(fuck);
+        //get timestamp
+
         DBObject o = BasicDBObject.parse(fuck.toString());
         collection.save(o);
         return Response.ok().build();
