@@ -8,7 +8,6 @@ import Course from './components/Course';
 import CreateQuiz from './components/CreateQuiz';
 import Courses from './components/Courses';
 import Quizzes from './components/Quizzes';
-import CreateQuiz_v2 from './components/CreateQuiz_v2';
 import TakeQuiz from './components/TakingQuiz';
 import RosterUpload from './components/RosterUpload';
 
@@ -92,7 +91,6 @@ class App extends React.Component {
                   <ProtectedRoute exact path="/Courses" condition={this.state.isSignedIn} component={Courses}/>
                   <ProtectedRoute exact path="/Quizzes" condition={this.state.isSignedIn} component={Quizzes}/>
                   <ProtectedRoute path="/TakingQuiz" condition={this.state.isSignedIn} component={TakeQuiz}/>
-                  <ProtectedRoute path="/CreateQuiz_v2" condition={this.state.isSignedIn} component={CreateQuiz_v2}/>
                   <ProtectedRoute path="/RosterUpload" condition={this.state.isSignedIn} component={RosterUpload}/>
 
                   

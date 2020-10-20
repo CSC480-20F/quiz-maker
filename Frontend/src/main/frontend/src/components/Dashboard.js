@@ -2,7 +2,6 @@ import React from 'react'
 import { Button } from "react-bootstrap";
 import MyCourses from './MyCourses';
 import RecentQuizzes from './RecentQuizzes';
-// import Searchbar from './Searchbar';
 import TopNavbar from './TopNavbar';
 
 const Dashboard = () => {
@@ -21,7 +20,6 @@ const Dashboard = () => {
             <div className="header"> Fall 2020 </div>
             {/* <div className='light-text'>Welcome back, {name}</div> */}
 
-            {/* <Searchbar/> */}
 
             <div style={{padding: '10px'}}> </div>
             <Button variant="light" className='create-quiz'>Create a Quiz</Button>

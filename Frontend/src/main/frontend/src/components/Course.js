@@ -9,6 +9,7 @@ import Loading from './Loading';
 class Course extends Component {
     state = {
         course: null,
+        quizData: []
     }
 
     componentDidMount() {
@@ -18,7 +19,9 @@ class Course extends Component {
                 course: res.data[0]
             })
         })
-        
+        fetch("https://jsonplaceholder.typicode.com/posts", {method: 'GET',}).then(response => response.json()).then(posts => {
+            this.setState({quizData: posts})
+        })
     }
 
     handleClick(e) {
@@ -42,7 +45,7 @@ class Course extends Component {
                     <div className="spacer"></div>
                     <h1 className='subtitle'> Course Quizzes </h1>
                     <Card className='rounded-corner'>
-                        <QuizTable />
+                        <QuizTable data={this.state.quizData}/>
                     </Card>
                 </div>
             </div>

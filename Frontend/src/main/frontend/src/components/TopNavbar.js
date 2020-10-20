@@ -74,15 +74,10 @@ const TopNavbar = () => {
       <NavLink to="/Courses" activeClassName="active" style={{ textDecoration: 'none' }}>Courses</NavLink>
       <NavLink to="/Quizzes" activeClassName="active" style={{ textDecoration: 'none' }}>Quizzes</NavLink>
       <NavLink to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Create</NavLink>
-      {/* <NavLink to="/CreateQuiz_v2" activeClassName="active" style={{ textDecoration: 'none' }}>Createv2</NavLink> */}
       <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none' }}>Upload Roster</NavLink>
       <NavLink to="/TakingQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Take Quiz</NavLink>
 
       {/* <DarkModeToggle/> */}
-      {/* <Form inline>
-      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-      <Button variant="dark">Search</Button>
-      </Form> */}
       </Nav>
       
       <img src={logo} alt="SUNY Oswego Logo" style={{width:98, height: 36, marginTop: -8}} />

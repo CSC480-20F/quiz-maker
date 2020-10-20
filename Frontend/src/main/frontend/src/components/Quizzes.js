@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Button, Tabs, Tab, Card } from "react-bootstrap";
 import MyTopRatedQuizzes from './MyTopRatedQuizzes';
 import TopNavbar from './TopNavbar';
 import styled from 'styled-components';
-import MyCreatedQuizzes from './MyCreatedQuizzesTable';
-import QuizzesTaken from './QuizzesTakenTable';
+import QuizTable from './QuizTable';
 
 const Styles = styled.div`
     .nav-tabs {
@@ -25,7 +24,25 @@ const Styles = styled.div`
     }
 `;
 
-const Quizzes = () => {
+class Quizzes extends Component {
+    state = {
+        createdQuizzesData: [],
+        takenQuizzesData: []
+    }
+
+    componentDidMount () {
+        // TODO: GRAB DATA FOR THE QUIZ TABLES
+        this.mounted = true;
+        fetch("https://jsonplaceholder.typicode.com/posts", {method: 'GET',}).then(response => response.json()).then(posts => {
+            if (this.mounted) {this.setState({createdQuizzesData: posts, takenQuizzesData: posts})}
+        })
+    }
+
+    componentWillUnmount () {
+        this.mounted = false;
+    }
+
+    render () {
     return (
         <div>
             <div> <TopNavbar/> </div>
@@ -45,12 +62,12 @@ const Quizzes = () => {
                     <Tabs defaultActiveKey="MyQuizzes" id="uncontrolled-tab-example">
                     <Tab eventKey="MyQuizzes" title="My created quizzes">
                         <Card className='rounded-corner'>
-                            <MyCreatedQuizzes />
+                            <QuizTable data ={this.state.createdQuizzesData} />
                         </Card>
                     </Tab>
                     <Tab eventKey="QuizHistory" title="Quizzes I took">
                         <Card className='rounded-corner'>
-                            <QuizzesTaken />
+                            <QuizTable data = {this.state.takenQuizzesData} />
                         </Card>
                     </Tab>
                     </Tabs>
@@ -61,6 +78,7 @@ const Quizzes = () => {
             </div>
         </div>
     )
+    }
 }
 
 export default Quizzes;
