@@ -9,12 +9,12 @@ public class QMUser {
     private String name;
     private String email;
     private ArrayList<String> courseId = new ArrayList<>();
+    //private ArrayList<String> takenQuizzes = new ArrayList<>();
 
     public QMUser(String name, String email, String courseId){
         this.name = name;
         this.email = email;
         this.courseId.add(courseId);
-
     }
 
     public void setName(String name) {
@@ -28,6 +28,10 @@ public class QMUser {
     public void addCourseId(String id){
         this.courseId.add(id);
     }
+
+    // public void addQuizId(String id){
+    //     this.takenQuizzes.add(id);
+    // }
 
     public String getName() {
         return name;
@@ -45,5 +49,6 @@ public class QMUser {
         return new BasicDBObject().append("name", this.name)
                 .append("email", this.email)
                 .append("courseId", this.courseId);
+                //.append("quizTaken",this.takenQuizzes);
     }
 }

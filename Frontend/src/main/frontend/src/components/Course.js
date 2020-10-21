@@ -19,8 +19,12 @@ class Course extends Component {
                 course: res.data[0]
             })
         })
-        fetch("https://jsonplaceholder.typicode.com/posts", {method: 'GET',}).then(response => response.json()).then(posts => {
-            this.setState({quizData: posts})
+        axios.get('http://localhost:9084/quizzes/get-quizzes/' + id).then(res => {
+            this.setState({
+                quizData: res.data,
+            })
+        }).catch(err => {
+            console.log(err);
         })
     }
 

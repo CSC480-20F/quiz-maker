@@ -10,7 +10,7 @@ import Courses from './components/Courses';
 import Quizzes from './components/Quizzes';
 import TakeQuiz from './components/TakingQuiz';
 import RosterUpload from './components/RosterUpload';
-
+import CreateQuizForm from './components/CreateQuizForm'
 class ProtectedRoute extends React.Component {
   render() {
     const { component: Component, condition: Condition, ...props } = this.props
@@ -92,7 +92,7 @@ class App extends React.Component {
                   <ProtectedRoute exact path="/Quizzes" condition={this.state.isSignedIn} component={Quizzes}/>
                   <ProtectedRoute path="/TakingQuiz" condition={this.state.isSignedIn} component={TakeQuiz}/>
                   <ProtectedRoute path="/RosterUpload" condition={this.state.isSignedIn} component={RosterUpload}/>
-
+                  <ProtectedRoute path="/CreateQuizForm" condition={this.state.isSignedIn} component={CreateQuizForm}/>
                   
                   {/* <Route path="/dashboard" render={() => this.ifUserSignedIn(Dashboard)}/> */}
               </Switch>

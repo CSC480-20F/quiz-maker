@@ -6,10 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="DBServer" />
         <module name="Frontend" />
         <module name="CoursesServer" />
-        <module name="QuizzesServer (1) (Quizzes-DB)" />
         <module name="QuestionsServer" />
         <module name="QuizzesServer" />
         <module name="UsersServer" />

@@ -4,80 +4,10 @@ import TopNavbar from './TopNavbar';
 import Loading from './Loading';
 import axios from 'axios';
 import {Card, ProgressBar, Form, Col, Button} from 'react-bootstrap';
+import { FcCheckmark, FcCancel } from "react-icons/fc"; //https://react-icons.github.io/react-icons/icons?name=fc
+import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai"; //https://react-icons.github.io/react-icons/icons?name=ai
 
 const Styles = styled.div`
-        ${'' /* display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-top: 200px;
-
-        .question-section {
-        width: 100%;
-        position: relative;
-        }
-
-        .question-count {
-        margin-bottom: 20px;
-        }
-
-        .question-count span {
-        font-size: 28px;
-        }
-
-        .question-text {
-        margin-bottom: 12px;
-        }
-
-        .timer-text {
-        background: rgb(0, 0, 0);
-        padding: 15px;
-        margin-top: 20px;
-        margin-right: 20px;
-        border: 5px solid rgb(0, 0, 0);
-        border-radius: 15px;
-        text-align: center;
-        }
-
-        .answer-section {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        }
-
-        button {
-        width: 100%;
-        font-size: 16px;
-        color: #ffffff;
-        background-color: black;
-        border-radius: 15px;
-        display: flex;
-        padding: 5px;
-        justify-content: flex-start;
-        align-items: center;
-        border: 5px solid white;
-        cursor: pointer;
-        }
-
-        .correct {
-        background-color: white;
-        }
-
-        .incorrect {
-        background-color: red;
-        }
-
-        button:hover {
-        background-color: #555e7d;
-        }
-
-        button:focus {
-        outline: none;
-        }
-
-        button svg {
-        margin-right: 5px;
-        } */}
   .topics {
     color: #8F0047;
   }
@@ -142,6 +72,29 @@ const Styles = styled.div`
     color: white;
   }
 
+  .score-card{
+    padding: 50px;
+    font-size: 50px;
+
+  }
+
+  .score-properties{
+ 
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+
+  }
+
+  .correct-answer{
+   float: left;
+  
+  }
+
+  .incorrect-answer{
+    float: left;
+  }
+
 `;
 
 class TakeQuiz extends Component {
@@ -158,13 +111,26 @@ class TakeQuiz extends Component {
       "showScore": false,
       "selectedID": "",
       "selected": false,
-      "allAnswers": []
+      "allAnswers": [],
+      "setScore":[],
+      "count":0
     }
+
+    this.increment = this.increment.bind(this)
+    this.decrement = this.decrement.bind(this)
+  }
+
+  increment(){
+    this.setState({count:this.state.count +1})
+  }
+
+  decrement(){
+    this.setState({count:this.state.count -1})
   }
 
   componentDidMount () {
     this.mounted = true;
-    axios.get('https://opentdb.com/api.php?amount=10&type=multiple').then(res => {
+    axios.get('https://opentdb.com/api.php?amount=5&type=multiple').then(res => {
       if(this.mounted){
         this.setState({
           questions: res.data.results,
@@ -220,7 +186,10 @@ class TakeQuiz extends Component {
   handleAnswerClick = (chosenAnswer) => {
     this.setState({selectedID: chosenAnswer, selected: true})
     if (this.state.questions[this.state.currentQuestion].correct_answer === chosenAnswer) {
-      this.setState({score: this.state.score + 1})
+      this.setState({score: this.state.score + 1, setScore: [...this.state.setScore, true]})
+      
+    } else {
+      this.setState({setScore:[...this.state.setScore, false]})
     }
   }
 
@@ -263,9 +232,26 @@ class TakeQuiz extends Component {
       ):(
         <h1 style={{visibility: "hidden"}}> hehe </h1>
       )
+
+
+      const scoreTally = this.state.setScore.map((score,i) => {
+        if (score) {
+          return (<div style={{display:"inline-block", margin:"80px"}} key = {i} > Q{i+1}   <FcCheckmark style={{display:"inline-block", margin:"2px"}} className="correct-answer-icon"/> </div>)
+        } else {
+          return (<div style={{display:"inline-block", margin:"80px"}}  key = {i}> Q{i+1}  <FcCancel style={{display:"inline-block", margin:"2px"}} className="incorrect-answer-icon"/> </div>)
+        }
+        
+      })
     
     const takingQuiz = this.state.showScore ? (
-      <h1> You scored: {this.state.score}/{questions.length} </h1>
+      <>
+      <div className="subtitle">My Score</div>
+      <Card className="score-card rounded-corner" >
+      <h1 className="score-properties"> <span style={{color:"#1C9B2F", marginRight:"10px"}}>{this.state.score}</span> out of {questions.length} </h1>
+      <div>{scoreTally}</div>
+
+      </Card>
+      </>
     ):(
       <>
       <div className="spacer">{this.state.quizTitle} is about: <span className="topics"> {this.state.topics.join(', ')}. </span></div>
@@ -274,7 +260,11 @@ class TakeQuiz extends Component {
           <div className="small-spacer"></div>
           
           <Card className="whole-question-card rounded-corner">
-            <h1 className="subtitle">Question {currentQuestion + 1} </h1>
+            <h1 className="subtitle">Question {currentQuestion + 1} 
+            <AiOutlineLike style={{display:"inline-block", margin:"2px"}} onClick={this.increment}/>
+            <AiOutlineDislike style={{display:"inline-block", margin:"2px"}} onClick={this.decrement}/>   counter: {this.state.count}
+            
+            </h1>
 
             <div className="small-spacer" dangerouslySetInnerHTML={{__html: questions[currentQuestion].question}}></div>
             <Form.Group>
@@ -289,82 +279,17 @@ class TakeQuiz extends Component {
     )
 
     return (
+      <>
+      <TopNavbar/>
       <Styles>
       <div className="container">
         <h1 className="header">{this.state.quizTitle}</h1>
         {takingQuiz}
       </div>
       </Styles>
+      </>
     )
   }
 }
 
 export default TakeQuiz;
-// const TakeQuiz = () => {
-
-//     const API_URL = 'http://localhost:9084/quizzes/all';
-//     const [questions,setQuestions ]= useState({})
-// 	  const [currentQuestion, setCurrentQuestion] = useState(0);
-// 	  const [showScore, setShowScore] = useState(false);
-//     const [score, setScore] = useState(0);
-
-//     useEffect(() => {
-//         fetch(
-//           API_URL,{method: "GET"}
-//         )
-//           .then(res => res.json())
-//           .then(response => {
-//             // console.log(response[5])
-//             setQuestions(response[5].quizQuestions);
-//             // console.log(questions)
-//           })
-//           .catch(error => console.log(error));
-//       }, []);
-
-    
-
-// 	const handleAnswerOptionClick = (isCorrect) => {
-// 		if (isCorrect) {
-// 			setScore(score + 1);
-// 		}
-
-// 		const nextQuestion = currentQuestion + 1;
-// 		if (nextQuestion < questions.length) {
-// 			setCurrentQuestion(nextQuestion);
-// 		} else {
-// 			setShowScore(true);
-// 		}
-//     };
-    
-//     if(!questions.length) return (<div className="container-middle"><Loading type={'balls'} color={'#235937'}/></div>);
-
-// 	return (
-//         <>
-//         <TopNavbar/>
-//         <Styles>
-// 		<div className='app'>
-// 			{showScore ? (
-// 				<div className='score-section'>
-// 					You scored {score} out of {questions.length}
-// 				</div>
-// 			) : (
-// 				<>
-// 					<div className='question-section'>
-// 						<div className='question-count'>
-// 							<span>Question {currentQuestion + 1}</span>/{questions.length}
-// 						</div>
-// 						<div className='question-text'>{questions[currentQuestion].question}</div>
-// 					</div>
-// 					<div className='answer-section'>
-//           <button onClick={() => handleAnswerOptionClick(true)}>{questions[currentQuestion].answer}</button>
-// 						{(questions[currentQuestion].incorrect_answers).map((answerOption) => {
-// 							return (<button key={Math.random()*5} onClick={() => handleAnswerOptionClick(false)}>{answerOption}</button>);
-//             })}
-// 					</div>
-// 				</>
-// 			)}
-// 		</div>
-//         </Styles>
-//         </>
-// 	);
-// }

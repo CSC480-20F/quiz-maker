@@ -63,7 +63,7 @@ const Style = styled.div`
     .publish-quiz-button {
       float: right;
       padding: 18px;
-      color: white;
+      color: white; 
       background-color: #1C9B2F;
     }
 
@@ -83,8 +83,8 @@ const Style = styled.div`
 
     .quiz-question {
       padding: 20px;
-      min-width: 75rem;
-      max-width: 85rem;
+      min-width: 70rem;
+      max-width: 80rem;
     }
 `;
 
@@ -92,9 +92,8 @@ const Style = styled.div`
 class CreateQuizForm extends React.Component{
   constructor(props) {
     super(props);
-    const firstName = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getGivenName()
     this.state = {
-      "quiz_title":firstName + "'s Quiz",
+      "quiz_title":"",
       "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
       "courseID":this.props.courseID,
       "topics":this.props.topics,
@@ -164,17 +163,18 @@ class CreateQuizForm extends React.Component{
 
     onCreateQuiz = (e) => {
       e.preventDefault();
-      console.log(this.state);
       if (this.state.questions.length === 0) {
         window.alert("You need to add at least one question! 😅");
         return; 
       }
-      axios.post(`http://localhost:9084/quizzes/testing-input`, {
+      axios.post(`http://localhost:9084/quizzes/add-quiz`, {
         "quizName":this.state.quiz_title,
         "creator":this.state.creator,
         "courseID":this.state.courseID,
         "quizTopics":this.state.topics,
-        "quizQuestions":this.state.questions
+        "quizQuestions":this.state.questions,
+        "rating": 0,
+        "starred": false
       })
       .then(res => {
         this.setState ({

@@ -6,47 +6,52 @@ import { Link } from 'react-router-dom';
 class QuizTable extends Component {
 
     render() {
+      const getTopics = (topics) => {
+        return (topics.join(', '))
+      }
+
+      const getDate = (mongoID) => {
+        return ((new Date(parseInt(mongoID.substring(0, 8), 16) * 1000)).toDateString())
+      }
+
+      const customTopicAccesor = row => getTopics(row.quizTopics)
+      const customDateAccesor = row => getDate(row._id.$oid)
+
       const data = this.props.data;
 
-      // {
-      //   userId: 1, 
-      //   id: 2, 
-      //   title: "qui est esse", 
-      //   body: "est rerum tempore vitae↵sequi sint nihil reprehend…aperiam non debitis possimus qui neque nisi nulla"
-      // }
-
-       const columns = [
+      const columns = [
         {
           Header: 'Name',
-          accessor: 'userID'
-          // render: (text, record) => <Link to={'Quizzes/' + record.name}>{text}</Link>
+          accessor: 'quizName'
         },
 
         {
           Header: 'Author',
-          accessor: 'id'
+          accessor: 'creator'
         },
 
         {
+          id: 'topics',
           Header: 'Topic',
-          accessor: 'title'
+          accessor: customTopicAccesor
         },
 
         {
           Header: 'Questions',
-          accessor: 'body'
+          accessor: 'quizLength'
         },
 
         {
+          id: 'date',
           Header: 'Date',
-          accessor: 'date'
+          accessor: customDateAccesor
         },
 
         {
           Header: 'Rating',
           accessor: 'rating'
         },
-      ]
+    ]
 
       const onRowClick = (state, rowInfo, column, instance) => {
         return {
@@ -54,7 +59,7 @@ class QuizTable extends Component {
                 // console.log('A Td Element was clicked!')
                 // console.log('it produced this event:', e)
                 // console.log('It was in this column:', column)
-                console.log('It was in this row:', rowInfo.original.id)
+                console.log('It was in this row:', rowInfo.original)
                 // console.log('It was in this table instance:', instance)
                 // console.log('State', state);
             }
@@ -62,7 +67,7 @@ class QuizTable extends Component {
     }
 
       return (
-            <div style={{padding: '50px'}}>
+            <div style={{padding: '50px', textAlign: 'center'}}>
                 <ReactTable className='quiztable'
                     data={data}
                     columns={columns}
