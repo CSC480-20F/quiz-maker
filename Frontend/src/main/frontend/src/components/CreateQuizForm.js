@@ -92,14 +92,11 @@ const Style = styled.div`
 class CreateQuizForm extends React.Component{
   constructor(props) {
     super(props);
-    const firstName = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getGivenName()
     this.state = {
       "quiz_title":"",
       "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
-      
-      // "courseID":this.props.courseID,
-      // "topics":this.props.topics,
-      "topics":["asd","asdasdsadsadsa"],
+      "courseID":this.props.courseID,
+      "topics":this.props.topics,
       "index":0,
       "question":"",
       "correct_answer":"",
@@ -166,12 +163,11 @@ class CreateQuizForm extends React.Component{
 
     onCreateQuiz = (e) => {
       e.preventDefault();
-      console.log(this.state);
       if (this.state.questions.length === 0) {
         window.alert("You need to add at least one question! 😅");
         return; 
       }
-      axios.post(`http://localhost:9084/quizzes/testing-input`, {
+      axios.post(`http://localhost:9084/quizzes/add-quiz`, {
         "quizName":this.state.quiz_title,
         "creator":this.state.creator,
         "courseID":this.state.courseID,

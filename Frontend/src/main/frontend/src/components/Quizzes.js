@@ -33,8 +33,14 @@ class Quizzes extends Component {
     componentDidMount () {
         // TODO: GRAB DATA FOR THE QUIZ TABLES
         this.mounted = true;
+        const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
         fetch("https://jsonplaceholder.typicode.com/posts", {method: 'GET',}).then(response => response.json()).then(posts => {
-            if (this.mounted) {this.setState({createdQuizzesData: posts, takenQuizzesData: posts})}
+            if (this.mounted) {
+                this.setState({
+                    createdQuizzesData: posts, 
+                    takenQuizzesData: posts
+                })
+            }
         })
     }
 

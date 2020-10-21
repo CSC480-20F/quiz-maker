@@ -18,7 +18,6 @@ class QuizTable extends Component {
       const customDateAccesor = row => getDate(row._id.$oid)
 
       const data = this.props.data;
-      console.log(data)
 
       const columns = [
         {
