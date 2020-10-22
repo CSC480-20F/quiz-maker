@@ -162,16 +162,19 @@ public class QuizMakerQuizzesDbInfo {
     public Response addCourse(JsonObject quizTaken){
         DBCollection collection = database.getCollection("quizzes");
         String quizId;
-        String rate;
+        int rate;
 
         quizId = quizTaken.getString("id");
-        rate = quizTaken.getString("rating");
+        rate = quizTaken.getInt("rating");
+
         DBObject quiz = collection.findOne(new ObjectId(quizId));
         BasicDBObject foundQuiz = new BasicDBObject();
         DBObject update = quiz;
+        rate += (int)quiz.get("rating");
         update.put("rating", rate);
-        foundQuiz.put("_id", quizId);
-        collection.findAndModify(foundQuiz,update);
+        System.out.println(update.toString());
+        foundQuiz.put("_id", new ObjectId(quizId));
+        collection.findAndModify(foundQuiz, update);
 
         return Response.ok().build();
     }
