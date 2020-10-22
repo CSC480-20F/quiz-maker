@@ -19,7 +19,7 @@ class Course extends Component {
                 course: res.data[0]
             })
         })
-        axios.get('http://localhost:9084/quizzes/get-quizzes/' + id).then(res => {
+        axios.get('http://localhost:9084/quizzes/get-course/' + id).then(res => {
             this.setState({
                 quizData: res.data,
             })

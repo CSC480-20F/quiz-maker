@@ -99,7 +99,7 @@ class CreateQuizForm extends React.Component{
       
       // "courseID":this.props.courseID,
       // "topics":this.props.topics,
-      "topics":["asd","asdasdsadsadsa"],
+      "topics":["math","addition", "multiplication"],
       "index":0,
       "question":"",
       "correct_answer":"",
@@ -171,7 +171,7 @@ class CreateQuizForm extends React.Component{
         window.alert("You need to add at least one question! 😅");
         return; 
       }
-      axios.post(`http://localhost:9084/quizzes/testing-input`, {
+      axios.post(`http://localhost:9084/quizzes/add-quiz`, {
         "quizName":this.state.quiz_title,
         "creator":this.state.creator,
         "courseID":this.state.courseID,

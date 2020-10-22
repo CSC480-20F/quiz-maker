@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from "react-bootstrap";
+import { NavLink, Link } from 'react-router-dom';
 import MyCourses from './MyCourses';
 import RecentQuizzes from './RecentQuizzes';
 import TopNavbar from './TopNavbar';
@@ -22,7 +23,9 @@ const Dashboard = () => {
 
 
             <div style={{padding: '10px'}}> </div>
-            <Button variant="light" className='create-quiz'>Create a Quiz</Button>
+
+            <Button variant="light" className='create-quiz' as={Link} to="/CreateQuiz">Create a Quiz</Button>
+
                 <div className='container'>
                     <h1 className='subtitle'> My Courses </h1>
                     <MyCourses limit="3"/>
