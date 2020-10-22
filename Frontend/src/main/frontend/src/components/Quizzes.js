@@ -4,6 +4,7 @@ import MyTopRatedQuizzes from './MyTopRatedQuizzes';
 import TopNavbar from './TopNavbar';
 import styled from 'styled-components';
 import QuizTable from './QuizTable';
+import axios from 'axios';
 
 const Styles = styled.div`
     .nav-tabs {
@@ -32,9 +33,12 @@ class Quizzes extends Component {
 
     componentDidMount () {
         // TODO: GRAB DATA FOR THE QUIZ TABLES
+        // const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
+        // axios.get('http://localhost:9081/users/' + email).then(res => response
+        
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        fetch("https://jsonplaceholder.typicode.com/posts", {method: 'GET',}).then(response => response.json()).then(posts => {
+        fetch('http://pi.cs.oswego.edu:9084/quizzes/get-created-quizzes/' + email, {method: 'GET',}).then(response => response.json()).then(posts => {
             if (this.mounted) {
                 this.setState({
                     createdQuizzesData: posts, 

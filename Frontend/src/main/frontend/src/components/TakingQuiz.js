@@ -95,6 +95,14 @@ const Styles = styled.div`
     float: left;
   }
 
+  .active-upvote{
+    color:#37bf84;
+  }
+
+  .active-downvote{
+    color:red;
+  }
+
 `;
 
 class TakeQuiz extends Component {
@@ -103,21 +111,33 @@ class TakeQuiz extends Component {
 
     this.state = {
       "questions": [],
-      "quizTitle": "Quiz Title",
+      "quizTitle": "Quiz Title", //placeholder change ""
       "currentQuestion": 0,
       "score": 0,
-      "topics": ["Topic 1", "My Topic", "Another Topic"],
+      "topics": ["Topic 1", "My Topic", "Another Topic"], //placeholder change []
       "isLoading": true,
       "showScore": false,
       "selectedID": "",
       "selected": false,
       "allAnswers": [],
       "setScore":[],
-      "count":0
+      "count":0,
+      "vote":0, //the user’s current vote. 0 if no vote, -1 if downvoted, 1 if upvoted.
+      "totalRating":0, //score of the post 
+      "currentQuestionCounter":0
     }
 
     this.increment = this.increment.bind(this)
     this.decrement = this.decrement.bind(this)
+  }
+
+  vote(type){ //type is either 1 for upvote or -1 for downvote;;;vote is a property of the state which describes the user's current vote: 0 = no vote; 1 = already upvoted; -1 already downvoted
+    this.setState(state => ({
+      vote: state.vote === type ? 0 : type
+      // If the current vote is the same as the one we just passed in to the method, 
+      //it means the user is undoing their vote and therefore it should be reset back to 0 to indicate they have no vote anymore. 
+      //Otherwise, we should just set it to that value.
+    }));
   }
 
   increment(){
@@ -130,10 +150,12 @@ class TakeQuiz extends Component {
 
   componentDidMount () {
     this.mounted = true;
-    axios.get('https://opentdb.com/api.php?amount=5&type=multiple').then(res => {
+    axios.get('https://opentdb.com/api.php?amount=5&type=multiple').then(res => { //Get this from engine 
       if(this.mounted){
         this.setState({
-          questions: res.data.results,
+          //quizTitle: res.data.title
+          questions: res.data.results, //res.data.results
+          //topics: res.data.results
           isLoading: false
         }, () => {
           console.log("Got data: ", this.state)
@@ -180,7 +202,15 @@ class TakeQuiz extends Component {
         })
     } else {
       this.setState({showScore: true, selected: false, selectedID:""})
+      //when the user is done taking a quiz, what are the request you want to us to make 
+      //posts here
+      //axios.post("url here") 
+      //axios.put(`http://localhost:9081/users/add-course`, {
+      //quiz id: this.state.id
+      //quiz rating: this.state.totalRating;
+      //})
     }
+    this.setState({totalRating:this.state.totalRating + this.state.vote, vote:0})
   }
 
   handleAnswerClick = (chosenAnswer) => {
@@ -249,6 +279,7 @@ class TakeQuiz extends Component {
       <Card className="score-card rounded-corner" >
       <h1 className="score-properties"> <span style={{color:"#1C9B2F", marginRight:"10px"}}>{this.state.score}</span> out of {questions.length} </h1>
       <div>{scoreTally}</div>
+      <div style={{fontSize:"12px"}}>Total Rating of this quiz:{this.state.totalRating}</div>
 
       </Card>
       </>
@@ -260,9 +291,27 @@ class TakeQuiz extends Component {
           <div className="small-spacer"></div>
           
           <Card className="whole-question-card rounded-corner">
-            <h1 className="subtitle">Question {currentQuestion + 1} 
-            <AiOutlineLike style={{display:"inline-block", margin:"2px"}} onClick={this.increment}/>
-            <AiOutlineDislike style={{display:"inline-block", margin:"2px"}} onClick={this.decrement}/>   counter: {this.state.count}
+            <h1 className="subtitle">Question {currentQuestion + 1}
+
+            <h1>Total Rating {this.state.totalRating}</h1>
+            <h2>Current {this.state.vote}</h2>
+            <AiOutlineLike 
+              style={{display:"inline-block", margin:"2px"}}
+              id="upvote"
+              className={this.state.vote === 1 ? "active-upvote" : undefined}
+              onClick={() => this.vote(1)}>
+              Upvote
+            </AiOutlineLike>
+            <AiOutlineDislike 
+              style={{display:"inline-block", margin:"2px"}}
+              id="downvote"
+              className={this.state.vote === -1 ? "active-downvote" : undefined}
+              onClick={() => this.vote(-1)}>
+              Downvote
+            </AiOutlineDislike>
+            {/* <AiOutlineLike style={{display:"inline-block", margin:"2px"}} onClick={this.increment}/>
+            <AiOutlineDislike style={{display:"inline-block", margin:"2px"}} onClick={this.decrement}/>   
+            counter: {this.state.count} */}
             
             </h1>
 

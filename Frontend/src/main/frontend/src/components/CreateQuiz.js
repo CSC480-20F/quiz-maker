@@ -56,7 +56,7 @@ class CreateQuiz extends Component {
   componentDidMount() {
     this.mounted = true;
     const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-    axios.get('http://localhost:9081/users/' + email).then(res => {
+    axios.get('http://pi.cs.oswego.edu:9081/users/' + email).then(res => {
       if(this.mounted){
         this.setState({
             courseIDs: res.data,
@@ -78,7 +78,7 @@ class CreateQuiz extends Component {
 
   getCoursesFromDB = () => {
     const sendCourseIDs = this.state.courseIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
-    axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
+    axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + sendCourseIDs).then(res => {
         if(this.mounted){
             this.setState({
                 courses: res.data,

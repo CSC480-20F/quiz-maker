@@ -61,6 +61,24 @@ public class QuizMakerUsersDbInfo {
         return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
 
+    //needs testing
+    //GET passes in the user email gets all taken quizzes
+    @Path("/get-quizzes/{email}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response usersQuizzesList(@PathParam("email") String email) {
+        //db connection and local var statements
+        DBCollection collection = database.getCollection("users");
+        BasicDBObject query = new BasicDBObject();
+
+        query.put("email", email);
+
+        DBObject currentUser = collection.findOne(query);
+        Object o = currentUser.get("quizTaken");
+
+        return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
+    }
+
     //adds course to courselist for all users in that class
     @Path("/add-course")
     @PUT
@@ -99,14 +117,28 @@ public class QuizMakerUsersDbInfo {
         return Response.ok().build();
     }
 
-    //PUT gets email and quizID
+    //needs testing
+    //PUT gets email and quizID then updates quizzes taken arraylist url /quizzes-taken
+    @Path("/quizzes-taken")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateQuizzesTaken(JsonObject quizTaken){
+        DBCollection collection = database.getCollection("users");
+        String quizId = quizTaken.getString("id");
+        String email = quizTaken.getString("email");
 
+        DBObject user = collection.findOne(new ObjectId(email));
+        BasicDBList quizList = (BasicDBList)user.get("quizTaken");
 
-
-    //GET passes in the user email gets all taken quizzes
-
-
-
-
+        if(!quizList.contains(quizId)){
+          quizList.add(quizId);
+          BasicDBObject foundQuiz = new BasicDBObject();
+          DBObject update = user;
+          update.put("quizTaken", quizList);
+          foundQuiz.put("email", email);
+          collection.findAndModify(foundQuiz,update);
+        }
+        return Response.ok().build();
+    }
 
 }

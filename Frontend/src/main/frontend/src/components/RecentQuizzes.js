@@ -7,11 +7,13 @@ import axios from 'axios';
 class RecentQuizzes extends Component {
     state = {
         recentQuizzes: []
+        
     }
 
     componentDidMount() {
         // TODO: GET RECENT QUIZZES FROM BACKEND FOR THIS USER
         axios.get('https://jsonplaceholder.typicode.com/users').then(res => {
+        // axios.get('http://localhost:9084/quizzes/get-created-quizzes/').then(res => {    
             this.setState({
                 // SLICE MEANS WE ONLY TAKE THE FIRST 3, THIS IS JUST FOR TESTING, CAN GET RID OF IT LATER
                 recentQuizzes: res.data.slice(0,3)

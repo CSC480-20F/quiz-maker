@@ -9,7 +9,7 @@ public class QMUser {
     private String name;
     private String email;
     private ArrayList<String> courseId = new ArrayList<>();
-    //private ArrayList<String> takenQuizzes = new ArrayList<>();
+    private ArrayList<String> takenQuizzes = new ArrayList<>();
 
     public QMUser(String name, String email, String courseId){
         this.name = name;
@@ -29,9 +29,9 @@ public class QMUser {
         this.courseId.add(id);
     }
 
-    // public void addQuizId(String id){
-    //     this.takenQuizzes.add(id);
-    // }
+    public void addQuizId(String id){
+        this.takenQuizzes.add(id);
+    }
 
     public String getName() {
         return name;
@@ -48,7 +48,7 @@ public class QMUser {
     public DBObject convertUsertoDBobject(QMUser convertUser){
         return new BasicDBObject().append("name", this.name)
                 .append("email", this.email)
-                .append("courseId", this.courseId);
-                //.append("quizTaken",this.takenQuizzes);
+                .append("courseId", this.courseId)
+                .append("quizTaken",this.takenQuizzes);
     }
 }
