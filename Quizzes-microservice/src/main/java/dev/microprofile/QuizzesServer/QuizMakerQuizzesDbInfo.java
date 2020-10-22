@@ -165,9 +165,9 @@ public class QuizMakerQuizzesDbInfo {
         BasicDBObject foundQuiz = new BasicDBObject();
         DBObject update = quiz;
         update.put("rating", rate);
+        System.out.println(update.toString());
         foundQuiz.put("_id", new ObjectId(quizId));
-        collection.findAndModify(foundQuiz,update);
-
+        collection.findAndModify(foundQuiz, update);
         return Response.ok().build();
     }
 
