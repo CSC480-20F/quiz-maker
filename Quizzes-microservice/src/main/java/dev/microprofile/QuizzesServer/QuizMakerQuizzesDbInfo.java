@@ -53,8 +53,6 @@ public class QuizMakerQuizzesDbInfo {
         return Response.ok(dbInfo, MediaType.APPLICATION_JSON).build();
     }
 
-
-    //needs testing
     //GET passes users email returns all quizzes created by them
     @Path("/get-created-quizzes/{email}")
     @GET
@@ -107,7 +105,6 @@ public class QuizMakerQuizzesDbInfo {
         return Response.ok(quizList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
-    //needs testing
     //GET passes list of quizIDs returns those quizzes info
     @Path("/get-quizzes/{quizIds}")
     @GET
@@ -130,7 +127,6 @@ public class QuizMakerQuizzesDbInfo {
         return Response.ok(quizList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
-    //needs testing
     //GET passes us one quiz ID returns the full quiz
     @Path("/get-quiz/{quizId}")
     @GET
@@ -153,7 +149,6 @@ public class QuizMakerQuizzesDbInfo {
         return Response.ok().build();
     }
 
-
     //needs testing
     //PUT gets quizID and rating int. Updates rating on quiz
     @Path("/update-rating")
@@ -170,7 +165,7 @@ public class QuizMakerQuizzesDbInfo {
         BasicDBObject foundQuiz = new BasicDBObject();
         DBObject update = quiz;
         update.put("rating", rate);
-        foundQuiz.put("_id", quizId);
+        foundQuiz.put("_id", new ObjectId(quizId));
         collection.findAndModify(foundQuiz,update);
 
         return Response.ok().build();
