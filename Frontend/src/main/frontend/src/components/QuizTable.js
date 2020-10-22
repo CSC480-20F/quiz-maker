@@ -51,6 +51,11 @@ class QuizTable extends Component {
           Header: 'Rating',
           accessor: 'rating'
         },
+
+        {
+          Header:'Favorite',
+          accessor:'favorite'
+        }
     ]
 
       const onRowClick = (state, rowInfo, column, instance) => {
@@ -62,8 +67,8 @@ class QuizTable extends Component {
                 console.log('It was in this row:', rowInfo.original)
                 // console.log('It was in this table instance:', instance)
                 // console.log('State', state);
-            }
-        }
+            }                                                        
+        } 
     }
 
       return (

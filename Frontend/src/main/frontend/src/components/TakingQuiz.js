@@ -279,6 +279,7 @@ class TakeQuiz extends Component {
       <Card className="score-card rounded-corner" >
       <h1 className="score-properties"> <span style={{color:"#1C9B2F", marginRight:"10px"}}>{this.state.score}</span> out of {questions.length} </h1>
       <div>{scoreTally}</div>
+      <div style={{fontSize:"12px"}}>Total Rating of this quiz:{this.state.totalRating}</div>
 
       </Card>
       </>
