@@ -167,7 +167,7 @@ public class QuizMakerQuizzesDbInfo {
         DBObject update = quiz;
         rate += (int)quiz.get("rating");
         update.put("rating", rate);
-        System.out.println(update.toString());
+        //System.out.println(update.toString());
         foundQuiz.put("_id", new ObjectId(quizId));
         collection.findAndModify(foundQuiz, update);
         return Response.ok().build();
