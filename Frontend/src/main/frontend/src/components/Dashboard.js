@@ -4,28 +4,18 @@ import { NavLink, Link } from 'react-router-dom';
 import MyCourses from './MyCourses';
 import RecentQuizzes from './RecentQuizzes';
 import TopNavbar from './TopNavbar';
+import {Link } from 'react-router-dom';
 
 const Dashboard = () => {
-    // const authInstance = window.gapi.auth2.getAuthInstance()
-    // const user = authInstance.currentUser.get()
-    // const profile = user.getBasicProfile()
-    // const name = profile.getName()
-    //const email = profile.getEmail()
-    // const imageUrl = profile.getImageUrl()
-
     return (
         <div>
             <div> <TopNavbar/> </div>
             
             <div className="container-middle">
             <div className="header"> Fall 2020 </div>
-            {/* <div className='light-text'>Welcome back, {name}</div> */}
-
 
             <div style={{padding: '10px'}}> </div>
-
             <Button variant="light" className='create-quiz' as={Link} to="/CreateQuiz">Create a Quiz</Button>
-
                 <div className='container'>
                     <h1 className='subtitle'> My Courses </h1>
                     <MyCourses limit="3"/>

@@ -92,14 +92,11 @@ const Style = styled.div`
 class CreateQuizForm extends React.Component{
   constructor(props) {
     super(props);
-    const firstName = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getGivenName()
     this.state = {
       "quiz_title":"",
       "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
-      
-      // "courseID":this.props.courseID,
-      // "topics":this.props.topics,
-      "topics":["math","addition", "multiplication"],
+      "courseID":this.props.courseID,
+      "topics":this.props.topics,
       "index":0,
       "question":"",
       "correct_answer":"",
@@ -166,7 +163,6 @@ class CreateQuizForm extends React.Component{
 
     onCreateQuiz = (e) => {
       e.preventDefault();
-      console.log(this.state);
       if (this.state.questions.length === 0) {
         window.alert("You need to add at least one question! 😅");
         return; 

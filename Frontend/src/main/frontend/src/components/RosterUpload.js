@@ -86,7 +86,6 @@ class RosterUpload extends React.Component {
     const sendString = teacherEmail + "," + courseName + "," + emails;
     console.log(sendString);
 
-
     if (this.state.emails.length === 0) {
       window.alert("You need to upload a Roster properly! 😅"); 
       return;
