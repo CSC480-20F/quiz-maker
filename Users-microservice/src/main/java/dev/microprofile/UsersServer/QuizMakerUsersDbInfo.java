@@ -126,8 +126,10 @@ public class QuizMakerUsersDbInfo {
         DBCollection collection = database.getCollection("users");
         String quizId = quizTaken.getString("id");
         String email = quizTaken.getString("email");
-
-        DBObject user = collection.findOne(new ObjectId(email));
+        System.out.println(email);
+        BasicDBObject query = new BasicDBObject();
+        query.put("email", email);
+        DBObject user = collection.findOne(query);
         BasicDBList quizList = (BasicDBList)user.get("quizTaken");
 
         if(!quizList.contains(quizId)){
