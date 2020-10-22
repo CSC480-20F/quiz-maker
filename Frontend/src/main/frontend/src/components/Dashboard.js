@@ -4,7 +4,7 @@ import { NavLink, Link } from 'react-router-dom';
 import MyCourses from './MyCourses';
 import RecentQuizzes from './RecentQuizzes';
 import TopNavbar from './TopNavbar';
-import {Link } from 'react-router-dom';
+// import {Link } from 'react-router-dom';
 
 const Dashboard = () => {
     return (
