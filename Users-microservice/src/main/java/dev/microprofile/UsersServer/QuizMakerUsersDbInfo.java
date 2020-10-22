@@ -74,7 +74,7 @@ public class QuizMakerUsersDbInfo {
         query.put("email", email);
 
         DBObject currentUser = collection.findOne(query);
-        Object o = currentUser.get("takenQuizzes");
+        Object o = currentUser.get("quizTaken");
 
         return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
@@ -128,13 +128,13 @@ public class QuizMakerUsersDbInfo {
         String email = quizTaken.getString("email");
 
         DBObject user = collection.findOne(new ObjectId(email));
-        BasicDBList quizList = (BasicDBList)user.get("takenQuizzes");
+        BasicDBList quizList = (BasicDBList)user.get("quizTaken");
 
         if(!quizList.contains(quizId)){
           quizList.add(quizId);
           BasicDBObject foundQuiz = new BasicDBObject();
           DBObject update = user;
-          update.put("takenQuizzes", quizList);
+          update.put("quizTaken", quizList);
           foundQuiz.put("email", email);
           collection.findAndModify(foundQuiz,update);
         }
