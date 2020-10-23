@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class QMUser {
     private String name;
     private String email;
+    private boolean isInstructor;
     private ArrayList<String> courseId = new ArrayList<>();
     private ArrayList<String> takenQuizzes = new ArrayList<>();
 
@@ -15,6 +16,7 @@ public class QMUser {
         this.name = name;
         this.email = email;
         this.courseId.add(courseId);
+        this.isInstructor = false;
     }
 
     public void setName(String name) {
@@ -49,6 +51,7 @@ public class QMUser {
         return new BasicDBObject().append("name", this.name)
                 .append("email", this.email)
                 .append("courseId", this.courseId)
-                .append("quizTaken",this.takenQuizzes);
+                .append("quizTaken",this.takenQuizzes)
+                .append("isInstructor", this.isInstructor);
     }
 }
