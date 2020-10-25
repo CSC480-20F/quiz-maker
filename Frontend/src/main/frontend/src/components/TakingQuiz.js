@@ -72,6 +72,15 @@ const Styles = styled.div`
     color: white;
   }
 
+  .back-course-button {
+    background-color: #8F0047;
+    color: white;
+    min-width: 20%;
+    max-width: 25%;
+    align-self: center;
+    border-radius: 20px;
+  }
+
   .score-card{
     padding: 50px;
     font-size: 50px;
@@ -111,10 +120,11 @@ class TakeQuiz extends Component {
 
     this.state = {
       "questions": [],
-      "quizTitle": "Quiz Title", //placeholder change ""
+      "courseID": "",
+      "quizTitle": "",
       "currentQuestion": 0,
       "score": 0,
-      "topics": ["Topic 1", "My Topic", "Another Topic"], //placeholder change []
+      "topics": [""],
       "isLoading": true,
       "showScore": false,
       "selectedID": "",
@@ -150,17 +160,18 @@ class TakeQuiz extends Component {
 
   componentDidMount () {
     this.mounted = true;
-    axios.get('https://opentdb.com/api.php?amount=5&type=multiple').then(res => { //Get this from engine 
+    let id = this.props.match.params.quiz_id;
+    axios.get('http://localhost:9084/quizzes/get-quiz/' + id).then(res => {
       if(this.mounted){
         this.setState({
-          //quizTitle: res.data.title
-          questions: res.data.results, //res.data.results
-          //topics: res.data.results
+          quizTitle: res.data.quizName,
+          courseID: res.data.courseID,
+          questions: res.data.quizQuestions,
+          topics: res.data.quizTopics,
           isLoading: false
         }, () => {
-          console.log("Got data: ", this.state)
           this.setState({
-            allAnswers: this.createRandom([...this.state.questions[this.state.currentQuestion].incorrect_answers, this.state.questions[this.state.currentQuestion].correct_answer])
+            allAnswers: this.createRandom([...this.state.questions[this.state.currentQuestion].incorrect_answers, this.state.questions[this.state.currentQuestion].answer])
           })
         })
       }
@@ -191,31 +202,48 @@ class TakeQuiz extends Component {
 
   goToNextQuestion = () => {
     const nextQuestion = this.state.currentQuestion + 1;
+    this.setState({totalRating: this.state.totalRating + this.state.vote, vote:0})
     if (nextQuestion < this.state.questions.length) {
       this.setState({
         currentQuestion: nextQuestion, 
         selected: false, 
         selectedID:""}, () => {
           this.setState({
-            allAnswers: this.createRandom([...this.state.questions[this.state.currentQuestion].incorrect_answers, this.state.questions[this.state.currentQuestion].correct_answer])
+            allAnswers: this.createRandom([...this.state.questions[this.state.currentQuestion].incorrect_answers, this.state.questions[this.state.currentQuestion].answer])
           })
         })
     } else {
-      this.setState({showScore: true, selected: false, selectedID:""})
-      //when the user is done taking a quiz, what are the request you want to us to make 
-      //posts here
-      //axios.post("url here") 
-      //axios.put(`http://localhost:9081/users/add-course`, {
-      //quiz id: this.state.id
-      //quiz rating: this.state.totalRating;
-      //})
+      axios.put(`http://localhost:9081/users/quizzes-taken`, {
+        "id": this.props.match.params.quiz_id,
+        "email": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
+      }).then(res => {
+        console.log(res);
+        this.sendRatingToDB();
+      }).catch(error =>{
+        console.log(error);
+      })
     }
-    this.setState({totalRating:this.state.totalRating + this.state.vote, vote:0})
+  }
+
+  sendRatingToDB = () => {
+    axios.put(`http://localhost:9084/quizzes/update-rating`, {
+        "id": this.props.match.params.quiz_id,
+        "rating": this.state.totalRating
+      }).then(res => {
+        console.log(res);
+        this.setState({showScore: true, selected: false, selectedID:""})
+      }).catch(error =>{
+        console.log(error);
+      })
+  }
+
+  goBackToCourse = () => {
+    this.props.history.push('/Courses/' + this.state.courseID);
   }
 
   handleAnswerClick = (chosenAnswer) => {
     this.setState({selectedID: chosenAnswer, selected: true})
-    if (this.state.questions[this.state.currentQuestion].correct_answer === chosenAnswer) {
+    if (this.state.questions[this.state.currentQuestion].answer === chosenAnswer) {
       this.setState({score: this.state.score + 1, setScore: [...this.state.setScore, true]})
       
     } else {
@@ -244,8 +272,8 @@ class TakeQuiz extends Component {
             <Form.Label className="label" column="lg" sm={0.5}> {answerLabels[i]} </Form.Label >
             <Col>
             <Form.Control className={this.state.selected ? 
-            ((answer === questions[currentQuestion].correct_answer) ? ("answer-field-correct"):(
-              (answer === this.state.selectedID && answer !== questions[currentQuestion].correct_answer)?("answer-field-incorrect"):("answer-field"))
+            ((answer === questions[currentQuestion].answer) ? ("answer-field-correct"):(
+              (answer === this.state.selectedID && answer !== questions[currentQuestion].answer)?("answer-field-incorrect"):("answer-field"))
             ):(
               "answer-field"
             )}
@@ -280,6 +308,7 @@ class TakeQuiz extends Component {
       <h1 className="score-properties"> <span style={{color:"#1C9B2F", marginRight:"10px"}}>{this.state.score}</span> out of {questions.length} </h1>
       <div>{scoreTally}</div>
       <div style={{fontSize:"12px"}}>Total Rating of this quiz:{this.state.totalRating}</div>
+      <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
 
       </Card>
       </>
@@ -293,8 +322,9 @@ class TakeQuiz extends Component {
           <Card className="whole-question-card rounded-corner">
             <h1 className="subtitle">Question {currentQuestion + 1}
 
-            <h1>Total Rating {this.state.totalRating}</h1>
-            <h2>Current {this.state.vote}</h2>
+            {/* <h1>Total Rating {this.state.totalRating}</h1>
+            <h2>Current {this.state.vote}</h2> */}
+
             <AiOutlineLike 
               style={{display:"inline-block", margin:"2px"}}
               id="upvote"

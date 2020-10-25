@@ -1,9 +1,9 @@
-  import React, { Component } from 'react';
+import React, { Component } from 'react';
 import ReactTable from 'react-table-6';
 import 'react-table-6/react-table.css';
 import { withRouter } from 'react-router-dom';
 
-class QuizTable extends Component {
+class InstructorQuizTable extends Component {
 
     render() {
       const getTopics = (topics) => {
@@ -53,6 +53,11 @@ class QuizTable extends Component {
         {
           Header: 'Rating',
           accessor: 'rating'
+        },
+
+        {
+          Header:'Favorite',
+          accessor:'starred'
         }
     ]
 
@@ -65,6 +70,7 @@ class QuizTable extends Component {
                       return {
                         onClick: (e, handleOriginal) => {
                           this.props.history.push(this.props.location.pathname + rowInfo.original._id.$oid)
+                          console.log('It was in this row:', rowInfo.original._id.$oid)
                         }
                       }
                     }}
@@ -77,4 +83,4 @@ class QuizTable extends Component {
     }
   }
 
-  export default withRouter(QuizTable);
+  export default withRouter(InstructorQuizTable);

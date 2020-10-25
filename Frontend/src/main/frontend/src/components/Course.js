@@ -3,33 +3,52 @@ import TopNavbar from './TopNavbar';
 import axios from 'axios';
 import QuizTable from './QuizTable';
 import { Button, Card } from "react-bootstrap";
-import TopQuizzes from './CourseTopQuizzes';
+import TopQuizzes from './QuizzesDeck';
 import Loading from './Loading';
 
 class Course extends Component {
     state = {
         course: null,
-        quizData: []
+        quizData: [],
+        topRatedQuizzes: []
     }
 
     componentDidMount() {
         let id = this.props.match.params.course_id;
-        axios.get("http://pi.cs.oswego.edu:9083/courses/get-courses/" + id).then(res => {
+        axios.get("http://localhost:9083/courses/get-courses/" + id).then(res => {
             this.setState({
                 course: res.data[0]
             })
         })
-        axios.get('http://pi.cs.oswego.edu:9084/quizzes/get-course/' + id).then(res => {
+        axios.get('http://localhost:9084/quizzes/get-course/' + id).then(res => {
             this.setState({
                 quizData: res.data,
-            })
+            }, () => {this.getTopRatedQuizzes()})
         }).catch(err => {
             console.log(err);
         })
     }
 
+    getTopRatedQuizzes = () => {
+        const sort_by = (field, reverse, primer) => {
+            const key = primer ?
+                function(x) {
+                return primer(x[field])
+                } :
+                function(x) {
+                return x[field]
+                };
+            reverse = !reverse ? 1 : -1;
+            return function(a, b) {
+                return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+            }
+        }
+        const sortedQuizzes = this.state.quizData.sort(sort_by('rating', true, parseInt));
+        this.setState({topRatedQuizzes: sortedQuizzes.slice(0,3)})
+    }
+
     handleClick(e) {
-        window.location.assign('http://pi.cs.oswego.edu:9081/users/all');
+        window.location.assign('http://localhost:9081/users/all');
     }
 
     render () {
@@ -44,7 +63,7 @@ class Course extends Component {
 
                 <div className='container'>
                     <h1 className='subtitle'> Top Rated Quizzes </h1>
-                    <TopQuizzes />
+                    <TopQuizzes data={this.state.topRatedQuizzes}/>
 
                     <div className="spacer"></div>
                     <h1 className='subtitle'> Course Quizzes </h1>

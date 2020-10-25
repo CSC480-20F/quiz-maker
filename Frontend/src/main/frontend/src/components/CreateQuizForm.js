@@ -82,7 +82,7 @@ const Style = styled.div`
     }
 
     .quiz-question {
-      padding: 20px;
+      padding: 20px 50px 20px 50px;
       min-width: 70rem;
       max-width: 80rem;
     }
@@ -167,7 +167,7 @@ class CreateQuizForm extends React.Component{
         window.alert("You need to add at least one question! 😅");
         return; 
       }
-      axios.post(`http://pi.cs.oswego.edu:9084/quizzes/add-quiz`, {
+      axios.post(`http://localhost:9084/quizzes/add-quiz`, {
         "quizName":this.state.quiz_title,
         "creator":this.state.creator,
         "courseID":this.state.courseID,

@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Button, Tabs, Tab, Card } from "react-bootstrap";
-import MyTopRatedQuizzes from './MyTopRatedQuizzes';
+import TopQuizzes from './QuizzesDeck';
 import TopNavbar from './TopNavbar';
 import styled from 'styled-components';
 import QuizTable from './QuizTable';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Styles = styled.div`
@@ -28,28 +29,57 @@ const Styles = styled.div`
 class Quizzes extends Component {
     state = {
         createdQuizzesData: [],
-        takenQuizzesData: []
+        topCreatedQuizzes: [],
+        takenQuizzesData: [],
+        takenQuizzes: []
     }
 
-    componentDidMount () {
-        // TODO: GRAB DATA FOR THE QUIZ TABLES
-        // const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        // axios.get('http://localhost:9081/users/' + email).then(res => response
-        
+    componentDidMount () {        
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        fetch('http://pi.cs.oswego.edu:9084/quizzes/get-created-quizzes/' + email, {method: 'GET',}).then(response => response.json()).then(posts => {
+        fetch('http://localhost:9084/quizzes/get-created-quizzes/' + email, {method: 'GET',}).then(response => response.json()).then(quizzes => {
             if (this.mounted) {
                 this.setState({
-                    createdQuizzesData: posts, 
-                    takenQuizzesData: posts
-                })
+                    createdQuizzesData: quizzes
+                }, () => {this.getTopRatedQuizzes()})
             }
         })
+        axios.get('http://localhost:9081/users/get-quizzes/' + email).then(res => {
+            if(this.mounted){
+                this.setState({takenQuizzes: res.data}, () => {this.getTakenQuizzes()})
+            }
+        }).catch(err => {console.log(err)})
     }
 
     componentWillUnmount () {
         this.mounted = false;
+    }
+
+    getTopRatedQuizzes = () => {
+        const sort_by = (field, reverse, primer) => {
+            const key = primer ?
+                function(x) {
+                return primer(x[field])
+                } :
+                function(x) {
+                return x[field]
+                };
+            reverse = !reverse ? 1 : -1;
+            return function(a, b) {
+                return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+            }
+        }
+        const sortedQuizzes = this.state.createdQuizzesData.sort(sort_by('rating', true, parseInt));
+        this.setState({topCreatedQuizzes: sortedQuizzes.slice(0,3)})
+    }
+
+    getTakenQuizzes = () => {
+        const ids = this.state.takenQuizzes.replace(/[[\]']+/g,'').split(" ").join("");
+        axios.get('http://localhost:9084/quizzes/get-quizzes/' + ids).then(res => {
+            if(this.mounted){
+                this.setState({takenQuizzesData: res.data})
+            }
+        }).catch(err => {console.log(err)})
     }
 
     render () {
@@ -60,12 +90,12 @@ class Quizzes extends Component {
             <div className="container-middle">
             <div className="header"> Quizzes </div>
             <div style={{padding: '10px'}}> </div>
-            <Button variant="light" className='create-quiz'>Create a Quiz</Button>
+            <Button variant="light" className='create-quiz' as={Link} to="/CreateQuiz">Create a Quiz</Button>
 
             <div style={{padding: '10px'}}> </div>
                 <div className='container'>
                     <h1 className='subtitle'> My Top Rated Quizzes </h1>
-                    <MyTopRatedQuizzes />
+                    <TopQuizzes data={this.state.topCreatedQuizzes}/>
 
                     <div className="spacer"></div>
                     <Styles>

@@ -98,7 +98,7 @@ public class QuizMakerQuizzesDbInfo {
           BasicDBList questions = (BasicDBList) cq.get("quizQuestions");
           int questSize = questions.size();
           cq.removeField("quizQuestions");
-          cq.put("quizLength", questSize);
+          cq.put("quiz-length", questSize);
           quizList.add(cq);
         }
 
