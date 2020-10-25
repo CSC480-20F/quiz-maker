@@ -55,19 +55,35 @@ class CreateQuiz extends Component {
 
   componentDidMount() {
     this.mounted = true;
-    const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-    axios.get('http://localhost:9081/users/' + email).then(res => {
+    if (this.props.match.params.course_id !== undefined) {
+      this.setState({
+        courseIDs: this.props.match.params.course_id,
+        chosenCourseId: this.props.match.params.course_id
+      }, () => {this.getChosenCourse()})
+    } else {
+      const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
+      axios.get('http://localhost:9081/users/' + email).then(res => {
+        if(this.mounted){
+          this.setState({courseIDs: res.data,}, () => {this.getCoursesFromDB()})
+        }
+      }).catch(err => {
+          console.log(err);
+          if (this.mounted) {
+            this.setState({isLoading: false})
+          }
+      })
+      }
+  }
+
+  getChosenCourse = () => {
+    axios.get('http://localhost:9083/courses/get-courses/' + this.state.chosenCourseId).then(res => {
       if(this.mounted){
-        this.setState({
-            courseIDs: res.data,
-        }, () => {this.getCoursesFromDB()})
+        this.setState({chosenCourse: res.data,isLoading: false})
       }
     }).catch(err => {
         console.log(err);
-        if (this.mounted) {
-          this.setState({
-            isLoading: false
-        })
+        if(this.mounted){
+            this.setState({isLoading: false})
         }
     })
   }

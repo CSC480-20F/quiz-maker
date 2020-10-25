@@ -217,7 +217,7 @@ class TakeQuiz extends Component {
         "id": this.props.match.params.quiz_id,
         "email": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
       }).then(res => {
-        console.log(res);
+        console.log("Putting to users DB",res);
         this.sendRatingToDB();
       }).catch(error =>{
         console.log(error);
@@ -230,7 +230,7 @@ class TakeQuiz extends Component {
         "id": this.props.match.params.quiz_id,
         "rating": this.state.totalRating
       }).then(res => {
-        console.log(res);
+        console.log("Updating Rating",res);
         this.setState({showScore: true, selected: false, selectedID:""})
       }).catch(error =>{
         console.log(error);
@@ -238,7 +238,7 @@ class TakeQuiz extends Component {
   }
 
   goBackToCourse = () => {
-    this.props.history.push('/Courses/' + this.state.courseID);
+    this.props.history.push('/Courses/' + this.state.courseID + '/');
   }
 
   handleAnswerClick = (chosenAnswer) => {

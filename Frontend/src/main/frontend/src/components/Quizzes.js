@@ -56,21 +56,9 @@ class Quizzes extends Component {
     }
 
     getTopRatedQuizzes = () => {
-        const sort_by = (field, reverse, primer) => {
-            const key = primer ?
-                function(x) {
-                return primer(x[field])
-                } :
-                function(x) {
-                return x[field]
-                };
-            reverse = !reverse ? 1 : -1;
-            return function(a, b) {
-                return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-            }
-        }
-        const sortedQuizzes = this.state.createdQuizzesData.sort(sort_by('rating', true, parseInt));
-        this.setState({topCreatedQuizzes: sortedQuizzes.slice(0,3)})
+        var obj = [...this.state.createdQuizzesData];
+        obj.sort((a,b) => b.rating - a.rating);
+        this.setState({topCreatedQuizzes: obj.slice(0,3)})
     }
 
     getTakenQuizzes = () => {

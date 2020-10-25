@@ -127,8 +127,6 @@ class CreateQuizForm extends React.Component{
         incorrect_answer4:"",
         incorrect_answers:[],
         index:this.state.index + 1
-      }, () => {
-        console.log("after updating state: ", this.state);
       });
     })
   }
@@ -183,9 +181,7 @@ class CreateQuizForm extends React.Component{
           "index":0
         })
         window.alert("Quiz Posted! 🥳 ");
-        this.props.history.push('/Courses/' + this.state.courseID);
-        console.log(res);
-        console.log(res.data);
+        this.props.history.push('/Courses/' + this.state.courseID + '/');
       }).catch(error =>{
         window.alert("Problem posting the Quiz 😞" );
         console.log(error);

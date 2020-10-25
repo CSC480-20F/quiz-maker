@@ -5,6 +5,14 @@ import QuizTable from './QuizTable';
 import { Button, Card } from "react-bootstrap";
 import TopQuizzes from './QuizzesDeck';
 import Loading from './Loading';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+const Styles = styled.div`
+    .create-quiz {
+        width: 250px !important;
+    }
+`;
 
 class Course extends Component {
     state = {
@@ -30,25 +38,9 @@ class Course extends Component {
     }
 
     getTopRatedQuizzes = () => {
-        const sort_by = (field, reverse, primer) => {
-            const key = primer ?
-                function(x) {
-                return primer(x[field])
-                } :
-                function(x) {
-                return x[field]
-                };
-            reverse = !reverse ? 1 : -1;
-            return function(a, b) {
-                return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-            }
-        }
-        const sortedQuizzes = this.state.quizData.sort(sort_by('rating', true, parseInt));
-        this.setState({topRatedQuizzes: sortedQuizzes.slice(0,3)})
-    }
-
-    handleClick(e) {
-        window.location.assign('http://localhost:9081/users/all');
+        var obj = [...this.state.quizData];
+        obj.sort((a,b) => b.rating - a.rating);
+        this.setState({topRatedQuizzes: obj.slice(0,3)})
     }
 
     render () {
@@ -58,7 +50,11 @@ class Course extends Component {
                 <div className='container-middle'> 
                     <h1 className="center header">{this.state.course.courseName}</h1>
                     <div style={{padding: '10px'}}> </div>
-                    <Button variant='light' className='create-quiz center' onClick={this.handleClick.bind(this)}>Create a Quiz</Button>
+                    <Styles>
+                    <Link to={"/CreateQuiz/" + this.state.course.courseId}>
+                    <Button variant='light' className='create-quiz center'>Create a Quiz</Button>
+                    </Link>
+                    </Styles>
                 </div>
 
                 <div className='container'>

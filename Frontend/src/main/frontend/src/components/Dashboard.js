@@ -27,21 +27,12 @@ class Dashboard extends Component {
     }
 
     getRecentQuizzes = () => {
-        const sort_by = (field, reverse, primer) => {
-            const key = primer ?
-                function(x) {
-                return primer(x[field])
-                } :
-                function(x) {
-                return x[field]
-                };
-            reverse = !reverse ? 1 : -1;
-            return function(a, b) {
-                return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-            }
-        }
-        const sortedQuizzes = this.state.createdQuizzes.sort(sort_by('$oid', true, parseInt));
-        this.setState({quizzesDeckData: sortedQuizzes.slice(0,3)})
+        var temp = [...this.state.createdQuizzes]
+        temp.map(quiz => {
+            return quiz.date = new Date(parseInt(quiz._id.$oid.substring(0, 8), 16) * 1000).toISOString();
+        })
+        temp.sort((a,b) => -a.date.localeCompare(b.date))
+        this.setState({quizzesDeckData: temp.slice(0,3)})
     }
 
     render () {
