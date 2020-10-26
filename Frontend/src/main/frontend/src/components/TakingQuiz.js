@@ -238,7 +238,7 @@ class TakeQuiz extends Component {
   }
 
   goBackToCourse = () => {
-    this.props.history.push('/Courses/' + this.state.courseID + '/');
+    this.props.history.push('/Courses/' + this.state.courseID);
   }
 
   handleAnswerClick = (chosenAnswer) => {

@@ -6,6 +6,9 @@ import styled from 'styled-components';
 import QuizTable from './QuizTable';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import {UserContext} from '../context/UserContext';
+import InstructorQuizTable from './InstructorQuizTable';
+import Loading from './Loading';
 
 const Styles = styled.div`
     .nav-tabs {
@@ -27,11 +30,14 @@ const Styles = styled.div`
 `;
 
 class Quizzes extends Component {
+    static contextType = UserContext
+
     state = {
         createdQuizzesData: [],
         topCreatedQuizzes: [],
         takenQuizzesData: [],
-        takenQuizzes: []
+        takenQuizzes: [],
+        isLoading: true
     }
 
     componentDidMount () {        
@@ -65,47 +71,70 @@ class Quizzes extends Component {
         const ids = this.state.takenQuizzes.replace(/[[\]']+/g,'').split(" ").join("");
         axios.get('http://localhost:9084/quizzes/get-quizzes/' + ids).then(res => {
             if(this.mounted){
-                this.setState({takenQuizzesData: res.data})
+                this.setState({takenQuizzesData: res.data, isLoading: false})
             }
         }).catch(err => {console.log(err)})
     }
 
     render () {
-    return (
-        <div>
-            <div> <TopNavbar/> </div>
-            
-            <div className="container-middle">
-            <div className="header"> Quizzes </div>
-            <div style={{padding: '10px'}}> </div>
-            <Button variant="light" className='create-quiz' as={Link} to="/CreateQuiz">Create a Quiz</Button>
+        if (this.state.isLoading) {
+            return <> <TopNavbar/> <div className="container-middle"><Loading type={'balls'} color={'#235937'}/> </div> </>
+        }
 
-            <div style={{padding: '10px'}}> </div>
-                <div className='container'>
-                    <h1 className='subtitle'> My Top Rated Quizzes </h1>
-                    <TopQuizzes data={this.state.topCreatedQuizzes}/>
+        const teacher = this.context.isInstructor;
 
-                    <div className="spacer"></div>
-                    <Styles>
-                    <Tabs defaultActiveKey="MyQuizzes" id="uncontrolled-tab-example">
-                    <Tab eventKey="MyQuizzes" title="My created quizzes">
-                        <Card className='rounded-corner'>
-                            <QuizTable data ={this.state.createdQuizzesData} />
-                        </Card>
-                    </Tab>
-                    <Tab eventKey="QuizHistory" title="Quizzes I took">
-                        <Card className='rounded-corner'>
-                            <QuizTable data = {this.state.takenQuizzesData} />
-                        </Card>
-                    </Tab>
-                    </Tabs>
-                    </Styles>
-                    <div style={{padding: '10px'}}> </div>
+        const view = teacher ? (
+            <Tabs defaultActiveKey="MyQuizzes" id="uncontrolled-tab-example">
+            <Tab eventKey="MyQuizzes" title="My created quizzes">
+                <Card className='rounded-corner'>
+                    <InstructorQuizTable data ={this.state.createdQuizzesData} />
+                </Card>
+            </Tab>
+            <Tab eventKey="QuizHistory" title="Quizzes I took">
+                <Card className='rounded-corner'>
+                    <InstructorQuizTable data = {this.state.takenQuizzesData} />
+                </Card>
+            </Tab>
+            </Tabs>
+        ):(
+            <Tabs defaultActiveKey="MyQuizzes" id="uncontrolled-tab-example">
+            <Tab eventKey="MyQuizzes" title="My created quizzes">
+                <Card className='rounded-corner'>
+                    <QuizTable data ={this.state.createdQuizzesData} />
+                </Card>
+            </Tab>
+            <Tab eventKey="QuizHistory" title="Quizzes I took">
+                <Card className='rounded-corner'>
+                    <QuizTable data = {this.state.takenQuizzesData} />
+                </Card>
+            </Tab>
+            </Tabs>
+        )
+
+        return (
+            <div>
+                <div> <TopNavbar/> </div>
+                
+                <div className="container-middle">
+                <div className="header"> Quizzes </div>
+                <div style={{padding: '10px'}}> </div>
+                <Button variant="light" className='create-quiz' as={Link} to="/CreateQuiz">Create a Quiz</Button>
+
+                <div style={{padding: '10px'}}> </div>
+                    <div className='container'>
+                        <h1 className='subtitle'> My Top Rated Quizzes </h1>
+                        <TopQuizzes data={this.state.topCreatedQuizzes}/>
+
+                        <div className="spacer"></div>
+                        <Styles>
+                        {view}
+                        </Styles>
+                        <div style={{padding: '10px'}}> </div>
+                    </div>
+        
                 </div>
-    
             </div>
-        </div>
-    )
+        )
     }
 }
 

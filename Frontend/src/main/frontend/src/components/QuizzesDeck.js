@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { CardDeck, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
+const Style = styled.div`
+    .create-link {
+        color: #8F0047;
+        font-weight: bold;
+        font-family: Roboto;
+    }
+`;
 
 class QuizzesDeck extends Component {
     render () {
@@ -17,16 +25,16 @@ class QuizzesDeck extends Component {
                 )
             })
         ):(
-            <div className="center"> No quizzes to show </div>
+            <div className="center"> You don't have any quizzes created. Go ahead and <Link className="create-link" to="/CreateQuiz">create one.</Link></div>
         )
         return (
-            <div>
+            <Style>
             <Card className='rounded-corner'>
                 <CardDeck className="courses-deck">
                     {quizzesList}
                 </CardDeck>
             </Card>
-            </div>
+            </Style>
         )
     }
 }

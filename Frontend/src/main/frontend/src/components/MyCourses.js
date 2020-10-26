@@ -9,8 +9,7 @@ class MyCourses extends Component {
     state = {
         myCourses: [],
         coursesIDs: [],
-        isLoading: true,
-        mounted: false,
+        isLoading: true
     }
 
     componentDidMount() {
@@ -81,7 +80,7 @@ class MyCourses extends Component {
                 )
             })
         ):(
-            <div className="center"> You are not in any courses </div>
+            <div className="center"> You are not in any courses. </div>
         )
         return (
             <div>

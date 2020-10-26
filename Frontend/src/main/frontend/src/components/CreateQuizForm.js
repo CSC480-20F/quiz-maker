@@ -181,7 +181,7 @@ class CreateQuizForm extends React.Component{
           "index":0
         })
         window.alert("Quiz Posted! 🥳 ");
-        this.props.history.push('/Courses/' + this.state.courseID + '/');
+        this.props.history.push('/Courses/' + this.state.courseID);
       }).catch(error =>{
         window.alert("Problem posting the Quiz 😞" );
         console.log(error);

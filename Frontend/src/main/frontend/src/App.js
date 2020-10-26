@@ -11,6 +11,9 @@ import Quizzes from './components/Quizzes';
 import TakeQuiz from './components/TakingQuiz';
 import RosterUpload from './components/RosterUpload';
 import CreateQuizForm from './components/CreateQuizForm'
+import UserProvider from './context/UserContext';
+
+
 class ProtectedRoute extends React.Component {
   render() {
     const { component: Component, condition: Condition, ...props } = this.props
@@ -83,6 +86,7 @@ class App extends React.Component {
 
   render() {
       return (
+        <UserProvider>
           <BrowserRouter>
               <Switch>
                   <Route exact path="/" render={() => this.ifUserSignedIn(Dashboard)}/>
@@ -99,6 +103,7 @@ class App extends React.Component {
                   {/* <Route path="/dashboard" render={() => this.ifUserSignedIn(Dashboard)}/> */}
               </Switch>
           </BrowserRouter>
+        </UserProvider>
       )
   }
 }

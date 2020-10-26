@@ -5,11 +5,17 @@ import MyCourses from './MyCourses';
 import RecentQuizzes from './QuizzesDeck';
 import TopNavbar from './TopNavbar';
 import axios from 'axios';
+import Loading from './Loading';
+import {UserContext} from '../context/UserContext';
+import InstructorCourses from './InstructorCourses';
 
 class Dashboard extends Component {
+    static contextType = UserContext
+
     state = {
         quizzesDeckData: [],
-        createdQuizzes: []
+        createdQuizzes: [],
+        isLoading: true
     }
 
     componentDidMount() {
@@ -32,10 +38,22 @@ class Dashboard extends Component {
             return quiz.date = new Date(parseInt(quiz._id.$oid.substring(0, 8), 16) * 1000).toISOString();
         })
         temp.sort((a,b) => -a.date.localeCompare(b.date))
-        this.setState({quizzesDeckData: temp.slice(0,3)})
+        this.setState({quizzesDeckData: temp.slice(0,3), isLoading: false})
     }
 
     render () {
+        if (this.state.isLoading) {
+            return <> <TopNavbar/> <div className="container-middle"><Loading type={'balls'} color={'#235937'}/> </div> </>
+        }
+
+        const teacher = this.context.isInstructor;
+
+        const view = teacher ? (
+            <InstructorCourses limit="3"/>
+        ):(
+            <MyCourses limit="3"/>
+        )
+
         return (
             <div>
                 <div> <TopNavbar/> </div>
@@ -47,13 +65,12 @@ class Dashboard extends Component {
                 <Button variant="light" className='create-quiz' as={Link} to="/CreateQuiz">Create a Quiz</Button>
                     <div className='container'>
                         <h1 className='subtitle'> My Courses </h1>
-                        <MyCourses limit="3"/>
+                        {view}
                         <div className="spacer"></div>
                         <h1 className='subtitle'> My Recently Created Quizzes </h1>
                         <RecentQuizzes data={this.state.quizzesDeckData}/>
                         <div style={{padding: '10px'}}></div>
                     </div>
-        
                 </div>
             </div>
         )

@@ -19,6 +19,7 @@ class InstructorQuizTable extends Component {
 
       const customTopicAccesor = row => getTopics(row.quizTopics)
       const customDateAccesor = row => getDate(row._id.$oid)
+      const customStarredAccessor = row => (row.starred.toString())
 
       const data = this.props.data;
 
@@ -56,8 +57,9 @@ class InstructorQuizTable extends Component {
         },
 
         {
+          id: 'favorite',
           Header:'Favorite',
-          accessor:'starred'
+          accessor:customStarredAccessor
         }
     ]
 
@@ -69,7 +71,7 @@ class InstructorQuizTable extends Component {
                     getTdProps={(state, rowInfo, column, instance) => {
                       return {
                         onClick: (e, handleOriginal) => {
-                          this.props.history.push(this.props.location.pathname + rowInfo.original._id.$oid)
+                          this.props.history.push(this.props.location.pathname + "/" + rowInfo.original._id.$oid)
                           console.log('It was in this row:', rowInfo.original._id.$oid)
                         }
                       }
