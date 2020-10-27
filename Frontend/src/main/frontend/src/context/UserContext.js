@@ -1,23 +1,41 @@
-import React, { createContext, Component} from 'react';
+import React, { useState, useEffect, createContext } from 'react';
+import axios from 'axios';
 
 export const UserContext = createContext();
 
-class UserProvider extends Component {
-    state = {
-        isInstructor: true,
-    }
+function UserProvider ({ children }) {
+    const [isInstructor, setInstructor] = useState([false]);
 
-    setUser = (isInstructor) => {
-        this.setState((prevState) => ({ isInstructor }))
-    }
+    const delay = ms => new Promise(res => setTimeout(res, ms));
 
-    render () {
-        return (
-            <UserContext.Provider value = {{...this.state}}>
-                {this.props.children}
-            </UserContext.Provider>
-        );
-    }
+    useEffect(() => {
+        async function fetchData() {
+            await delay(800);
+            if (!window.gapi.auth2.getAuthInstance().isSignedIn.get()) {
+              console.log('NO GOOGLE USER')
+              setInstructor(false);
+            } else {
+              const email = await window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
+              console.log('GETTING DATA FROM DB');
+              const { data } = await axios.get(
+              `http://localhost:9081/users/is-instructor/${email}`
+              );
+              setInstructor(data);
+            }
+        }
+        fetchData();
+      }, [signInData()]);
+
+      async function signInData(){
+        await delay(1000);
+        window.gapi.auth2.getAuthInstance().isSignedIn.get()
+      }
+
+      return (
+        <UserContext.Provider value={{isInstructor}}>
+          {children}
+        </UserContext.Provider>
+      );
 }
 
 export default UserProvider;

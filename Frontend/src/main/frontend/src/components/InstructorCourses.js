@@ -22,7 +22,20 @@ class InstructorCourses extends Component {
     componentDidMount() {
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        // TODO: GET COURSES THAT THIS USER IS AN INSTRUCTOR IN - WE WILL PASS LIMIT AS A PROP LIKE LAST TIME IN "MYCOURSES"
+        axios.get('http://localhost:9083/courses/get-instructor-courses/' + email).then(res => {
+            if(this.mounted){
+                if (this.props.limit === "null" || res.data.length < 3) {
+                    this.setState({myCourses: res.data, isLoading: false})
+                } else if (this.props.limit !== "null" && res.data.length >= 3) {
+                    this.setState({myCourses: res.data.slice(0,3), isLoading: false})
+                }
+            }
+        }).catch(err => {
+            if(this.mounted){
+                console.log(err);
+                this.setState({isLoading: false})
+            }
+        })
     }
 
     componentWillUnmount(){
@@ -38,7 +51,7 @@ class InstructorCourses extends Component {
         const coursesList = myCourses.length ? (
             myCourses.map(course => {
                 return (
-                    <Link to={`/Courses/${course.courseId}/`} className='regular-link' key={course.courseId}>
+                    <Link to={`/Courses/${course._id.$oid}/`} className='regular-link' key={course._id.$oid}>
                         <Card className="course-card">
                             <Card.Title>{course.courseName}</Card.Title>
                         </Card>

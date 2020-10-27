@@ -47,12 +47,22 @@ class Quizzes extends Component {
             if (this.mounted) {
                 this.setState({
                     createdQuizzesData: quizzes
-                }, () => {this.getTopRatedQuizzes()})
+                }, () => {
+                    if (this.state.createdQuizzesData.length > 0) {
+                        this.getTopRatedQuizzes()
+                    }
+                })
             }
         })
         axios.get('http://localhost:9081/users/get-quizzes/' + email).then(res => {
             if(this.mounted){
-                this.setState({takenQuizzes: res.data}, () => {this.getTakenQuizzes()})
+                this.setState({takenQuizzes: res.data}, () => {
+                    if (this.state.takenQuizzes.length > 0) {
+                        this.getTakenQuizzes()
+                    } else {
+                        this.setState({isLoading: false})
+                    }
+                })
             }
         }).catch(err => {console.log(err)})
     }

@@ -25,7 +25,7 @@ class QuizzesDeck extends Component {
                 )
             })
         ):(
-            <div className="center"> You don't have any quizzes created. Go ahead and <Link className="create-link" to="/CreateQuiz">create one.</Link></div>
+            <div className="center"> No quizzes created. Go ahead and <Link className="create-link" to="/CreateQuiz">create one.</Link></div>
         )
         return (
             <Style>

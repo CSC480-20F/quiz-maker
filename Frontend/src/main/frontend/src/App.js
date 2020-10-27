@@ -99,8 +99,6 @@ class App extends React.Component {
                   <ProtectedRoute path="/Quizzes/:quiz_id" condition={this.state.isSignedIn} component={TakeQuiz}/>
                   <ProtectedRoute path="/RosterUpload" condition={this.state.isSignedIn} component={RosterUpload}/>
                   <ProtectedRoute path="/CreateQuizForm" condition={this.state.isSignedIn} component={CreateQuizForm}/>
-                  
-                  {/* <Route path="/dashboard" render={() => this.ifUserSignedIn(Dashboard)}/> */}
               </Switch>
           </BrowserRouter>
         </UserProvider>
