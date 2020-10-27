@@ -64,7 +64,7 @@ class QuizTable extends Component {
                     getTdProps={(state, rowInfo, column, instance) => {
                       return {
                         onClick: (e, handleOriginal) => {
-                          this.props.history.push(this.props.location.pathname + rowInfo.original._id.$oid)
+                          this.props.history.push(this.props.location.pathname + "/" + rowInfo.original._id.$oid)
                         }
                       }
                     }}

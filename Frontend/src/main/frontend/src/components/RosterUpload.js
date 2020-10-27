@@ -172,13 +172,6 @@ class RosterUpload extends React.Component {
         the column with student names is titled "Name"</div>
         </Card>
         </Form>
-        {/* <form id="course-form" onSubmit={this.handleSubmit.bind(this)}>
-        <label htmlFor="course">Course Name</label>
-        <div className="small-spacer">
-        <input type="text" required className="form-control" value={this.state.course} onChange={this.onCourseChange.bind(this)} />
-        </div>
-        <Button type="submit" className="btn-warning"> Add Roster </Button>
-        </form> */}
         </div>
         </Style>
       </>
