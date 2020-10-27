@@ -198,6 +198,14 @@ class CreateQuizForm extends React.Component{
     }
       
     render(){
+      console.log(this.state.isInstructor);
+
+      const instructorButton = this.state.isInstructor ? (
+        <> <Button> Bullshit </Button></>
+      ):(
+        <> </>
+      )
+
       return (
         <Style>
         <div className="container-middle">
@@ -288,6 +296,7 @@ class CreateQuizForm extends React.Component{
           </Card>
 
           <div className="container-middle small-spacer"> 
+            {instructorButton}
             <Button type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> 
           </div>
           

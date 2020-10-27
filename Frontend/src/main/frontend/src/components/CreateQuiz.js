@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import TopNavbar from './TopNavbar';
-import { Button, Card, CardDeck, InputGroup, FormControl } from 'react-bootstrap';
+import { Button, Card, CardDeck } from 'react-bootstrap';
 import styled from 'styled-components';
 import CreateQuizForm from './CreateQuizForm';
 import Loading from './Loading';
+import {UserContext} from '../context/UserContext';
 
 // 💅 Styling  
 const Styles = styled.div`
@@ -47,16 +48,23 @@ const Styles = styled.div`
     align-self: center;
   }
 
+  .courses-deck {
+    max-width: 75rem !important;
+  }
+
 `;
 
 
 class CreateQuiz extends Component {
+  static contextType = UserContext
+
   state = {
     isLoading:true,
     courses: [],
     courseIDs: [],
     chosenCourseId:null,
     chosenCourse:null,
+    instructorCourses: [],
     topicOptions: ["Option1","Option2", "Option3", "Option4", "Option5", "Option6", "Option7"],
     topics: [],
     createQuizSection: false,
@@ -79,9 +87,6 @@ class CreateQuiz extends Component {
         }
       }).catch(err => {
           console.log(err);
-          if (this.mounted) {
-            this.setState({isLoading: false})
-          }
       })
       }
   }
@@ -110,21 +115,40 @@ class CreateQuiz extends Component {
 
   getCoursesFromDB = () => {
     const sendCourseIDs = this.state.courseIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
+    console.log(sendCourseIDs);
     axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
         if(this.mounted){
-            this.setState({
-                courses: res.data,
-                isLoading: false
-            })
+            this.setState({courses: res.data}, () => {this.getInstructorCourses()})
         }
-    }).catch(err => {
-        if(this.mounted){
-            console.log(err);
-            this.setState({
-                isLoading: false
-            })
+    }).catch(err => {console.log(err)})
+  }
+
+  getInstructorCourses = () => {
+    const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
+    if (this.context.isInstructor) {
+      axios.get('http://localhost:9083/courses/get-instructor-courses/' + email).then(res => {
+      if(this.mounted){
+          this.setState({instructorCourses: res.data, isLoading: false}, () => this.changeToMatch())
+      }
+      }).catch(err => {console.log(err);})
+    }
+  }
+
+  changeToMatch = () => {
+    const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
+    const tempArray = [...this.state.courses];
+    if (this.state.instructorCourses.length > 0) {
+      this.state.instructorCourses.map(course => {
+        const temp = {
+          "courseId": course._id.$oid,
+          "courseName": course.courseName,
+          "teacher": email
         }
-    })
+        tempArray.push(temp);
+        // this.setState({courses: [...this.state.courses, temp]})
+      })
+      this.setState({courses: tempArray})
+    }
   }
 
   onTopicChange(event) {this.setState({topic:event.target.value})}
