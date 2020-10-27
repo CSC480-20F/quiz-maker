@@ -118,7 +118,6 @@ class RosterUpload extends React.Component {
     const teacherEmail = this.state.professor;
     const emails = this.state.emails.toString();
     const sendString = teacherEmail + "," + courseName + "," + emails;
-    console.log(sendString);
 
 
     if (this.state.emails.length === 0) {

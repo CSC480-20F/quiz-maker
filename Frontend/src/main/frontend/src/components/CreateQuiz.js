@@ -18,6 +18,16 @@ const Styles = styled.div`
 
   .topic-card {
     min-width: fit-content;
+    font-family: Roboto;
+    border-color: white;
+  }
+
+  .chosen-topic-card{
+    min-width: fit-content;
+    color: #8F0047;
+    font-family: Roboto;
+    font-size: bold;
+    border-color: white;
   }
 
   .topics-deck {
@@ -47,9 +57,10 @@ class CreateQuiz extends Component {
     courseIDs: [],
     chosenCourseId:null,
     chosenCourse:null,
-    topic: "",
+    topicOptions: ["Option1","Option2", "Option3", "Option4", "Option5", "Option6", "Option7"],
     topics: [],
     createQuizSection: false,
+    isInstructor: false
   }
 
 
@@ -76,16 +87,21 @@ class CreateQuiz extends Component {
   }
 
   getChosenCourse = () => {
+    // TODO: ALSO GET THE TOPICS FOR THAT COURSE
     axios.get('http://localhost:9083/courses/get-courses/' + this.state.chosenCourseId).then(res => {
       if(this.mounted){
-        this.setState({chosenCourse: res.data, isLoading: false})
+        this.setState({chosenCourse: res.data, isLoading: false}, () => this.checkIfInstructor())
       }
     }).catch(err => {
         console.log(err);
-        if(this.mounted){
-            this.setState({isLoading: false})
-        }
     })
+  }
+
+  checkIfInstructor = () => {
+    const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
+    if (this.state.chosenCourse[0].teacher === email) {
+      this.setState({isInstructor: true})
+    }
   }
 
   componentWillUnmount(){
@@ -138,22 +154,27 @@ class CreateQuiz extends Component {
     })
   }
 
+  addTopic = (topic) => {
+    if (!this.state.topics.includes(topic)){
+      this.setState({topics: [...this.state.topics, topic]})
+    } else {
+      const filteredArray = this.state.topics.filter(item => item !== topic)
+      this.setState({topics: filteredArray});
+    }
+  }
+
   render () {
     if (this.state.isLoading) {
       return <> <TopNavbar/> <div className="container-middle"><Loading type={'balls'} color={'#235937'}/> </div> </>
     }
 
-    console.log(this.state);
-
     // Once a specific course has been chosen, display this instead of all courses
     const specificCourse = this.state.chosenCourse !== null ? (
       this.state.chosenCourse.map(course => {
           return (
-            <Styles key={course.courseId}>
             <Card className="course-card specific-course-card" key={course.courseId}>
                 <Card.Title>{course.courseName}</Card.Title>
             </Card>
-            </Styles>
           )
       })
     ):(
@@ -173,53 +194,40 @@ class CreateQuiz extends Component {
         <div className="center"> You are not in any courses </div>
     );
 
-    const topics = this.state.topics.length ? (
-      this.state.topics.map(topic => {
+    const topics = this.state.topicOptions.map((topic,i) => {
           return (
-            <Styles key={Math.random()*3}>
-            <Card className="topic-card">
-                <Card.Footer>{topic}</Card.Footer>
+            <Card className="topic-card" onClick={e => this.addTopic(topic)} className={this.state.topics.includes(topic) ? ("chosen-topic-card"):("topic-card")} key = {i}>
+                {topic}
             </Card>
-            </Styles>
           )
-      }) 
-  ):(
-      <Card className="topic-card"> <Card.Footer> No topics added yet </Card.Footer></Card>
-  ); 
+      })
 
   const quizCreationButton = this.state.topics.length ? (
-    <Styles>
     <div className="container">
     <div className="spacer"></div>
     <Button className="create-quiz" variant="light" onClick={this.quizCreation}> Go to Quiz Creation </Button>
     </div>
-    </Styles>
   ):(
     <div className="container"></div>
   )
 
     // Switch view depending on if a course has been choosen or not, and if you have started creating a Quiz or Not
     const createQuizPart = this.state.createQuizSection ? (
-      <CreateQuizForm courseID={this.state.chosenCourseId} topics={this.state.topics}/>
+      <CreateQuizForm courseID={this.state.chosenCourseId} topics={this.state.topics} professor={this.state.isInstructor}/>
     ):(
       (this.state.chosenCourseId !== null) ? (
         <>
         <h1 className="subtitle" style={{paddingTop: '30px'}}> What is your quiz about? </h1>
-        <Styles>
         <Card className='main-card'>
         <CardDeck className="courses-deck">
           {specificCourse}
         </CardDeck>
-        <InputGroup className="topic-input">
-          <FormControl value={this.state.topic} onChange={this.onTopicChange.bind(this)} placeholder="Add a topic" aria-label="topics" aria-describedby="basic-addon2"/>
-          <InputGroup.Append> <Button variant="outline-secondary" onClick={this.onSubmitTopic}>Add Topic</Button> </InputGroup.Append>
-        </InputGroup>
+        
         <CardDeck className="topics-deck">
           {topics}
         </CardDeck>
         </Card>
           {quizCreationButton}
-        </Styles>
         <div className="small-spacer"></div>
         </>
     ):(
@@ -239,7 +247,9 @@ class CreateQuiz extends Component {
       <TopNavbar/>
         <div className="container-middle">
           <div className="small-spacer"></div>
+            <Styles>
             {createQuizPart} 
+            </Styles>
         </div>  
       </>
     )

@@ -300,7 +300,7 @@ class TakeQuiz extends Component {
       return (
         <>
         <Form.Row key={i}>
-            <Form.Label className="label" column="lg" sm={0.5}> {answerLabels[i]} </Form.Label >
+            <Form.Label className="label" column="lg" sm={0.5}> {answerLabels[i]} </Form.Label>
             <Col>
             <Form.Control className={this.state.selected ? 
             ((answer === questions[currentQuestion].answer) ? ("answer-field-correct"):(
@@ -385,19 +385,19 @@ class TakeQuiz extends Component {
 
            <Form.Check 
            type={type}
-           id={`default-${type}`}
+           id={`default-${type}1`}
            label={`Spelling Mistake`}
            />
       
             <Form.Check 
            type={type}
-           id={`default-${type}`}
+           id={`default-${type}2`}
            label={`Wrong Question `}
            />
 
            <Form.Check 
            type={type}
-           id={`default-${type}`}
+           id={`default-${type}3`}
            label={`Wrong Answer`}
            />
 

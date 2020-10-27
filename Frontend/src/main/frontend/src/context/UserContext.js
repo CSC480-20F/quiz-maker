@@ -12,11 +12,9 @@ function UserProvider ({ children }) {
         async function fetchData() {
             await delay(800);
             if (!window.gapi.auth2.getAuthInstance().isSignedIn.get()) {
-              console.log('NO GOOGLE USER')
               setInstructor(false);
             } else {
               const email = await window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
-              console.log('GETTING DATA FROM DB');
               const { data } = await axios.get(
               `http://localhost:9081/users/is-instructor/${email}`
               );

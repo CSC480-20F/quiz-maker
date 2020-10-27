@@ -95,6 +95,7 @@ class CreateQuizForm extends React.Component{
     this.state = {
       "quiz_title":"",
       "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
+      "isInstructor": this.props.professor,
       "courseID":this.props.courseID,
       "topics":this.props.topics,
       "index":0,
