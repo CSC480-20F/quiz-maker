@@ -16,17 +16,19 @@ function DarkModeToggle() {
   }
   
   
+  
   return (
-    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
-      <>
+        <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+        <>
         <GlobalStyles />
-        
+        <toggle theme={theme} toggleTheme={toggleTheme} />
+        <h1>It's a {theme === 'light' ? 'light theme' : 'dark theme'}!</h1>
         <button onClick={toggleTheme}>Toggle theme</button>
         
         <footer>
         </footer>
-      </>
-    </ThemeProvider>
+        </>
+        </ThemeProvider>
   );
 }
 

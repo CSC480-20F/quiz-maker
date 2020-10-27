@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import TopNavbar from './TopNavbar';
 import Loading from './Loading';
 import axios from 'axios';
-import {Card, ProgressBar, Form, Col, Button} from 'react-bootstrap';
+import {Card, ProgressBar, Form, Col, Button, Modal} from 'react-bootstrap';
 import { FcCheckmark, FcCancel } from "react-icons/fc"; //https://react-icons.github.io/react-icons/icons?name=fc
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai"; //https://react-icons.github.io/react-icons/icons?name=ai
 
@@ -134,7 +134,10 @@ class TakeQuiz extends Component {
       "count":0,
       "vote":0, //the user’s current vote. 0 if no vote, -1 if downvoted, 1 if upvoted.
       "totalRating":0, //score of the post 
-      "currentQuestionCounter":0
+      "currentQuestionCounter":0,
+      "show":false,
+      "report_form":""
+      
     }
 
     this.increment = this.increment.bind(this)
@@ -157,6 +160,32 @@ class TakeQuiz extends Component {
   decrement(){
     this.setState({count:this.state.count -1})
   }
+
+  handleClose = () => {
+    this.setState({show: false})
+  }
+  handleShow = () => {
+    this.setState({show: true})
+  }
+
+  onReportSubmit = (e) => {
+    e.preventDefault();
+    // axios.post(`http://localhost:9084/quizzes/add-quiz`, {
+    //   "report_form":this.state.report_form
+    // })
+    window.alert("Report Submited! 🥳 ");
+    console.log(this.state.report_form)
+    this.setState({
+      "report_form":""
+    })
+  }
+
+  onReportChange(event) {
+    this.setState({report_form: event.target.value})
+    // console.log(this.state.report_form)
+  }
+
+
 
   componentDidMount () {
     this.mounted = true;
@@ -251,6 +280,8 @@ class TakeQuiz extends Component {
     }
   }
 
+  
+
   doNothing () {}
 
   render() {
@@ -300,14 +331,16 @@ class TakeQuiz extends Component {
         }
         
       })
+      
     
+
     const takingQuiz = this.state.showScore ? (
       <>
       <div className="subtitle">My Score</div>
       <Card className="score-card rounded-corner" >
       <h1 className="score-properties"> <span style={{color:"#1C9B2F", marginRight:"10px"}}>{this.state.score}</span> out of {questions.length} </h1>
       <div>{scoreTally}</div>
-      
+      <div style={{fontSize:"12px"}}>Total Rating of this quiz:{this.state.totalRating}</div>
       <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
 
       </Card>
@@ -321,6 +354,9 @@ class TakeQuiz extends Component {
           
           <Card className="whole-question-card rounded-corner">
             <h1 className="subtitle">Question {currentQuestion + 1}
+
+            {/* <h1>Total Rating {this.state.totalRating}</h1>
+            <h2>Current {this.state.vote}</h2> */}
 
             <AiOutlineLike 
               style={{display:"inline-block", margin:"2px"}}
@@ -336,10 +372,67 @@ class TakeQuiz extends Component {
               onClick={() => this.vote(-1)}>
               Downvote
             </AiOutlineDislike>
+
+            
+            <Button variant="danger" className="rounded-corner" onClick={this.handleShow}> Report </Button> 
+
+            <Modal show={this.state.show} onHide={this.handleClose} backdrop="static">
+            <Modal.Header closeButton> 
+            <Modal.Title> Report </Modal.Title> 
+            </Modal.Header>
+            <Modal.Body>What is the problem?
+            
+            <Form id="report-form" onSubmit={this.onReportSubmit.bind(this)}>
+            
+            {['checkbox'].map((type) => (
+            <div key={`default-${type}`} className="mb-3">
+
+           <Form.Check 
+           type={type}
+           id={`default-${type}`}
+           label={`Spelling Mistake`}
+           />
+      
+            <Form.Check 
+           type={type}
+           id={`default-${type}`}
+           label={`Wrong Question `}
+           />
+
+           <Form.Check 
+           type={type}
+           id={`default-${type}`}
+           label={`Wrong Answer`}
+           />
+
+         
+          </div>
+          ))}
+            <Form.Row>
+            <Form.Control 
+            required 
+            className="no-border" 
+            size="sm" 
+            type="text" 
+            placeholder="If other please specify" 
+            value={this.state.report_form} 
+            onChange={this.onReportChange.bind(this)}/>
+           
+            </Form.Row>
+
+            </Form>
+            
+            </Modal.Body>
+            <Modal.Footer>
+            {/* <Button variant="secondary" onClick={this.handleClose}> Cancel </Button> */}
+            <Button variant="primary" onClick={this.onReportSubmit}> Submit </Button>
+            </Modal.Footer>
+            </Modal>
+
+            
             {/* <AiOutlineLike style={{display:"inline-block", margin:"2px"}} onClick={this.increment}/>
             <AiOutlineDislike style={{display:"inline-block", margin:"2px"}} onClick={this.decrement}/>   
             counter: {this.state.count} */}
-            
             </h1>
 
             <div className="small-spacer" dangerouslySetInnerHTML={{__html: questions[currentQuestion].question}}></div>
