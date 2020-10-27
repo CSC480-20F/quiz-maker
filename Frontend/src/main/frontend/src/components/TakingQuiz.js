@@ -170,7 +170,7 @@ class TakeQuiz extends Component {
 
   onReportSubmit = (e) => {
     e.preventDefault();
-    // axios.post(`http://localhost:9084/quizzes/add-quiz`, {
+    // axios.post(`http://pi.cs.oswego.edu:9084/quizzes/add-quiz`, {
     //   "report_form":this.state.report_form
     // })
     window.alert("Report Submited! 🥳 ");
@@ -190,7 +190,7 @@ class TakeQuiz extends Component {
   componentDidMount () {
     this.mounted = true;
     let id = this.props.match.params.quiz_id;
-    axios.get('http://localhost:9084/quizzes/get-quiz/' + id).then(res => {
+    axios.get('http://pi.cs.oswego.edu:9084/quizzes/get-quiz/' + id).then(res => {
       if(this.mounted){
         this.setState({
           quizTitle: res.data.quizName,
@@ -242,7 +242,7 @@ class TakeQuiz extends Component {
           })
         })
     } else {
-      axios.put(`http://localhost:9081/users/quizzes-taken`, {
+      axios.put(`http://pi.cs.oswego.edu:9081/users/quizzes-taken`, {
         "id": this.props.match.params.quiz_id,
         "email": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
       }).then(res => {
@@ -255,7 +255,7 @@ class TakeQuiz extends Component {
   }
 
   sendRatingToDB = () => {
-    axios.put(`http://localhost:9084/quizzes/update-rating`, {
+    axios.put(`http://pi.cs.oswego.edu:9084/quizzes/update-rating`, {
         "id": this.props.match.params.quiz_id,
         "rating": this.state.totalRating
       }).then(res => {

@@ -73,7 +73,7 @@ class CreateQuiz extends Component {
       }, () => {this.getChosenCourse()})
     } else {
       const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-      axios.get('http://localhost:9081/users/' + email).then(res => {
+      axios.get('http://pi.cs.oswego.edu:9081/users/' + email).then(res => {
         if(this.mounted){
           this.setState({courseIDs: res.data,}, () => {this.getCoursesFromDB()})
         }
@@ -88,7 +88,7 @@ class CreateQuiz extends Component {
 
   getChosenCourse = () => {
     // TODO: ALSO GET THE TOPICS FOR THAT COURSE
-    axios.get('http://localhost:9083/courses/get-courses/' + this.state.chosenCourseId).then(res => {
+    axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + this.state.chosenCourseId).then(res => {
       if(this.mounted){
         this.setState({chosenCourse: res.data, isLoading: false}, () => this.checkIfInstructor())
       }
@@ -110,7 +110,7 @@ class CreateQuiz extends Component {
 
   getCoursesFromDB = () => {
     const sendCourseIDs = this.state.courseIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
-    axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
+    axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + sendCourseIDs).then(res => {
         if(this.mounted){
             this.setState({
                 courses: res.data,
