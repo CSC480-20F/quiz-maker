@@ -43,7 +43,7 @@ class Dashboard extends Component {
 
     render () {
         if (this.state.isLoading) {
-            return <> <TopNavbar/> <div className="container-middle"><Loading type={'balls'} color={'#235937'}/> </div> </>
+            return <> <TopNavbar/> <div className="container-middle"><Loading type={'spin'} color={'#235937'}/> </div> </>
         }
 
         const teacher = this.context.isInstructor;

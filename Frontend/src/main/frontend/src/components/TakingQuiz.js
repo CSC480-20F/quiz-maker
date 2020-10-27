@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import TopNavbar from './TopNavbar';
 import Loading from './Loading';
 import axios from 'axios';
-import {Card, ProgressBar, Form, Col, Button, Modal} from 'react-bootstrap';
+import {Card, ProgressBar, Form, Col, Button, Modal, } from 'react-bootstrap';
 import { FcCheckmark, FcCancel } from "react-icons/fc"; //https://react-icons.github.io/react-icons/icons?name=fc
-import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai"; //https://react-icons.github.io/react-icons/icons?name=ai
+import { AiOutlineLike, AiOutlineDislike, AiOutlineFlag, AiTwotoneFlag } from "react-icons/ai"; //https://react-icons.github.io/react-icons/icons?name=ai
 
 const Styles = styled.div`
   .topics {
@@ -285,7 +285,7 @@ class TakeQuiz extends Component {
   doNothing () {}
 
   render() {
-    if (this.state.isLoading) {return <div className="container-center"> <Loading type={'balls'} color={'#235937'}/> </div>}
+    if (this.state.isLoading) {return <div className="container-center"> <Loading type={'spin'} color={'#235937'}/> </div>}
 
     const answerLabels = ['A', 'B', 'C', 'D', 'E'];
 
@@ -316,6 +316,73 @@ class TakeQuiz extends Component {
       )
     })
 
+    const scoreQuestions = this.state.questions.map((question,i) => {
+      return (
+        <>
+        <Card className="whole-question-card rounded-corner">
+        <h1 className="subtitle" >
+          Question{i+1} 
+        </h1>
+        <div style={{fontSize:"20px"}} className="small-spacer" dangerouslySetInnerHTML={{__html: question.question}}></div>
+        <Form.Group>
+        <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>
+            <Col>
+            <Form.Control className="answer-field-correct"
+
+            size="lg" type="text" readOnly value={question.answer}/>
+            </Col>
+          </Form.Row>
+
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label>
+            <Col>
+            <Form.Control className="answer-field"
+
+            size="lg" type="text" readOnly value={question.incorrect_answers[0]}/>
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label>
+            <Col>
+            <Form.Control className="answer-field"
+
+            size="lg" type="text" readOnly value={question.incorrect_answers[1]}/>
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label>
+            <Col>
+            <Form.Control className="answer-field"
+
+            size="lg" type="text" readOnly value={question.incorrect_answers[2]}/>
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label>
+            <Col>
+            <Form.Control className="answer-field"
+
+            size="lg" type="text" readOnly value={question.incorrect_answers[3]}/>
+            </Col>
+          </Form.Row>
+
+
+          </Form.Group>
+          <br/>
+          </Card>
+          <div className="small-spacer"></div>
+
+
+
+        </>
+      )
+    })
+
     const nextQuestionButton = this.state.selected ? (
       <Button variant="light" type="button" className="next-question-button" onClick={() => { this.goToNextQuestion()}}>Next Question</Button>
       ):(
@@ -341,8 +408,20 @@ class TakeQuiz extends Component {
       <h1 className="score-properties"> <span style={{color:"#1C9B2F", marginRight:"10px"}}>{this.state.score}</span> out of {questions.length} </h1>
       <div>{scoreTally}</div>
       <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
-
       </Card>
+
+      <div className="small-spacer"></div>
+
+     
+      <Card  className="score-card rounded-corner" >
+      
+      {/* <h1 className="subtitle">Question {currentQuestion + 1} </h1> */}
+      {/* <div className="small-spacer">{questions[currentQuestion].question}</div> */}
+      
+      {scoreQuestions}
+      </Card>
+      
+      
       </>
     ):(
       <>
@@ -355,14 +434,14 @@ class TakeQuiz extends Component {
             <h1 className="subtitle">Question {currentQuestion + 1}
 
             <AiOutlineLike 
-              style={{display:"inline-block", margin:"2px"}}
+              style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
               id="upvote"
               className={this.state.vote === 1 ? "active-upvote" : undefined}
               onClick={() => this.vote(1)}>
               Upvote
             </AiOutlineLike>
             <AiOutlineDislike 
-              style={{display:"inline-block", margin:"2px"}}
+              style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
               id="downvote"
               className={this.state.vote === -1 ? "active-downvote" : undefined}
               onClick={() => this.vote(-1)}>
@@ -370,8 +449,8 @@ class TakeQuiz extends Component {
             </AiOutlineDislike>
 
             
-            <Button variant="danger" className="rounded-corner" onClick={this.handleShow}> Report </Button> 
-
+            {/* <Button variant="danger" className="rounded-corner" onClick={this.handleShow}> Report </Button>  */}
+            <AiTwotoneFlag onClick={this.handleShow} style={{cursor:'pointer', display:"inline-block", margin:"2px", float: "right"}}  > </AiTwotoneFlag>
             <Modal show={this.state.show} onHide={this.handleClose} backdrop="static">
             <Modal.Header closeButton> 
             <Modal.Title> Report </Modal.Title> 

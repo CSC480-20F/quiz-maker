@@ -138,7 +138,7 @@ class Course extends Component {
             </div>
         ) : (
             <div> <TopNavbar/>
-            <div className="container-center"> <Loading type={'balls'} color={'#235937'}/></div>
+            <div className="container-center"> <Loading type={'spin'} color={'#235937'}/></div>
             </div>
         )
         return(

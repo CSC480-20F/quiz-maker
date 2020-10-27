@@ -165,7 +165,7 @@ class CreateQuiz extends Component {
 
   render () {
     if (this.state.isLoading) {
-      return <> <TopNavbar/> <div className="container-middle"><Loading type={'balls'} color={'#235937'}/> </div> </>
+      return <> <TopNavbar/> <div className="container-middle"><Loading type={'spin'} color={'#235937'}/> </div> </>
     }
 
     // Once a specific course has been chosen, display this instead of all courses
