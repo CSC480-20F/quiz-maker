@@ -1,7 +1,6 @@
 package dev.microprofile.UsersServer;
 
 import com.mongodb.*;
-import org.bson.types.ObjectId;
 
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -141,6 +140,18 @@ public class QuizMakerUsersDbInfo {
           collection.findAndModify(foundQuiz,update);
         }
         return Response.ok().build();
+    }
+
+    @Path("/is-instructor/{email}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response instructorCheck(@PathParam("email") String email){
+        DBCollection collection = database.getCollection("users");
+        BasicDBObject query = new BasicDBObject();
+        query.put("email", email);
+        DBObject currentUser = collection.findOne(query);
+        Object o = currentUser.get("isInstructor");
+        return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
 
 }
