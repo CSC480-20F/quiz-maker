@@ -9,14 +9,13 @@ class MyCourses extends Component {
     state = {
         myCourses: [],
         coursesIDs: [],
-        isLoading: true,
-        mounted: false,
+        isLoading: true
     }
 
     componentDidMount() {
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        axios.get('http://pi.cs.oswego.edu:9081/users/' + email).then(res => {
+        axios.get('http://localhost:9081/users/' + email).then(res => {
             if(this.mounted){
                 if (this.props.limit === "null" || res.data.split(",").length < 3) {
                     this.setState({
@@ -43,7 +42,7 @@ class MyCourses extends Component {
 
     getCoursesFromDB = () => {
         const sendCourseIDs = this.state.coursesIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
-        axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + sendCourseIDs).then(res => {
+        axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
             if(this.mounted){
                 this.setState({
                     myCourses: res.data,
@@ -73,7 +72,7 @@ class MyCourses extends Component {
         const coursesList = myCourses.length ? (
             myCourses.map(course => {
                 return (
-                    <Link to={'/Courses/' + course.courseId} className='regular-link' key={course.courseId}>
+                    <Link to={`/Courses/${course.courseId}`} className='regular-link' key={course.courseId}>
                         <Card className="course-card">
                             <Card.Title>{course.courseName}</Card.Title>
                         </Card>
@@ -81,7 +80,7 @@ class MyCourses extends Component {
                 )
             })
         ):(
-            <div className="center"> You are not in any courses </div>
+            <div className="center"> You are not in any courses. </div>
         )
         return (
             <div>

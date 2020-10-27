@@ -6,6 +6,7 @@ import org.bson.types.ObjectId;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 
 
 @Path("/courses")
@@ -82,6 +83,27 @@ public class QuizMakerCoursesDbInfo {
         }
         courseOut = courseOut.concat("]");
         return Response.ok(courseOut, MediaType.APPLICATION_JSON).build();
+    }
+
+    @Path("/get-instructor-courses/{email}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response listInstructorCourses(@PathParam("email") String email){
+
+        DBCollection collection = database.getCollection("courses");
+        BasicDBObject query = new BasicDBObject();
+        ArrayList<DBObject> courseList = new ArrayList<>();
+        query.put("teacher", email);
+
+        DBCursor instructor = collection.find(query);
+        System.out.println(instructor.toString());
+        while (instructor.hasNext()){
+            DBObject adding = instructor.next();
+            adding.removeField("courseRoster");
+            adding.removeField("teacher");
+            courseList.add(adding);
+        }
+        return Response.ok(courseList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 //import logo from '../pexels-anna-shvets-3683107.jpg';
 import styled from 'styled-components';
@@ -6,6 +6,7 @@ import { NavLink, Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import DarkModeToggle from './DarkModeToggle';
 import quizmakerlogo from '../assets/Final_Dark_Background.png'
+import {UserContext} from '../context/UserContext';
 
 
 const Styles = styled.div`
@@ -58,8 +59,13 @@ const TopNavbar = () => {
   const user = authInstance.currentUser.get()
   const profile = user.getBasicProfile()
   const name = profile.getName()
-  // const imageUrl = profile.getImageUrl()
+  const teacher = useContext(UserContext).isInstructor
 
+  const view = teacher ? (
+    <> <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none' }}>Course Creation</NavLink> </>
+  ):(
+    <> </>
+  )
 
   return (
       <>
@@ -74,9 +80,8 @@ const TopNavbar = () => {
       <NavLink to="/Courses" activeClassName="active" style={{ textDecoration: 'none' }}>Courses</NavLink>
       <NavLink to="/Quizzes" activeClassName="active" style={{ textDecoration: 'none' }}>Quizzes</NavLink>
       <NavLink to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Create</NavLink>
-      <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none' }}>Upload Roster</NavLink>
-      <NavLink to="/TakingQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Take Quiz</NavLink>
-      <NavLink to="/CreateQuizForm" activeClassName="active" style={{ textDecoration: 'none' }}>CreateQuizForm</NavLink>
+      {view}
+      {/* <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none' }}>Course Creation</NavLink> */}
       {/* <DarkModeToggle></DarkModeToggle>/ */}
       </Nav>
       

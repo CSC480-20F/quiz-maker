@@ -1,11 +1,45 @@
 import React from 'react';
 import axios from 'axios';
 import TopNavbar from './TopNavbar';
-import { Button } from 'react-bootstrap';
+import { Button, Form, Card } from 'react-bootstrap';
 import { CSVReader } from 'react-papaparse';
+import styled from 'styled-components';
 
 
 const buttonRef = React.createRef()
+
+const Style = styled.div`
+    .header {
+      background-color:#F2F2F2;
+      border: 0;
+      box-shadow: none;
+    }
+
+    .purpleColor {
+      color: #8F0047;
+      font-weight: bold;
+    }
+
+    .span {
+      font-family: Roboto;
+    }
+
+    .main-card {
+      padding: 30px;
+    }
+
+    .note {
+      padding-top: 25px;
+    }
+
+    .submit-button {
+      background-color: #8F0047;
+      color: white;
+      font-family: Roboto;
+      min-width: 25%;
+      align-self: center;
+    }
+`;
 
 class RosterUpload extends React.Component {
   constructor(props) {
@@ -60,7 +94,7 @@ class RosterUpload extends React.Component {
 
   postToUsers = () => {
     console.log("Posting to the User's DB");
-    axios.put(`http://pi.cs.oswego.edu:9081/users/add-course`, {
+    axios.put(`http://localhost:9081/users/add-course`, {
     "id": this.state.courseID,
     "names": this.state.names,
     "emails": this.state.emails
@@ -84,7 +118,6 @@ class RosterUpload extends React.Component {
     const teacherEmail = this.state.professor;
     const emails = this.state.emails.toString();
     const sendString = teacherEmail + "," + courseName + "," + emails;
-    console.log(sendString);
 
 
     if (this.state.emails.length === 0) {
@@ -92,7 +125,7 @@ class RosterUpload extends React.Component {
       return;
     }
 
-    axios.get('http://pi.cs.oswego.edu:9083/courses/create-course/' + sendString).then(res => {
+    axios.get('http://localhost:9083/courses/create-course/' + sendString).then(res => {
       this.setState({
         courseID: res.data
       })
@@ -106,11 +139,19 @@ class RosterUpload extends React.Component {
   render() {
     return (
       <>
+        <Style>
         <TopNavbar/>
-        <div className="container-middle">
-        <h1 className="subtitle small-spacer">Upload the Class Roster</h1>
-        </div>
         <div className="container">
+        <div className="small-spacer"></div>
+
+        <Form id="course-form" onSubmit={this.handleSubmit.bind(this)}>
+          <Form.Row>
+          <Form.Control required className="header no-border" size="sm" type="text" placeholder="Course Title..." value={this.state.course} onChange={this.onCourseChange.bind(this)}/>
+          </Form.Row>
+        
+        <div className="spacer"></div>
+
+        <Card className="main-card rounded-corner">
         <CSVReader
           required
           config={{header: true, skipEmptyLines: true}}
@@ -119,16 +160,19 @@ class RosterUpload extends React.Component {
           addRemoveButton
           onRemoveFile={this.handleOnRemoveFile}
         >
-          <span>Drop CSV file here or click to upload.</span>
+          <span className='span'>Drop your <span className="purpleColor">class roster</span> CSV file here or click to upload.</span>
         </CSVReader>
-        <form id="course-form" onSubmit={this.handleSubmit.bind(this)}>
-        <label htmlFor="course">Course Name</label>
-        <div className="small-spacer">
-        <input type="text" required className="form-control" value={this.state.course} onChange={this.onCourseChange.bind(this)} />
+        <div className="small-spacer"></div>
+        <div className="container-middle">
+        <Button type="submit" variant="light" className="submit-button rounded-corner"> Create Course </Button>
         </div>
-        <Button type="submit" className="btn-warning"> Add Roster </Button>
-        </form>
+
+        <div className="note container-middle">Note: Please make sure the column with student emails is titled "Emails" and
+        the column with student names is titled "Name"</div>
+        </Card>
+        </Form>
         </div>
+        </Style>
       </>
     )
   }

@@ -82,7 +82,7 @@ const Style = styled.div`
     }
 
     .quiz-question {
-      padding: 20px;
+      padding: 20px 50px 20px 50px;
       min-width: 70rem;
       max-width: 80rem;
     }
@@ -95,6 +95,7 @@ class CreateQuizForm extends React.Component{
     this.state = {
       "quiz_title":"",
       "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
+      "isInstructor": this.props.professor,
       "courseID":this.props.courseID,
       "topics":this.props.topics,
       "index":0,
@@ -127,8 +128,6 @@ class CreateQuizForm extends React.Component{
         incorrect_answer4:"",
         incorrect_answers:[],
         index:this.state.index + 1
-      }, () => {
-        console.log("after updating state: ", this.state);
       });
     })
   }
@@ -167,7 +166,7 @@ class CreateQuizForm extends React.Component{
         window.alert("You need to add at least one question! 😅");
         return; 
       }
-      axios.post(`http://pi.cs.oswego.edu:9084/quizzes/add-quiz`, {
+      axios.post(`http://localhost:9084/quizzes/add-quiz`, {
         "quizName":this.state.quiz_title,
         "creator":this.state.creator,
         "courseID":this.state.courseID,
@@ -184,8 +183,6 @@ class CreateQuizForm extends React.Component{
         })
         window.alert("Quiz Posted! 🥳 ");
         this.props.history.push('/Courses/' + this.state.courseID);
-        console.log(res);
-        console.log(res.data);
       }).catch(error =>{
         window.alert("Problem posting the Quiz 😞" );
         console.log(error);

@@ -19,7 +19,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 @Path("/quizzes")
 public class QuizMakerQuizzesDbInfo {
     // Creates login username and password
-    MongoCredential adminAuth = MongoCredential.createScramSha256Credential("superuser", "admin", "AdminPassword123".toCharArray());
+    MongoCredential frontendAuth = MongoCredential.createScramSha256Credential("frontend", "quizzesDB", "AdminPassword123".toCharArray());
     // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
     ServerAddress serverAddress = new ServerAddress("129.3.20.26", 27019);
     CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
@@ -98,7 +98,7 @@ public class QuizMakerQuizzesDbInfo {
           BasicDBList questions = (BasicDBList) cq.get("quizQuestions");
           int questSize = questions.size();
           cq.removeField("quizQuestions");
-          cq.put("quizLength", questSize);
+          cq.put("quiz-length", questSize);
           quizList.add(cq);
         }
 
@@ -164,14 +164,51 @@ public class QuizMakerQuizzesDbInfo {
 
         DBObject quiz = collection.findOne(new ObjectId(quizId));
         BasicDBObject foundQuiz = new BasicDBObject();
-        DBObject update = quiz;
         rate += (int)quiz.get("rating");
-        update.put("rating", rate);
+        quiz.put("rating", rate);
         //System.out.println(update.toString());
         foundQuiz.put("_id", new ObjectId(quizId));
-        collection.findAndModify(foundQuiz, update);
+        collection.findAndModify(foundQuiz, quiz);
         return Response.ok().build();
     }
 
+    @Path("/update-star")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateStar(JsonObject quizID){
+        DBCollection collection = database.getCollection("quizzes");
+        DBObject query = collection.findOne(new ObjectId(quizID.getString("id")));
+        BasicDBObject foundQuiz = new BasicDBObject();
+        foundQuiz.put("_id", new ObjectId(quizID.getString("id")));
+        if(query.get("starred").equals(false)){
+            query.put("starred", true);
+        }else {
+            query.put("starred", false);
+        }
 
+        System.out.println(query.toString());
+        collection.findAndModify(foundQuiz, query);
+        return Response.ok().build();
+    }
+
+    @Path("/course-starred-quizzes/{courseID}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateStar(@PathParam("courseID") String courseID){
+        DBCollection collection = database.getCollection("quizzes");
+        BasicDBObject query = new BasicDBObject();
+        ArrayList<DBObject> starredQuizzes = new ArrayList<>();
+        query.put("courseID", courseID);
+        DBCursor foundCourse = collection.find(query);
+        while (foundCourse.hasNext()){
+            DBObject fC = foundCourse.next();
+            if(fC.get("starred").equals(true)){
+                starredQuizzes.add(fC);
+            }
+        }
+
+
+        //System.out.println(query.toString());
+        return Response.ok(starredQuizzes.toString(), MediaType.APPLICATION_JSON).build();
+    }
 }

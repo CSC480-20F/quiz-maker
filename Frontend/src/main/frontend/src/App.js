@@ -11,6 +11,9 @@ import Quizzes from './components/Quizzes';
 import TakeQuiz from './components/TakingQuiz';
 import RosterUpload from './components/RosterUpload';
 import CreateQuizForm from './components/CreateQuizForm'
+import UserProvider from './context/UserContext';
+
+
 class ProtectedRoute extends React.Component {
   render() {
     const { component: Component, condition: Condition, ...props } = this.props
@@ -83,20 +86,22 @@ class App extends React.Component {
 
   render() {
       return (
+        <UserProvider>
           <BrowserRouter>
               <Switch>
                   <Route exact path="/" render={() => this.ifUserSignedIn(Dashboard)}/>
+                  <ProtectedRoute path="/Courses/:course_id/:quiz_id" condition={this.state.isSignedIn} component={TakeQuiz}/>
                   <ProtectedRoute path="/Courses/:course_id" condition={this.state.isSignedIn} component={Course}/>
-                  <ProtectedRoute path="/CreateQuiz" condition={this.state.isSignedIn} component={CreateQuiz}/>
+                  <ProtectedRoute path="/CreateQuiz/:course_id" condition={this.state.isSignedIn} component={CreateQuiz}/>
+                  <ProtectedRoute exact path="/CreateQuiz" condition={this.state.isSignedIn} component={CreateQuiz}/>
                   <ProtectedRoute exact path="/Courses" condition={this.state.isSignedIn} component={Courses}/>
                   <ProtectedRoute exact path="/Quizzes" condition={this.state.isSignedIn} component={Quizzes}/>
-                  <ProtectedRoute path="/TakingQuiz" condition={this.state.isSignedIn} component={TakeQuiz}/>
+                  <ProtectedRoute path="/Quizzes/:quiz_id" condition={this.state.isSignedIn} component={TakeQuiz}/>
                   <ProtectedRoute path="/RosterUpload" condition={this.state.isSignedIn} component={RosterUpload}/>
                   <ProtectedRoute path="/CreateQuizForm" condition={this.state.isSignedIn} component={CreateQuizForm}/>
-                  
-                  {/* <Route path="/dashboard" render={() => this.ifUserSignedIn(Dashboard)}/> */}
               </Switch>
           </BrowserRouter>
+        </UserProvider>
       )
   }
 }
