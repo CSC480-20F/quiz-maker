@@ -340,7 +340,6 @@ class TakeQuiz extends Component {
       <Card className="score-card rounded-corner" >
       <h1 className="score-properties"> <span style={{color:"#1C9B2F", marginRight:"10px"}}>{this.state.score}</span> out of {questions.length} </h1>
       <div>{scoreTally}</div>
-      <div style={{fontSize:"12px"}}>Total Rating of this quiz:{this.state.totalRating}</div>
       <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
 
       </Card>
@@ -354,9 +353,6 @@ class TakeQuiz extends Component {
           
           <Card className="whole-question-card rounded-corner">
             <h1 className="subtitle">Question {currentQuestion + 1}
-
-            {/* <h1>Total Rating {this.state.totalRating}</h1>
-            <h2>Current {this.state.vote}</h2> */}
 
             <AiOutlineLike 
               style={{display:"inline-block", margin:"2px"}}

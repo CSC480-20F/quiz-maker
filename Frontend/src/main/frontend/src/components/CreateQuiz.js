@@ -46,7 +46,7 @@ class CreateQuiz extends Component {
     courses: [],
     courseIDs: [],
     chosenCourseId:null,
-    chosenCourse:[],
+    chosenCourse:null,
     topic: "",
     topics: [],
     createQuizSection: false,
@@ -78,7 +78,7 @@ class CreateQuiz extends Component {
   getChosenCourse = () => {
     axios.get('http://localhost:9083/courses/get-courses/' + this.state.chosenCourseId).then(res => {
       if(this.mounted){
-        this.setState({chosenCourse: res.data,isLoading: false})
+        this.setState({chosenCourse: res.data, isLoading: false})
       }
     }).catch(err => {
         console.log(err);
@@ -143,8 +143,10 @@ class CreateQuiz extends Component {
       return <> <TopNavbar/> <div className="container-middle"><Loading type={'balls'} color={'#235937'}/> </div> </>
     }
 
+    console.log(this.state);
+
     // Once a specific course has been chosen, display this instead of all courses
-    const specificCourse = this.state.chosenCourse.length ? (
+    const specificCourse = this.state.chosenCourse !== null ? (
       this.state.chosenCourse.map(course => {
           return (
             <Styles key={course.courseId}>

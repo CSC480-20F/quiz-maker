@@ -51,7 +51,7 @@ class InstructorCourses extends Component {
         const coursesList = myCourses.length ? (
             myCourses.map(course => {
                 return (
-                    <Link to={`/Courses/${course._id.$oid}/`} className='regular-link' key={course._id.$oid}>
+                    <Link to={`/Courses/${course._id.$oid}`} className='regular-link' key={course._id.$oid}>
                         <Card className="course-card">
                             <Card.Title>{course.courseName}</Card.Title>
                         </Card>
