@@ -5,6 +5,7 @@ import org.bson.types.ObjectId;
 
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonValue;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -127,10 +128,33 @@ public class QuizMakerCoursesDbInfo {
                 topicsList.add(topic);
             }
         }
+
         BasicDBObject foundCourse = new BasicDBObject();
         course.put("topics", topicsList);
         foundCourse.put("_id", new ObjectId(courseId));
         collection.findAndModify(foundCourse, course);
+        return Response.ok().build();
+    }
+
+    @Path("/update-topics")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateTopics(JsonObject freshTopics){
+        DBCollection collection = database.getCollection("courses");
+        String id = freshTopics.getString("courseID");
+        DBObject foundCourse = collection.findOne(new ObjectId(id));
+
+        BasicDBList convertList = new BasicDBList();
+        for (JsonValue value :freshTopics.getJsonArray("topics")) {
+            convertList.add(value.toString().replace('"',' ').trim());
+
+        }
+
+        foundCourse.put("topics", convertList);
+        System.out.println(foundCourse.toString());
+        BasicDBObject currentCourse = new BasicDBObject();
+        currentCourse.put("_id", new ObjectId(id));
+        collection.findAndModify(currentCourse, foundCourse);
         return Response.ok().build();
     }
 
