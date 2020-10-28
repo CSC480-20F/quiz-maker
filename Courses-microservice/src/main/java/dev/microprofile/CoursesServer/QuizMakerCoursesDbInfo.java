@@ -64,25 +64,17 @@ public class QuizMakerCoursesDbInfo {
 
         DBCollection collection = database.getCollection("courses");
         String[] course = courseId.split(",");
-        String courseOut = "[{";
         Object courseName;
         Object teacher;
-
+        ArrayList<DBObject> courses = new ArrayList<>();
         for (int i = 0; i < course.length; i++) {
             DBObject currentCourse = collection.findOne(new ObjectId(course[i]));
+            currentCourse.removeField("courseRoster");
+            courses.add(currentCourse);
 
-            if(i > 0){
-                courseOut = courseOut.concat(",{");
-            }
-
-            courseName = currentCourse.get("courseName");
-            teacher = currentCourse.get("teacher");
-
-            courseOut = courseOut.concat("\"courseId\" : ").concat("\""+ course[i] + "\"" +  ",").concat("\"courseName\" : ").concat("\""+courseName.toString() + "\""+",").concat("\"teacher\" : " + "\""+teacher.toString()+"\"");
-            courseOut = courseOut.concat("}");
         }
-        courseOut = courseOut.concat("]");
-        return Response.ok(courseOut, MediaType.APPLICATION_JSON).build();
+        //courseOut = courseOut.concat("]");
+        return Response.ok(courses.toString(), MediaType.APPLICATION_JSON).build();
     }
 
     @Path("/get-instructor-courses/{email}")
@@ -96,7 +88,6 @@ public class QuizMakerCoursesDbInfo {
         query.put("teacher", email);
 
         DBCursor instructor = collection.find(query);
-        System.out.println(instructor.toString());
         while (instructor.hasNext()){
             DBObject adding = instructor.next();
             adding.removeField("courseRoster");
