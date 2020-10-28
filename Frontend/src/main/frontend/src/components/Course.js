@@ -119,7 +119,7 @@ class Course extends Component {
                 <div className='container-middle'> 
                     <h1 className="center header">{this.state.course.courseName}</h1>
                     <div style={{padding: '10px'}}> </div>
-                    <Link to={"/CreateQuiz/" + this.state.course.courseId}>
+                    <Link to={"/CreateQuiz/" + this.state.course._id.$oid}>
                     <Button variant='light' className='create-quiz center'>Create a Quiz</Button>
                     </Link>
                 </div>

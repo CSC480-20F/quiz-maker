@@ -33,6 +33,8 @@ const Styles = styled.div`
 
   .topics-deck {
     display: flex;
+    padding-left: 20px;
+    padding-right: 20px;
     justify-content: flex-start;
     flex-direction: row;
   }
@@ -65,7 +67,7 @@ class CreateQuiz extends Component {
     chosenCourseId:null,
     chosenCourse:null,
     instructorCourses: [],
-    topicOptions: ["Option1","Option2", "Option3", "Option4", "Option5", "Option6", "Option7"],
+    topicOptions: [],
     topics: [],
     createQuizSection: false,
     isInstructor: false
@@ -95,7 +97,7 @@ class CreateQuiz extends Component {
     // TODO: ALSO GET THE TOPICS FOR THAT COURSE
     axios.get('http://localhost:9083/courses/get-courses/' + this.state.chosenCourseId).then(res => {
       if(this.mounted){
-        this.setState({chosenCourse: res.data, isLoading: false}, () => this.checkIfInstructor())
+        this.setState({chosenCourse: res.data, isLoading: false, topicOptions: res.data[0].topics}, () => this.checkIfInstructor())
       }
     }).catch(err => {
         console.log(err);
@@ -115,7 +117,6 @@ class CreateQuiz extends Component {
 
   getCoursesFromDB = () => {
     const sendCourseIDs = this.state.courseIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
-    console.log(sendCourseIDs);
     axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
         if(this.mounted){
             this.setState({courses: res.data}, () => {this.getInstructorCourses()})
@@ -127,27 +128,12 @@ class CreateQuiz extends Component {
     const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
     if (this.context.isInstructor) {
       axios.get('http://localhost:9083/courses/get-instructor-courses/' + email).then(res => {
-      if(this.mounted){
-          this.setState({instructorCourses: res.data, isLoading: false}, () => this.changeToMatch())
-      }
+        res.data.map(item => {
+          if(this.mounted){
+            this.setState({courses: [...this.state.courses,item], isLoading: false})
+          }
+        })
       }).catch(err => {console.log(err);})
-    }
-  }
-
-  changeToMatch = () => {
-    const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-    const tempArray = [...this.state.courses];
-    if (this.state.instructorCourses.length > 0) {
-      this.state.instructorCourses.map(course => {
-        const temp = {
-          "courseId": course._id.$oid,
-          "courseName": course.courseName,
-          "teacher": email
-        }
-        tempArray.push(temp);
-        // this.setState({courses: [...this.state.courses, temp]})
-      })
-      this.setState({courses: tempArray})
     }
   }
 
@@ -170,11 +156,10 @@ class CreateQuiz extends Component {
       chosenCourseId: id
     }, () => {
       const foundCourse = this.state.courses.filter(item => {
-        return item.courseId === this.state.chosenCourseId
+        return item._id.$oid === this.state.chosenCourseId
       })
-      this.setState ({
-        chosenCourse: foundCourse
-      })
+      console.log(foundCourse)
+      this.setState ({chosenCourse: foundCourse, topicOptions: foundCourse[0].topics})
     })
   }
 
@@ -196,7 +181,7 @@ class CreateQuiz extends Component {
     const specificCourse = this.state.chosenCourse !== null ? (
       this.state.chosenCourse.map(course => {
           return (
-            <Card className="course-card specific-course-card" key={course.courseId}>
+            <Card className="course-card specific-course-card" key={course._id.$oid}>
                 <Card.Title>{course.courseName}</Card.Title>
             </Card>
           )
@@ -209,7 +194,7 @@ class CreateQuiz extends Component {
     const coursesList = this.state.courses.length ? (
         this.state.courses.map(course => {
             return (
-              <Card className="course-card" key={course.courseId} onClick={e => this.courseChosen(course.courseId)}>
+              <Card className="course-card" key={course._id.$oid} onClick={e => this.courseChosen(course._id.$oid)}>
                   <Card.Title>{course.courseName}</Card.Title>
               </Card>
             )

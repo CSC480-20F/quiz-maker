@@ -91,7 +91,6 @@ public class QuizMakerCoursesDbInfo {
         while (instructor.hasNext()){
             DBObject adding = instructor.next();
             adding.removeField("courseRoster");
-            adding.removeField("teacher");
             courseList.add(adding);
         }
         return Response.ok(courseList.toString(), MediaType.APPLICATION_JSON).build();
