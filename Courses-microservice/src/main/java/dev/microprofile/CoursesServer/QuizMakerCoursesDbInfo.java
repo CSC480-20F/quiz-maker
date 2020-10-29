@@ -10,15 +10,16 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 @Path("/courses")
 public class QuizMakerCoursesDbInfo {
     // Creates login username and password
-    MongoCredential adminAuth = MongoCredential.createScramSha256Credential("superuser", "admin", "AdminPassword123".toCharArray());
+    MongoCredential frontendAuth = MongoCredential.createScramSha1Credential("frontend", "coursesDB", "CsC480OswegoFrontendXD".toCharArray());
     // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
     ServerAddress serverAddress = new ServerAddress("129.3.20.26", 27018);
-    MongoClient mongoClient = new MongoClient(serverAddress);
+    MongoClient mongoClient = new MongoClient(serverAddress, Collections.singletonList(frontendAuth));
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("coursesDB");
 

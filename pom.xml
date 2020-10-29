@@ -26,7 +26,6 @@
 
     <modules>
         <module>Users-microservice</module>
-        <module>Questions-microservice</module>
         <module>Courses-microservice</module>
         <module>Quizzes-microservice</module>
         <module>Frontend</module>

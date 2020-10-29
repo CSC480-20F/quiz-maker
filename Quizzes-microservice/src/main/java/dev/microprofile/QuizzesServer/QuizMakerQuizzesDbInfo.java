@@ -11,6 +11,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -19,12 +20,11 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 @Path("/quizzes")
 public class QuizMakerQuizzesDbInfo {
     // Creates login username and password
-    MongoCredential frontendAuth = MongoCredential.createScramSha256Credential("frontend", "quizzesDB", "AdminPassword123".toCharArray());
-    // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
+    MongoCredential frontendAuth = MongoCredential.createScramSha1Credential("frontend", "quizzesDB", "CsC480OswegoFrontendXD".toCharArray());    // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
     ServerAddress serverAddress = new ServerAddress("129.3.20.26", 27019);
     CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
         fromProviders(PojoCodecProvider.builder().register(QuizMakerQuiz.class).automatic(true).build()));
-    MongoClient mongoClient = new MongoClient(serverAddress);
+    MongoClient mongoClient = new MongoClient(serverAddress, Collections.singletonList(frontendAuth));
     //MongoClient mongoClient = new MongoClient(27018);
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("quizzesDB");
