@@ -85,7 +85,7 @@ class CreateQuiz extends Component {
       const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
       axios.get('http://localhost:9081/users/' + email).then(res => {
         if(this.mounted){
-          this.setState({courseIDs: res.data,}, () => {this.getCoursesFromDB()})
+          this.setState({courseIDs: res.data}, () => {this.getCoursesFromDB()})
         }
       }).catch(err => {
           console.log(err);
@@ -96,6 +96,7 @@ class CreateQuiz extends Component {
   getChosenCourse = () => {
     // TODO: ALSO GET THE TOPICS FOR THAT COURSE
     axios.get('http://localhost:9083/courses/get-courses/' + this.state.chosenCourseId).then(res => {
+      console.log(res.data)
       if(this.mounted){
         this.setState({chosenCourse: res.data, isLoading: false, topicOptions: res.data[0].topics}, () => this.checkIfInstructor())
       }

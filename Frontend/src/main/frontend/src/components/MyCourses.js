@@ -28,6 +28,8 @@ class MyCourses extends Component {
                 }
                 if (this.state.coursesIDs.length !== 0) {
                     this.getCoursesFromDB();
+                } else {
+                    this.setState({ isLoading: false})
                 }
             }
         }).catch(err => {
