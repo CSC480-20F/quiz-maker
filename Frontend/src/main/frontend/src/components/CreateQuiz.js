@@ -94,9 +94,8 @@ class CreateQuiz extends Component {
   }
 
   getChosenCourse = () => {
-    // TODO: ALSO GET THE TOPICS FOR THAT COURSE
     axios.get('http://localhost:9083/courses/get-courses/' + this.state.chosenCourseId).then(res => {
-      console.log(res.data)
+      console.log('GOT CHOSEN COURSE', res.data)
       if(this.mounted){
         this.setState({chosenCourse: res.data, isLoading: false, topicOptions: res.data[0].topics}, () => this.checkIfInstructor())
       }
@@ -117,32 +116,44 @@ class CreateQuiz extends Component {
   }
 
   getCoursesFromDB = () => {
-    const sendCourseIDs = this.state.courseIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
-    axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
-        if(this.mounted){
-            this.setState({courses: res.data}, () => {this.getInstructorCourses()})
-        }
-    }).catch(err => {console.log(err)})
+    if (this.state.courseIDs.length > 0) {
+      const sendCourseIDs = this.state.courseIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
+      axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
+          console.log('GET ALL COURSES', res.data)
+          if(this.mounted){
+              this.setState({courses: res.data}, () => {this.getInstructorCourses()})
+          }
+      }).catch(err => {console.log(err)})
+    } else {
+      this.getInstructorCourses()
+    }
   }
 
   getInstructorCourses = () => {
     const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
     if (this.context.isInstructor) {
       axios.get('http://localhost:9083/courses/get-instructor-courses/' + email).then(res => {
-        res.data.map(item => {
-          if(this.mounted){
-            this.setState({courses: [...this.state.courses,item], isLoading: false})
-          }
-        })
+        console.log('GOT INSTRUCTOR COURSES', res.data)
+        if (res.data.length > 0) {
+          res.data.map(item => {
+            if(this.mounted){
+              this.setState({courses: [...this.state.courses,item], isLoading: false})
+            }
+          })
+        } else {
+          this.setState({isLoading: false})
+        }
       }).catch(err => {console.log(err);})
     }
   }
 
-  onTopicChange(event) {this.setState({topic:event.target.value})}
-
-  onSubmitTopic = (e) => {
-    e.preventDefault()
-    this.setState({topics: [...this.state.topics,this.state.topic], topic: ""})
+  addTopic = (topic) => {
+    if (!this.state.topics.includes(topic)){
+      this.setState({topics: [...this.state.topics, topic]})
+    } else {
+      const filteredArray = this.state.topics.filter(item => item !== topic)
+      this.setState({topics: filteredArray});
+    }
   }
 
   quizCreation = (e) => {
@@ -160,17 +171,8 @@ class CreateQuiz extends Component {
         return item._id.$oid === this.state.chosenCourseId
       })
       console.log(foundCourse)
-      this.setState ({chosenCourse: foundCourse, topicOptions: foundCourse[0].topics})
+      this.setState ({chosenCourse: foundCourse, topicOptions: foundCourse[0].topics}, () => this.checkIfInstructor())
     })
-  }
-
-  addTopic = (topic) => {
-    if (!this.state.topics.includes(topic)){
-      this.setState({topics: [...this.state.topics, topic]})
-    } else {
-      const filteredArray = this.state.topics.filter(item => item !== topic)
-      this.setState({topics: filteredArray});
-    }
   }
 
   render () {
@@ -206,7 +208,7 @@ class CreateQuiz extends Component {
 
     const topics = this.state.topicOptions.map((topic,i) => {
           return (
-            <Card className="topic-card" onClick={e => this.addTopic(topic)} className={this.state.topics.includes(topic) ? ("chosen-topic-card"):("topic-card")} key = {i}>
+            <Card onClick={e => this.addTopic(topic)} className={this.state.topics.includes(topic) ? ("chosen-topic-card"):("topic-card")} key = {i}>
                 {topic}
             </Card>
           )

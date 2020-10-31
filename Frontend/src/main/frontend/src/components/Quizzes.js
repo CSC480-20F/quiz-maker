@@ -64,7 +64,7 @@ class Quizzes extends Component {
                     }
                 })
             }
-        }).catch(err => {console.log(err)})
+        }).catch(err => {console.log(err); this.setState({isLoading: false})})
     }
 
     componentWillUnmount () {
@@ -83,7 +83,7 @@ class Quizzes extends Component {
             if(this.mounted){
                 this.setState({takenQuizzesData: res.data, isLoading: false})
             }
-        }).catch(err => {console.log(err)})
+        }).catch(err => {console.log(err); this.setState({isLoading: false})})
     }
 
     render () {

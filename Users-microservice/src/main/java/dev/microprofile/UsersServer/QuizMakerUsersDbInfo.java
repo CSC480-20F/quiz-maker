@@ -13,13 +13,13 @@ import java.util.Collections;
 @Path("/users")
 public class QuizMakerUsersDbInfo {
     // Creates login username and password
-    MongoCredential frontendAuth = MongoCredential.createScramSha1Credential("frontend", "testing", "CsC480OswegoFrontendXD".toCharArray());
+    MongoCredential frontendAuth = MongoCredential.createScramSha1Credential("frontend", "usersDB", "CsC480OswegoFrontendXD".toCharArray());
     // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
-    ServerAddress serverAddress = new ServerAddress("129.3.20.26", 27017);
+    ServerAddress serverAddress = new ServerAddress("68.172.33.6", 27017);
     MongoClient mongoClient = new MongoClient(serverAddress, Collections.singletonList(frontendAuth));
     //MongoClient mongoClient = new MongoClient();
     //Connects to the specific db we want;
-    DB database = mongoClient.getDB("testing");
+    DB database = mongoClient.getDB("usersDB");
 
     //Dumps whole db
     @Path("/all")

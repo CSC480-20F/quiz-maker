@@ -82,10 +82,10 @@ class Course extends Component {
             <div className="container">
                 <h1 className="subtitle">Professor Panel</h1>
                 <CardGroup className="professor-panel rounded-corner">
-                    <Card className="professor-panel-card rounded-corner">
+                    {/* <Card className="professor-panel-card rounded-corner">
                         <img src={databasePic} className="icon" alt="Database of Quizzes" />
                         <Button variant="light" className="manage"> Quiz Database </Button>
-                    </Card>
+                    </Card> */}
                     <Card className="professor-panel-card rounded-corner">
                         <img src={studentPic} className="icon" alt="Database of Quizzes" />
                         <Button variant="light" className="manage">Manage Students </Button>

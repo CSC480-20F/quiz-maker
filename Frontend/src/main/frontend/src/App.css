@@ -118,6 +118,7 @@
   font-family: Roboto;
   min-width: 240px;
   min-height: 150px;
+  max-width: 260px;
   border-radius: 10px;
   max-height: fit-content;
   padding: 10px;

@@ -25,7 +25,7 @@ class Dashboard extends Component {
             if(this.mounted){
                 this.setState({createdQuizzes: res.data}, () => {this.getRecentQuizzes()})
             }
-        }).catch(err => {console.log(err)})
+        }).catch(err => {console.log(err); this.setState({isLoading: false})})
     }
 
     componentWillUnmount() {

@@ -110,9 +110,6 @@ class RosterUpload extends React.Component {
     "emails": this.state.emails
     })
     .then(res => {
-      this.setState({
-        course:""
-      })
       this.postTopics();
     }).catch(error =>{
       console.log(error);
@@ -167,10 +164,12 @@ class RosterUpload extends React.Component {
   onTopicChange(event) {this.setState({topic: event.target.value})}
 
   addTopic = () => {
-    this.setState({
-      topics: [...this.state.topics, this.state.topic],
-      topic: ""
-    })
+    if (this.state.topic.length > 0) {
+      this.setState({
+        topics: [...this.state.topics, this.state.topic],
+        topic: ""
+      })
+    }
   }
 
   render() {

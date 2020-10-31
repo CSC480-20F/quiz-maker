@@ -86,6 +86,10 @@ const Style = styled.div`
       min-width: 70rem;
       max-width: 80rem;
     }
+
+    .button-group {
+      text-align: -webkit-center;
+    }
 `;
 
 
@@ -107,7 +111,12 @@ class CreateQuizForm extends React.Component{
       "incorrect_answer4":"",
       "incorrect_answers":[],
       "questions":[],
-      "show": false
+      "show": false,
+      "importShow": false,
+      "chosenQuiz": [],
+      "chosenQuestion": null,
+      "starredQuizzes": [],
+      "gettingQuizzes": true
     }
   }
         
@@ -190,20 +199,95 @@ class CreateQuizForm extends React.Component{
     }
 
     handleClose = () => {this.setState({show: false})}
-    handleShow = () => {this.setState({show: true})};
+    handleShow = () => {this.setState({show: true})}
+
+    handleImportClose = () => {this.setState({importShow: false, "chosenQuiz": [], "chosenQuestion": null})}
+    handleImportShow = () => {this.setState({importShow: true})}
 
     onDeleteQuiz = (e) => {
       e.preventDefault();
       this.props.history.push('/');
     }
+
+    getStarredQuizzes = () => {
+      this.handleImportShow()
+      axios.get('http://localhost:9084/quizzes/course-starred-quizzes/' + this.state.courseID).then(res => {
+        this.setState({starredQuizzes: res.data, gettingQuizzes: false})
+      }).catch(err => {console.log(err)})
+    }
+
+    choseQuiz = (id) => {
+      const foundQuiz = this.state.starredQuizzes.filter(item => {
+        return item._id.$oid === id
+      })
+      this.setState ({chosenQuiz: foundQuiz})
+    }
+
+    choseQuestion = (id) => {
+      const foundQuestion = this.state.chosenQuiz[0].quizQuestions[id]
+      this.setState ({chosenQuestion: foundQuestion})
+    }
+
+    useQuestion = () => {
+      this.setState({
+        "question":this.state.chosenQuestion.question,
+        "correct_answer":this.state.chosenQuestion.answer,
+        "incorrect_answer1":this.state.chosenQuestion.incorrect_answers[0],
+        "incorrect_answer2":this.state.chosenQuestion.incorrect_answers[1],
+        "incorrect_answer3":this.state.chosenQuestion.incorrect_answers[2],
+        "incorrect_answer4":this.state.chosenQuestion.incorrect_answers[3]
+      })
+      this.handleImportClose()
+    }
       
     render(){
-      console.log(this.state.isInstructor);
-
       const instructorButton = this.state.isInstructor ? (
-        <> <Button> Bullshit </Button></>
+        <> <Button variant="light" className="add-question-button rounded-corner" onClick={() => this.getStarredQuizzes()}> Import Questions </Button>
+        <Button type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> </>
       ):(
-        <> </>
+        <Button type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> 
+      )
+
+      const body = this.state.chosenQuiz.length ? (
+        this.state.chosenQuestion!== null ? (
+          <>
+          <div> {this.state.chosenQuestion.question} </div>
+          <div> {this.state.chosenQuestion.answer} </div>
+          <div> {this.state.chosenQuestion.incorrect_answers[0]} </div>
+          <div> {this.state.chosenQuestion.incorrect_answers[1]} </div>
+          <div> {this.state.chosenQuestion.incorrect_answers[2]} </div>
+          <div> {this.state.chosenQuestion.incorrect_answers[3]} </div>
+          </>
+        ):(
+          this.state.chosenQuiz[0].quizQuestions.map((question,i) => {
+            return (
+              <Card key={i} onClick={() => this.choseQuestion(i)}> {question.question} </Card>
+            )
+          })
+        )
+      ):(
+        this.state.starredQuizzes.length ? (
+          this.state.starredQuizzes.map((quiz,i) => {
+            return (
+              <Card key={i} onClick={() => this.choseQuiz(quiz._id.$oid)}> {quiz.quizName} </Card>
+            )
+          })
+        ): (
+          this.state.gettingQuizzes ? (
+            <span role="img" aria-label="Loading"> Loading... 🔄 </span> 
+          ):(
+            <span role="img" aria-label="No Starred Quizzes"> No starred quizzes in this course 😲 </span> 
+          ) 
+        )
+      )
+
+      const footerButtons = this.state.chosenQuestion===null ? (
+        <Button variant="light" onClick={this.handleImportClose}> Cancel </Button>
+      ):(
+        <>
+        <Button variant="light" onClick={this.handleImportClose}> Cancel </Button>
+        <Button variant="light" onClick={() => this.useQuestion()}> Use Question </Button>
+        </>
       )
 
       return (
@@ -231,9 +315,9 @@ class CreateQuizForm extends React.Component{
             </Modal.Footer>
           </Modal>
 
-          <div className="small-spacer"> 
+          {/* <div className="small-spacer"> 
             <Button variant="light" className="add-topic-button rounded-corner"> Add Topic </Button> 
-          </div>
+          </div> */}
 
           <div className="spacer"></div>
 
@@ -295,11 +379,16 @@ class CreateQuizForm extends React.Component{
           </Form.Group>
           </Card>
 
-          <div className="container-middle small-spacer"> 
-            {instructorButton}
-            <Button type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> 
-          </div>
-          
+          <div className="small-spacer">  </div>
+          <div className="button-group"> {instructorButton} </div>
+          <div className="small-spacer"> </div>
+
+          <Modal show={this.state.importShow} onHide={this.handleImportClose} backdrop="static">
+            <Modal.Header closeButton> <Modal.Title> Import Quiz Question </Modal.Title> </Modal.Header>
+            <Modal.Body>{body}</Modal.Body>
+            <Modal.Footer> {footerButtons} </Modal.Footer>
+          </Modal>
+
         </Form>
         </div>
         </Style>
