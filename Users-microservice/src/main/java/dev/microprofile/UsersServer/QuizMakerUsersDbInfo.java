@@ -155,4 +155,24 @@ public class QuizMakerUsersDbInfo {
         return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
 
+    @Path("/remove-from-course")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteCourse(JsonObject toRemove){
+        DBCollection collection = database.getCollection("users");
+        String id = toRemove.getString("id");
+        JsonArray emails = toRemove.getJsonArray("emails");
+        for (int i = 0; i < emails.size(); i++) {
+
+            BasicDBObject userLookUp = new BasicDBObject();
+            userLookUp.put("email", emails.getString(i));
+            DBObject foundUser = collection.findOne(userLookUp);
+            BasicDBList courseList = (BasicDBList)foundUser.get("courseId");
+            System.out.println(courseList);
+            if (courseList.contains(id)) {
+                courseList.remove(id);
+            }
+        }
+        return Response.ok().build();
+    }
 }

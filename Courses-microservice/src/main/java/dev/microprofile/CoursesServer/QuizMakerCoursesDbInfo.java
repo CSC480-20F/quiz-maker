@@ -173,7 +173,6 @@ public class QuizMakerCoursesDbInfo {
         BasicDBList convertList = new BasicDBList();
         for (JsonValue value :updatedCourse.getJsonArray("courseRoster")) {
             convertList.add(value.toString().replace('"',' ').trim());
-
         }
 
         DBObject currentCourse = collection.findOne(id);
