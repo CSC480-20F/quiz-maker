@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import {Modal, Button, Card, Form, Col } from "react-bootstrap";
+import {Modal, Button, Card, Form, Col, Spinner } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 
 // 💅 Stylesheet for this babay
@@ -333,9 +333,9 @@ class CreateQuizForm extends React.Component{
           })
         ): (
           this.state.gettingQuizzes ? (
-            <span role="img" aria-label="Loading"> Loading... 🔄 </span> 
+            <div className="container-middle"><Spinner animation="border" variant="dark" /> Getting favorite quizzes...</div>
           ):(
-            <span role="img" aria-label="No Starred Quizzes"> No starred quizzes in this course 😲 </span> 
+            <span role="img" aria-label="No Starred Quizzes"> No starred quizzes in this course ✖ </span> 
           ) 
         )
       )

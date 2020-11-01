@@ -393,7 +393,6 @@ class TakeQuiz extends Component {
 
 
           </Form.Group>
-          <br/>
           </Card>
           <div className="small-spacer"></div>
 
@@ -412,9 +411,9 @@ class TakeQuiz extends Component {
 
       const scoreTally = this.state.setScore.map((score,i) => {
         if (score) {
-          return (<div style={{display:"inline-block", margin:"80px"}} key = {i} > Q{i+1}   <FcCheckmark style={{display:"inline-block", margin:"2px"}} className="correct-answer-icon"/> </div>)
+          return (<div style={{display:"inline-block", margin:"25px", textAlign: "center"}} key = {i} > Q{i+1}   <FcCheckmark style={{display:"inline-block", margin:"2px"}} className="correct-answer-icon"/> </div>)
         } else {
-          return (<div style={{display:"inline-block", margin:"80px"}}  key = {i}> Q{i+1}  <FcCancel style={{display:"inline-block", margin:"2px"}} className="incorrect-answer-icon"/> </div>)
+          return (<div style={{display:"inline-block", margin:"25px", textAlign: "center"}}  key = {i}> Q{i+1}  <FcCancel style={{display:"inline-block", margin:"2px"}} className="incorrect-answer-icon"/> </div>)
         }
         
       })
@@ -439,7 +438,7 @@ class TakeQuiz extends Component {
         <div className="subtitle">My Score</div>
         <Card className="score-card rounded-corner" >
         <h1 className="score-properties"> <span style={{color:"#1C9B2F", marginRight:"10px"}}>{this.state.score}</span> out of {questions.length} </h1>
-        <div>{scoreTally}</div>
+        <div style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>{scoreTally}</div>
         
         {endButtons}
 

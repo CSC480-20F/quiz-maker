@@ -95,7 +95,6 @@ class CreateQuiz extends Component {
 
   getChosenCourse = () => {
     axios.get('http://localhost:9083/courses/get-courses/' + this.state.chosenCourseId).then(res => {
-      console.log('GOT CHOSEN COURSE', res.data)
       if(this.mounted){
         this.setState({chosenCourse: res.data, isLoading: false, topicOptions: res.data[0].topics}, () => this.checkIfInstructor())
       }
@@ -119,7 +118,6 @@ class CreateQuiz extends Component {
     if (this.state.courseIDs.length > 0) {
       const sendCourseIDs = this.state.courseIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
       axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
-          console.log('GET ALL COURSES', res.data)
           if(this.mounted){
               this.setState({courses: res.data}, () => {this.getInstructorCourses()})
           }
@@ -133,13 +131,12 @@ class CreateQuiz extends Component {
     const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
     if (this.context.isInstructor) {
       axios.get('http://localhost:9083/courses/get-instructor-courses/' + email).then(res => {
-        console.log('GOT INSTRUCTOR COURSES', res.data)
         if (res.data.length > 0) {
-          res.data.map(item => {
-            if(this.mounted){
-              this.setState({courses: [...this.state.courses,item], isLoading: false})
+          for (var course in res.data) {
+            if (this.mounted) {
+              this.setState({courses: [...this.state.courses, res.data[course]], isLoading: false})
             }
-          })
+          }
         } else {
           this.setState({isLoading: false})
         }
@@ -170,14 +167,13 @@ class CreateQuiz extends Component {
       const foundCourse = this.state.courses.filter(item => {
         return item._id.$oid === this.state.chosenCourseId
       })
-      console.log(foundCourse)
       this.setState ({chosenCourse: foundCourse, topicOptions: foundCourse[0].topics}, () => this.checkIfInstructor())
     })
   }
 
   render () {
     if (this.state.isLoading) {
-      return <> <TopNavbar/> <div className="container-middle"><Loading type={'spin'} color={'#235937'}/> </div> </>
+      return <> <TopNavbar/> <div className="container-center"><Loading type={'spin'} color={'#235937'}/> </div> </>
     }
 
     // Once a specific course has been chosen, display this instead of all courses

@@ -12,7 +12,7 @@ function UserProvider ({ children }) {
 
     useEffect(() => {
         async function fetchData() {
-            await delay(800);
+            await delay(1000);
             if (!window.gapi.auth2.getAuthInstance().isSignedIn.get()) {
               setInstructor(false);
             } else {
