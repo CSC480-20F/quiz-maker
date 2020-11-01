@@ -156,7 +156,7 @@ public class QuizMakerUsersDbInfo {
     }
 
     @Path("/remove-from-course")
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteCourse(JsonObject toRemove){
         DBCollection collection = database.getCollection("users");
@@ -168,9 +168,10 @@ public class QuizMakerUsersDbInfo {
             userLookUp.put("email", emails.getString(i));
             DBObject foundUser = collection.findOne(userLookUp);
             BasicDBList courseList = (BasicDBList)foundUser.get("courseId");
-            System.out.println(courseList);
             if (courseList.contains(id)) {
                 courseList.remove(id);
+                foundUser.put("courseId", courseList);
+                collection.findAndModify(userLookUp, foundUser);
             }
         }
         return Response.ok().build();
