@@ -149,4 +149,38 @@ public class QuizMakerCoursesDbInfo {
         return Response.ok().build();
     }
 
+    @Path("/get-course-roster/{courseId}")
+    @GET
+    @Consumes("application/json")
+    public Response getCourseRoster(@PathParam("courseId") String courseId){
+        DBCollection collection = database.getCollection("courses");
+        BasicDBObject currentCourse = new BasicDBObject();
+        currentCourse.put("_id", new ObjectId(courseId));
+        DBObject currentRoster = collection.findOne(currentCourse);
+        BasicDBList foundRoster = (BasicDBList)currentRoster.get("courseRoster");
+        return Response.ok(foundRoster, MediaType.APPLICATION_JSON).build();
+    }
+
+    @Path("/update-course-roster/")
+    @PUT
+    @Consumes("application/json")
+    public Response addCourseRoster(JsonObject updatedCourse){
+        DBCollection collection = database.getCollection("courses");
+        String stringID = updatedCourse.getString("courseID");
+        ObjectId id = new ObjectId(stringID);
+        System.out.println(id.toString());
+
+        BasicDBList convertList = new BasicDBList();
+        for (JsonValue value :updatedCourse.getJsonArray("courseRoster")) {
+            convertList.add(value.toString().replace('"',' ').trim());
+
+        }
+
+        DBObject currentCourse = collection.findOne(id);
+        currentCourse.put("courseRoster", convertList);
+        BasicDBObject looker = new BasicDBObject();
+        looker.put("_id", id);
+        collection.findAndModify(looker,currentCourse);
+        return Response.ok().build();
+    }
 }
