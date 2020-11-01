@@ -2,23 +2,23 @@
 import React from 'react'
 import { func, string } from 'prop-types';
 import styled from 'styled-components';
-// Import a couple of SVG files we'll use in the design: https://www.flaticon.com
-import { ReactComponent as MoonIcon } from 'icons/moon.svg';
-import { ReactComponent as SunIcon } from 'icons/sun.svg';
+import { HiMoon } from "react-icons/hi"; //https://react-icons.github.io/react-icons/icons?name=hi
 
-const Toggle = ({ theme, toggleTheme }) => {
+const ToggleDark = ({ theme, toggleTheme }) => {
   const isLight = theme === 'light';
   return (
-    <button onClick={toggleTheme} >
-      <SunIcon />
-      <MoonIcon />
-    </button>
+
+    <HiMoon 
+    onClick={toggleTheme} style={{ fontSize:'20px', cursor:'pointer'}}>
+    </HiMoon>
+    
+
   );
 };
 
-Toggle.propTypes = {
+ToggleDark.propTypes = {
   theme: string.isRequired,
   toggleTheme: func.isRequired,
 }
 
-export default Toggle;
+export default ToggleDark;

@@ -4,15 +4,17 @@ import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
 import { NavLink, Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
-import DarkModeToggle from './DarkModeToggle';
+// import DarkModeToggle from './DarkModeToggle';
+// import DarkModeMain from './DarkModeMain';
+
 import quizmakerlogo from '../assets/Final_Dark_Background.png'
 import {UserContext} from '../context/UserContext';
-
+import DarkModeApp from './DarkModeApp';
 
 const Styles = styled.div`
   .navbar { 
     background-color: "black";
-    border-bottom:1px solid white; 
+    border-bottom:1px solid "#235937"; 
   }
 
   a, .nav-link {
@@ -49,6 +51,10 @@ const Styles = styled.div`
     color:#235937;
     
   }
+
+  #edit-dark-mode-text {
+    margin:100px;
+  }
   
   }
 `;
@@ -82,9 +88,15 @@ const TopNavbar = () => {
       <NavLink to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Create</NavLink>
       {view}
       {/* <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none' }}>Course Creation</NavLink> */}
-      {/* <DarkModeToggle></DarkModeToggle>/ */}
+
+      
+     
       </Nav>
       
+      <div style={{fontSize:'9px', margin:'25px'}}>
+      <DarkModeApp id="edit-dark-mode-text"/> 
+      {/* <DarkModeApp  id="edit-dark-mode-text"></DarkModeApp> */}
+      </div>
       <img src={logo} alt="SUNY Oswego Logo" style={{width:98, height: 36, marginTop: -8}} />
       <NavDropdown className="justify-content-end" title={name} id="collasible-nav-dropdown">
       <NavDropdown.Item id="nav-drop-down-little-box" onClick={authInstance.signOut} href="/">Sign Out

@@ -1,11 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import TopNavbar from './TopNavbar';
-import { Button, Form, Card, Col } from 'react-bootstrap';
+import { Button, Form, Card } from 'react-bootstrap';
 import { CSVReader } from 'react-papaparse';
 import styled from 'styled-components';
-
-
+  
 const buttonRef = React.createRef()
 
 const Style = styled.div`
@@ -32,14 +31,6 @@ const Style = styled.div`
       padding-top: 25px;
     }
 
-    .topic-input {
-      border-top: 0;
-      border-left: 0;
-      border-right: 0;
-      padding-left: 15px;
-      box-shadow: none;
-    }
-
     .submit-button {
       background-color: #8F0047;
       color: white;
@@ -56,8 +47,6 @@ class RosterUpload extends React.Component {
         "response": [],
         "emails": [],
         "names": [],
-        "topics": [],
-        "topic": "",
         "course": "",
         "professor": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
         "courseID": ""
@@ -130,6 +119,7 @@ class RosterUpload extends React.Component {
       console.log(error);
       window.alert("Problem creating the Course. Please try again 😞" );
     })
+
   }
 
   handleSubmit(e) {
@@ -142,11 +132,6 @@ class RosterUpload extends React.Component {
 
     if (this.state.emails.length === 0) {
       window.alert("You need to upload a Roster properly! 😅"); 
-      return;
-    }
-
-    if (!this.state.topics.length > 0) {
-      window.alert("You need to add at least one topic! 😅"); 
       return;
     }
 
@@ -173,16 +158,6 @@ class RosterUpload extends React.Component {
   }
 
   render() {
-
-    const topics = this.state.topics.length ? (
-      this.state.topics.map((topic,i) => {
-        return (
-          <div key={i}> {topic} </div>
-        )
-      })
-    ): (
-      <span> No topics added yet </span>
-    )
     return (
       <>
         <Style>
@@ -197,6 +172,7 @@ class RosterUpload extends React.Component {
         
         <div className="spacer"></div>
 
+        <ToggleContainer>
         <Card className="main-card rounded-corner">
         <CSVReader
           required
@@ -208,29 +184,15 @@ class RosterUpload extends React.Component {
         >
           <span className='span'>Drop your <span className="purpleColor">class roster</span> CSV file here or click to upload.</span>
         </CSVReader>
-
-        <div className="note container-middle">Note: Please make sure the column with student emails is titled "Emails" and
-        the column with student names is titled "Name"</div>
-
         <div className="small-spacer"></div>
-
-        <div className="container-middle">
-        <Form inline>
-          <Col xs="auto">
-          <Form.Control required className="topic-input mb-2 mr-sm-2" type="text" placeholder="Write a topic..." value={this.state.topic} onChange={this.onTopicChange.bind(this)}/>
-          </Col>
-          <Col xs="auto"><Button variant="light" className="submit-button rounded-corner mb-2" onClick={() => this.addTopic()}> Add Topic </Button> </Col>
-        </Form>
-        </div>
-
-        <div className="container-middle"> <span className="purpleColor">{topics}</span> </div>
-
-        <div className="small-spacer"></div>
-
         <div className="container-middle">
         <Button type="submit" variant="light" className="submit-button rounded-corner"> Create Course </Button>
         </div>
+
+        <div className="note container-middle">Note: Please make sure the column with student emails is titled "Emails" and
+        the column with student names is titled "Name"</div>
         </Card>
+        </ToggleContainer>
         </Form>
         </div>
         </Style>
