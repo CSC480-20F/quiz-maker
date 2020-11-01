@@ -61,11 +61,15 @@ class ManageTopics extends Component {
     state = {
         topics: [],
         topic: "",
-        sendingTopic: false
+        sendingTopic: false,
+        loadingTopics: true
     }
 
     componentDidMount () {
-        this.setState({topics: this.props.topics})
+      let id = this.props.courseID
+      axios.get("http://localhost:9083/courses/get-courses/" + id).then(res => {
+        this.setState({topics: res.data[0].topics, loadingTopics: false})
+      })
     }
 
     onTopicChange(event) {this.setState({topic: event.target.value})}
@@ -85,7 +89,7 @@ class ManageTopics extends Component {
       this.setState({topics: filteredArray});
     }
 
-    saveTopics = async() => {
+    saveTopics = () => {
       if (this.state.topics.length > 0) {
         this.setState({sendingTopic: true})
         axios.post(`http://localhost:9083/courses/update-topics`, {
@@ -121,21 +125,25 @@ class ManageTopics extends Component {
         const content = this.state.sendingTopic ? (
           <div className="container-middle"><Spinner animation="border" variant="dark" /> Updating Topics...</div>
         ):(
-          <>
-          <div>{topics}</div>
+          this.state.loadingTopics ? (
+            <div className="container-middle"><Spinner animation="border" variant="dark" /> Getting Topics...</div>
+          ):(
+            <>
+            <div>{topics}</div>
 
-          <div className="small-spacer"></div>
-          <div className="container-middle">
-          <Form inline>
-              <Col xs="auto">
-              <Form.Control required className="topic-input mb-2 mr-sm-2" type="text" placeholder="Write a topic..." value={this.state.topic} onChange={this.onTopicChange.bind(this)} aria-label="Input a topic to add"/>
-              </Col>
-              <Col xs="auto"><Button variant="light" className="submit-button rounded-corner mb-2" onClick={() => this.addTopic()}> Add Topic </Button> </Col>
-          </Form>
-          </div>
+            <div className="small-spacer"></div>
+            <div className="container-middle">
+            <Form inline>
+                <Col xs="auto">
+                <Form.Control required className="topic-input mb-2 mr-sm-2" type="text" placeholder="Write a topic..." value={this.state.topic} onChange={this.onTopicChange.bind(this)} aria-label="Input a topic to add"/>
+                </Col>
+                <Col xs="auto"><Button variant="light" className="submit-button rounded-corner mb-2" onClick={() => this.addTopic()}> Add Topic </Button> </Col>
+            </Form>
+            </div>
 
-          <Button variant="light" className="save-button rounded-corner" onClick={() => this.saveTopics()}>Save Changes</Button>
-          </>
+            <Button variant="light" className="save-button rounded-corner" onClick={() => this.saveTopics()}>Save Changes</Button>
+            </>
+          )
         )
 
         return (
