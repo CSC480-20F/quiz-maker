@@ -9,9 +9,11 @@ import Loading from './Loading';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import studentPic from '../assets/student.png';
-import databasePic from '../assets/database.png';
+// import databasePic from '../assets/database.png';
 import topicsPic from '../assets/topics.png';
 import ManageTopics from './ManageTopics';
+import manageStudents from './ManageStudents';
+import ManageStudents from './ManageStudents';
 
 const Styles = styled.div`
     .create-quiz {
@@ -58,7 +60,8 @@ class Course extends Component {
         topRatedQuizzes: [],
         isInstructor: false,
         // isInstructor: true,
-        manageTopics: false
+        manageTopics: false,
+        manageStudents: false
     }
 
     componentDidMount() {
@@ -94,36 +97,49 @@ class Course extends Component {
         this.setState({manageTopics: !this.state.manageTopics})
     }
 
+    manageStudents = () => {
+        this.setState({manageStudents: !this.state.manageStudents})
+    }
+
     render () {
         const professorPanel = this.state.isInstructor ? (
             this.state.manageTopics ? (
                 <div className="container">
                 <Card className="manage-panel">
-                <ManageTopics topics={this.state.course.topics} courseID={this.props.match.params.course_id}/>
+                <ManageTopics courseID={this.props.match.params.course_id}/>
                 <div className="container"><Button variant="light" className="manage back" onClick={() => this.manageTopics()}> Back to Panel </Button></div>
                 </Card>
                 </div>
             ):(
-                <>
-                <div className="container">
-                    <h1 className="subtitle">Professor Panel</h1>
-                    <CardGroup className="professor-panel rounded-corner">
-                        {/* <Card className="professor-panel-card rounded-corner">
-                            <img src={databasePic} className="icon" alt="Database of Quizzes" />
-                            <Button variant="light" className="manage"> Quiz Database </Button>
-                        </Card> */}
-                        <Card className="professor-panel-card rounded-corner">
-                            <img src={studentPic} className="icon" alt="Database of Quizzes" />
-                            <Button variant="light" className="manage">Manage Students </Button>
-                        </Card>
-                        <Card className="professor-panel-card rounded-corner">
-                            <img src={topicsPic} className="icon" alt="Database of Quizzes" />
-                            <Button variant="light" className="manage" onClick={() => this.manageTopics()}>Manage Topics </Button>
-                        </Card>
-                    </CardGroup>
-                </div>
-                <div className="spacer"></div>
-                </>
+                this.state.manageStudents ? (
+                    <div className="container">
+                    <Card className="manage-panel">
+                    <ManageStudents courseID={this.props.match.params.course_id}/>
+                    <div className="container"><Button variant="light" className="manage back" onClick={() => this.manageStudents()}> Back to Panel </Button></div>
+                    </Card>
+                    </div>
+                ):(
+                    <>
+                    <div className="container">
+                        <h1 className="subtitle">Professor Panel</h1>
+                        <CardGroup className="rounded-corner">
+                            {/* <Card className="professor-panel-card rounded-corner">
+                                <img src={databasePic} className="icon" alt="Database of Quizzes" />
+                                <Button variant="light" className="manage"> Quiz Database </Button>
+                            </Card> */}
+                            <Card className="professor-panel-card rounded-corner">
+                                <img src={studentPic} className="icon" alt="Database of Quizzes" />
+                                <Button variant="light" className="manage" onClick={() => this.manageStudents()}>Manage Students </Button>
+                            </Card>
+                            <Card className="professor-panel-card rounded-corner">
+                                <img src={topicsPic} className="icon" alt="Database of Quizzes" />
+                                <Button variant="light" className="manage" onClick={() => this.manageTopics()}>Manage Topics </Button>
+                            </Card>
+                        </CardGroup>
+                    </div>
+                    <div className="spacer"></div>
+                    </>
+                )
             )
         ):(
             <div style={{padding: '10px'}}> </div>

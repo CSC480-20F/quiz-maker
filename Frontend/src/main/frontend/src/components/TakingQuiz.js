@@ -312,7 +312,7 @@ class TakeQuiz extends Component {
     const questions = this.state.questions;
     const currentQuestion = this.state.currentQuestion;
 
-    const currentPlace = ((currentQuestion+1)/questions.length) * 100;
+    const currentPlace = Math.round(((currentQuestion+1)/questions.length) * 100);
 
     const allAnswers = this.state.allAnswers;
 
