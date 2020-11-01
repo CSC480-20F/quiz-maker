@@ -6,7 +6,9 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonValue;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -210,5 +212,25 @@ public class QuizMakerQuizzesDbInfo {
 
         //System.out.println(query.toString());
         return Response.ok(starredQuizzes.toString(), MediaType.APPLICATION_JSON).build();
+    }
+
+    @Path("/populate-database-for-testing")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response populateDB(JsonArray mockData){
+        DBCollection collection = database.getCollection("quizzes");
+        int badQuizzes = 1;
+        BulkWriteOperation bulk = collection.initializeUnorderedBulkOperation();
+
+        for (JsonValue mockQuiz: mockData) {
+            if(badQuizzes > 2) {
+                DBObject o = BasicDBObject.parse(mockQuiz.toString());
+                bulk.insert(o);
+            }
+            badQuizzes++;
+        }
+        bulk.execute();
+
+        return Response.ok().build();
     }
 }
