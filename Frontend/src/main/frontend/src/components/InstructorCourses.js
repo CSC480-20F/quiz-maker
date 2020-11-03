@@ -22,7 +22,7 @@ class InstructorCourses extends Component {
     componentDidMount() {
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        axios.get('http://localhost:9083/courses/get-instructor-courses/' + email).then(res => {
+        axios.get('http://pi.cs.oswego.edu:9083/courses/get-instructor-courses/' + email).then(res => {
             if(this.mounted){
                 if (this.props.limit === "null" || res.data.length < 3) {
                     this.setState({myCourses: res.data, isLoading: false})

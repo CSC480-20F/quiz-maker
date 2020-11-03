@@ -108,7 +108,7 @@ class RosterUpload extends React.Component {
 
   postToUsers = () => {
     console.log("Posting to the User's DB");
-    axios.put(`http://localhost:9081/users/add-course`, {
+    axios.put(`http://pi.cs.oswego.edu:9081/users/add-course`, {
     "id": this.state.courseID,
     "names": this.state.names,
     "emails": this.state.emails
@@ -150,12 +150,13 @@ class RosterUpload extends React.Component {
       return;
     }
 
-    if (!this.state.topics.length > 0) {
+
+     if (!this.state.topics.length > 0) {
       window.alert("You need to add at least one topic! 😅"); 
       return;
     }
 
-    axios.get('http://localhost:9083/courses/create-course/' + sendString).then(res => {
+    axios.get('http://localhost:9083/courses/create-course/' + sendString).then(res => {v
       this.setState({
         courseID: res.data
       })
