@@ -139,11 +139,20 @@ class TakeQuiz extends Component {
       "isStarred": null,
       "report_form":"",
       "scoreLoading": true,
-      "isInstructor": false
+      "isInstructor": false,
+
+
+      //addition
+      "student": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
+      
     }
 
     this.increment = this.increment.bind(this)
     this.decrement = this.decrement.bind(this)
+  }
+
+  sendEmail() {
+    window.open('mailto:test@example.com?subject=subject&body=body');
   }
 
   vote(type){ //type is either 1 for upvote or -1 for downvote;;;vote is a property of the state which describes the user's current vote: 0 = no vote; 1 = already upvoted; -1 already downvoted
@@ -494,6 +503,13 @@ class TakeQuiz extends Component {
             
             <Form id="report-form" onSubmit={this.onReportSubmit.bind(this)}>
             
+
+            <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control type="email" placeholder={window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()} readOnly/>
+            </Form.Group>
+        
+
             {['checkbox'].map((type) => (
             <div key={`default-${type}`} className="mb-3">
 
@@ -515,15 +531,30 @@ class TakeQuiz extends Component {
            label={`Wrong Answer`}
            />
 
+           <div class="button" href="mailto:@oswego.edu">Email The Driver</div>
          
           </div>
           ))}
+            
+            {/* <Form.Group controlId="exampleForm.ControlSelect1">
+            <Form.Label>What seems to be the issue?</Form.Label>
+            <Form.Control as="select">
+              <option>Spelling Mistake</option>
+              <option>Wrong Question</option>
+              <option>Wrong Answer(s)</option>
+              <option>4</option>
+              <option>5</option>
+            </Form.Control>
+            </Form.Group> */}
+
+
             <Form.Row>
             <Form.Control 
             required 
             className="no-border" 
             size="sm" 
             type="text" 
+            // sender={window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()}
             placeholder="If other please specify" 
             value={this.state.report_form} 
             onChange={this.onReportChange.bind(this)}/>
