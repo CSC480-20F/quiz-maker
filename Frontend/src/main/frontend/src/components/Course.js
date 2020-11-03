@@ -65,12 +65,12 @@ class Course extends Component {
 
     componentDidMount() {
         let id = this.props.match.params.course_id;
-        axios.get("http://localhost:9083/courses/get-courses/" + id).then(res => {
+        axios.get("http://pi.cs.oswego.edu:9083/courses/get-courses/" + id).then(res => {
             this.setState({
                 course: res.data[0]
             }, () => this.checkIfInstructor())
         })
-        axios.get('http://localhost:9084/quizzes/get-course/' + id).then(res => {
+        axios.get('http://pi.cs.oswego.edu:9084/quizzes/get-course/' + id).then(res => {
             this.setState({
                 quizData: res.data,
             }, () => {this.getTopRatedQuizzes()})

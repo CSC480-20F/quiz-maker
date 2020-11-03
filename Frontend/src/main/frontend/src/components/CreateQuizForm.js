@@ -199,7 +199,7 @@ class CreateQuizForm extends React.Component{
         window.alert("You need to add at least one question! 😅");
         return; 
       }
-      axios.post(`http://localhost:9084/quizzes/add-quiz`, {
+      axios.post(`http://pi.cs.oswego.edu:9084/quizzes/add-quiz`, {
         "quizName":this.state.quiz_title,
         "creator":this.state.creator,
         "courseID":this.state.courseID,
@@ -235,7 +235,7 @@ class CreateQuizForm extends React.Component{
 
     getStarredQuizzes = () => {
       this.handleImportShow()
-      axios.get('http://localhost:9084/quizzes/course-starred-quizzes/' + this.state.courseID).then(res => {
+      axios.get('http://pi.cs.oswego.edu:9084/quizzes/course-starred-quizzes/' + this.state.courseID).then(res => {
         this.setState({starredQuizzes: res.data, gettingQuizzes: false})
       }).catch(err => {console.log(err)})
     }
