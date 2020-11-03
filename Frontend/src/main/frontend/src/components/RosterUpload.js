@@ -4,6 +4,8 @@ import TopNavbar from './TopNavbar';
 import { Button, Form, Card, Col } from 'react-bootstrap';
 import { CSVReader } from 'react-papaparse';
 import styled from 'styled-components';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
   
 const buttonRef = React.createRef()
 
@@ -117,7 +119,7 @@ class RosterUpload extends React.Component {
       this.postTopics();
     }).catch(error =>{
       console.log(error);
-      window.alert("Problem creating the Course. Please try again 😞" );
+      NotificationManager.error('Problem creating the Course. Please try again 😞', 'Error', 4000);
     })
   }
 
@@ -128,11 +130,11 @@ class RosterUpload extends React.Component {
     "topics": this.state.topics
     })
     .then(res => {
-      window.alert("Course created! 🥳 " );
+      NotificationManager.success('Course successfully created! 🥳', 'Course Created', 4000);
       this.props.history.push('/');
     }).catch(error =>{
       console.log(error);
-      window.alert("Problem creating the Course. Please try again 😞" );
+      NotificationManager.error('Problem creating the Course. Please try again 😞', 'Error', 4000);
     })
 
   }
@@ -146,13 +148,13 @@ class RosterUpload extends React.Component {
 
 
     if (this.state.emails.length === 0) {
-      window.alert("You need to upload a Roster properly! 😅"); 
+      NotificationManager.info('You need to upload a Roster properly! 😅', 'Check Roster', 4000);
       return;
     }
 
 
      if (!this.state.topics.length > 0) {
-      window.alert("You need to add at least one topic! 😅"); 
+      NotificationManager.info('You need to add at least one topic! 😅', 'Need Topics', 4000);
       return;
     }
 
@@ -163,7 +165,7 @@ class RosterUpload extends React.Component {
       this.postToUsers();
     }).catch(err => {
       console.log(err);
-      window.alert("Problem creating the Course 😞" );
+      NotificationManager.error('Problem creating the Course. Please try again 😞', 'Error', 4000);
     })
   }
 
@@ -194,6 +196,7 @@ class RosterUpload extends React.Component {
       <>
         <Style>
         <TopNavbar/>
+        <NotificationContainer/>
         <div className="container">
         <div className="small-spacer"></div>
 
