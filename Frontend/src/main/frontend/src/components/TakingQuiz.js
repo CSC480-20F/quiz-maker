@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import TopNavbar from './TopNavbar';
 import Loading from './Loading';
 import axios from 'axios';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 import {Card, ProgressBar, Form, Col, Button, Modal, } from 'react-bootstrap';
 import { FcCheckmark, FcCancel } from "react-icons/fc"; //https://react-icons.github.io/react-icons/icons?name=fc
 import { AiOutlineLike, AiOutlineDislike, AiTwotoneFlag } from "react-icons/ai"; //https://react-icons.github.io/react-icons/icons?name=ai
@@ -302,10 +304,10 @@ class TakeQuiz extends Component {
     axios.put(`http://pi.cs.oswego.edu:9084/quizzes/update-star`, {
         "id" : this.props.match.params.quiz_id
       }).then(res => {
-        window.alert("Quiz favorite status changed! 🥳 ");
+        NotificationManager.success('Quiz favorite status changed! 🥳', 'Favorite Changed', 4000);
         document.getElementById("star-button").style.visibility="hidden";
       }).catch(error =>{
-        window.alert("Problem starring the Quiz 😞" );
+        NotificationManager.success('Problem starring the Quiz 😞', 'Error', 4000);
         console.log(error);
       })
   }
@@ -534,6 +536,7 @@ class TakeQuiz extends Component {
     return (
       <>
       <TopNavbar/>
+      <NotificationContainer/>
       <Styles>
       <div className="container" style={{backgroundColor: "#F2F2F2"}}>
         <h1 className="header">{this.state.quizTitle}</h1>

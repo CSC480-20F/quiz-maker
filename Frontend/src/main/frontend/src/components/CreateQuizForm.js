@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import {Modal, Button, Card, Form, Col, Spinner } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 // 💅 Stylesheet for this babay
 const Style = styled.div`
@@ -196,7 +198,7 @@ class CreateQuizForm extends React.Component{
     onCreateQuiz = (e) => {
       e.preventDefault();
       if (this.state.questions.length === 0) {
-        window.alert("You need to add at least one question! 😅");
+        NotificationManager.info('You need to add at least one question! 😅', 'Question Needed', 4000);
         return; 
       }
       axios.post(`http://pi.cs.oswego.edu:9084/quizzes/add-quiz`, {
@@ -214,10 +216,10 @@ class CreateQuizForm extends React.Component{
           "topic":"",
           "index":0
         })
-        window.alert("Quiz Posted! 🥳 ");
+        NotificationManager.success('Quiz Posted Successfully! 🥳', 'Quiz Posted', 4000);
         this.props.history.push('/Courses/' + this.state.courseID);
       }).catch(error =>{
-        window.alert("Problem posting the Quiz 😞" );
+        NotificationManager.error('Problem posting the Quiz 😞', 'Error', 4000);
         console.log(error);
       })  
     }
@@ -351,6 +353,7 @@ class CreateQuizForm extends React.Component{
 
       return (
         <Style>
+        <NotificationContainer/>
         <div className="container-middle" style={{backgroundColor: "#F2F2F2"}}>
         <Form id="quiz-form" onSubmit={this.handleSubmit.bind(this)}>
           <Form.Row>
