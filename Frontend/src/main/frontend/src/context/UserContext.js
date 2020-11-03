@@ -19,7 +19,7 @@ function UserProvider ({ children }) {
               const email = await window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
               console.log('Checking with DB to see if user is an instructor')
               const { data } = await axios.get(
-              `http://pi.cs.oswego.edu:9081/users/is-instructor/${email}`
+              `http://localhost:9081/users/is-instructor/${email}`
               );
               setInstructor(data);
             }
