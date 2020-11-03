@@ -83,7 +83,7 @@ class CreateQuiz extends Component {
       }, () => {this.getChosenCourse()})
     } else {
       const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-      axios.get('http://pi.cs.oswego.edu:9081/users/' + email).then(res => {
+      axios.get('http://localhost:9081/users/' + email).then(res => {
         if(this.mounted){
           this.setState({courseIDs: res.data}, () => {this.getCoursesFromDB()})
         }
@@ -257,7 +257,7 @@ class CreateQuiz extends Component {
       <>
       <TopNavbar/>
         <div className="container-middle" style={{backgroundColor: "#F2F2F2"}}>
-          <div cla>>>>>>> masterssName="small-spacer"></div>
+          <div className="small-spacer"></div>
             <Styles>
             {createQuizPart} 
             </Styles>

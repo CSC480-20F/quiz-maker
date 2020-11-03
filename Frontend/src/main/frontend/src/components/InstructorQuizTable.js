@@ -72,7 +72,6 @@ class InstructorQuizTable extends Component {
                       return {
                         onClick: (e, handleOriginal) => {
                           this.props.history.push(this.props.location.pathname + "/" + rowInfo.original._id.$oid)
-                          console.log('It was in this row:', rowInfo.original._id.$oid)
                         }
                       }
                     }}

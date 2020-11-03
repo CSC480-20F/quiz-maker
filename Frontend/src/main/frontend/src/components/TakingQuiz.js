@@ -143,7 +143,8 @@ class TakeQuiz extends Component {
 
 
       //addition
-      "student": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
+      "student": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
+      "teacher":''
       
     }
 
@@ -152,7 +153,10 @@ class TakeQuiz extends Component {
   }
 
   sendEmail() {
-    window.open('mailto:test@example.com?subject=subject&body=body');
+    const teacher = this.state.teacher
+    const body = "this is a test"
+    const subject = "this is a test subject"
+    window.open(`mailto:${teacher}subject=${subject}&body=${body}`); //problem is that anytime button window.open 
   }
 
   vote(type){ //type is either 1 for upvote or -1 for downvote;;;vote is a property of the state which describes the user's current vote: 0 = no vote; 1 = already upvoted; -1 already downvoted
@@ -181,7 +185,7 @@ class TakeQuiz extends Component {
 
   onReportSubmit = (e) => {
     e.preventDefault();
-    // axios.post(`http://pi.cs.oswego.edu:9084/quizzes/add-quiz`, {
+    // axios.post(`http://localhost:9084/quizzes/add-quiz`, {
     //   "report_form":this.state.report_form
     // })
     window.alert("Report Submited! 🥳 ");
@@ -200,8 +204,9 @@ class TakeQuiz extends Component {
 
   componentDidMount () {
     this.mounted = true;
+    this.checkIfInstructor()
     let id = this.props.match.params.quiz_id;
-    axios.get('http://pi.cs.oswego.edu:9084/quizzes/get-quiz/' + id).then(res => {
+    axios.get('http://localhost:9084/quizzes/get-quiz/' + id).then(res => {
       if(this.mounted){
         this.setState({
           quizTitle: res.data.quizName,
@@ -267,7 +272,7 @@ class TakeQuiz extends Component {
   }
 
   sendRatingToDB = () => {
-    axios.put(`http://pi.cs.oswego.edu:9084/quizzes/update-rating`, {
+    axios.put(`http://localhost:9084/quizzes/update-rating`, {
         "id": this.props.match.params.quiz_id,
         "rating": this.state.totalRating
       }).then(res => {
@@ -278,7 +283,8 @@ class TakeQuiz extends Component {
   checkIfInstructor = () => {
     const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
     axios.get('http://localhost:9083/courses/get-courses/' + this.state.courseID).then(res => {
-      if (email === res.data[0].teacher) {
+      this.setState({teacher:res.data[0]})
+    if (email === res.data[0].teacher) {
         this.setState({isInstructor: true})
       }
       this.setState({scoreLoading: false})
@@ -494,6 +500,9 @@ class TakeQuiz extends Component {
 
             
             {/* <Button variant="danger" className="rounded-corner" onClick={this.handleShow}> Report </Button>  */}
+
+            {/* <AiTwotoneFlag onClick={ this.sendEmail()} style={{cursor:'pointer', display:"inline-block", margin:"2px", float: "right"}} >test</AiTwotoneFlag> */}
+
             <AiTwotoneFlag onClick={this.handleShow} style={{cursor:'pointer', display:"inline-block", margin:"2px", float: "right"}}  > </AiTwotoneFlag>
             <Modal show={this.state.show} onHide={this.handleClose} backdrop="static">
             <Modal.Header closeButton> 
@@ -531,8 +540,7 @@ class TakeQuiz extends Component {
            label={`Wrong Answer`}
            />
 
-           <div class="button" href="mailto:@oswego.edu">Email The Driver</div>
-         
+            
           </div>
           ))}
             
@@ -566,7 +574,10 @@ class TakeQuiz extends Component {
             </Modal.Body>
             <Modal.Footer>
             {/* <Button variant="secondary" onClick={this.handleClose}> Cancel </Button> */}
-            <Button variant="primary" onClick={this.onReportSubmit}> Submit </Button>
+            {/* <Button variant="primary" onClick={this.onReportSubmit}> Submit </Button> */}
+            <Button variant="primary" onClick={ () => this.sendEmail()}> Submit </Button>
+            {/* onClick={ this.sendEmail()} */}
+            
             </Modal.Footer>
             </Modal>
 

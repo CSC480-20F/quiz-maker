@@ -221,10 +221,10 @@ class ManageStudents extends Component {
                         <h1 style={{fontFamily: "Roboto", fontSize: "18px", textAlign: "center"}}>Current Students:</h1>
                         <div className="small-spacer"></div> 
 
-                        <div className="container-middle">Note: Select the students to be removed and click "Save Changes"</div>
+                        <div className="container-middle">Note: Select the students to be removed and click "Remove Students"</div>
                         <CardDeck style={{display: "flex", flexWrap: "wrap", alignContent: "flex-start"}}>{removeStudents}</CardDeck>
                         <div className="small-spacer"></div>
-                        <Button variant="light" className="save-button rounded-corner" onClick={() => this.finishRemovingStudents()}>Save Changes</Button>
+                        <Button variant="light" className="save-button rounded-corner" onClick={() => this.finishRemovingStudents()}>Remove Students</Button>
                         </>
                     ):(
                         <CardGroup className="rounded-corner">

@@ -43,7 +43,7 @@ class Quizzes extends Component {
     componentDidMount () {        
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        fetch('http://pi.cs.oswego.edu:9084/quizzes/get-created-quizzes/' + email, {method: 'GET',}).then(response => response.json()).then(quizzes => {
+        fetch('http://localhost:9084/quizzes/get-created-quizzes/' + email, {method: 'GET',}).then(response => response.json()).then(quizzes => {
             if (this.mounted) {
                 this.setState({
                     createdQuizzesData: quizzes
@@ -54,7 +54,7 @@ class Quizzes extends Component {
                 })
             }
         })
-        axios.get('http://pi.cs.oswego.edu:9081/users/get-quizzes/' + email).then(res => {
+        axios.get('http://localhost:9081/users/get-quizzes/' + email).then(res => {
             if(this.mounted){
                 this.setState({takenQuizzes: res.data}, () => {
                     if (this.state.takenQuizzes.length > 0) {
@@ -79,7 +79,7 @@ class Quizzes extends Component {
 
     getTakenQuizzes = () => {
         const ids = this.state.takenQuizzes.replace(/[[\]']+/g,'').split(" ").join("");
-        axios.get('http://pi.cs.oswego.edu:9084/quizzes/get-quizzes/' + ids).then(res => {
+        axios.get('http://localhost:9084/quizzes/get-quizzes/' + ids).then(res => {
             if(this.mounted){
                 this.setState({takenQuizzesData: res.data, isLoading: false})
             }

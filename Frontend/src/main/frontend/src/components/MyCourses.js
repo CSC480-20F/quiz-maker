@@ -15,7 +15,7 @@ class MyCourses extends Component {
     componentDidMount() {
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        axios.get('http://pi.cs.oswego.edu:9081/users/' + email).then(res => {
+        axios.get('http://localhost:9081/users/' + email).then(res => {
             if(this.mounted){
                 if (this.props.limit === "null" || res.data.split(",").length < 3) {
                     this.setState({
@@ -44,7 +44,7 @@ class MyCourses extends Component {
 
     getCoursesFromDB = () => {
         const sendCourseIDs = this.state.coursesIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
-        axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + sendCourseIDs).then(res => {
+        axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
             if(this.mounted){
                 this.setState({
                     myCourses: res.data,
