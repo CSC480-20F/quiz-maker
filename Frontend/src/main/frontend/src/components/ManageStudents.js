@@ -86,7 +86,7 @@ class ManageStudents extends Component {
 
     componentDidMount () {
         let id = this.props.courseID;
-        axios.get("http://localhost:9083/courses/get-course-roster/" + id).then(res => {
+        axios.get("http://pi.cs.oswego.edu:9083/courses/get-course-roster/" + id).then(res => {
             this.setState({courseRoster: res.data, loadingRoster: false})
         }).catch(err => {console.log(err)})
     }
@@ -95,7 +95,7 @@ class ManageStudents extends Component {
     finishAddingStudents = () => {
         if (this.state.addedEmails.length > 0) {
             this.setState({updatingDB: true})
-            axios.put(`http://localhost:9081/users/add-course`, {
+            axios.put(`http://pi.cs.oswego.edu:9081/users/add-course`, {
                 "id": this.state.courseID,
                 "names":this.state.addedNames,
                 "emails": this.state.addedEmails
@@ -116,7 +116,7 @@ class ManageStudents extends Component {
     finishRemovingStudents = () => {
         if (this.state.removeStudents.length > 0) {
             this.setState({updatingDB: true})
-            axios.put(`http://localhost:9081/users/remove-from-course`, {
+            axios.put(`http://pi.cs.oswego.edu:9081/users/remove-from-course`, {
                 "id": this.state.courseID,
                 "emails": this.state.removeStudents
             }).then(res => {
@@ -137,7 +137,7 @@ class ManageStudents extends Component {
         let copyArray = this.state.courseRoster;
         copyArray = copyArray.filter( ( el ) => !this.state.removeStudents.includes( el ) );
         this.setState({courseRoster: copyArray})
-        axios.put(`http://localhost:9083/courses/update-course-roster`, {
+        axios.put(`http://pi.cs.oswego.edu:9083/courses/update-course-roster`, {
             "courseID": this.state.courseID,
             "courseRoster": this.state.courseRoster
         }).then(res => {

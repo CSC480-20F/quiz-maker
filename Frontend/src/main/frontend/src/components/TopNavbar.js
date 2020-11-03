@@ -94,7 +94,7 @@ const TopNavbar = () => {
       </Nav>
       
       <div style={{fontSize:'9px', margin:'25px'}}>
-      <DarkModeApp id="edit-dark-mode-text"/> 
+      {/* <DarkModeApp id="edit-dark-mode-text"/>  */}
       {/* <DarkModeApp  id="edit-dark-mode-text"></DarkModeApp> */}
       </div>
       <img src={logo} alt="SUNY Oswego Logo" style={{width:98, height: 36, marginTop: -8}} />

@@ -140,31 +140,17 @@ class TakeQuiz extends Component {
       "report_form":"",
       "scoreLoading": true,
       "isInstructor": false,
-
-
-      //addition
       "student": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
-      "teacher":''
-      
+      "teacher":""
     }
 
     this.increment = this.increment.bind(this)
     this.decrement = this.decrement.bind(this)
   }
 
-  sendEmail() {
-    const teacher = this.state.teacher
-    const body = "this is a test"
-    const subject = "this is a test subject"
-    window.open(`mailto:${teacher}subject=${subject}&body=${body}`); //problem is that anytime button window.open 
-  }
-
   vote(type){ //type is either 1 for upvote or -1 for downvote;;;vote is a property of the state which describes the user's current vote: 0 = no vote; 1 = already upvoted; -1 already downvoted
     this.setState(state => ({
       vote: state.vote === type ? 0 : type
-      // If the current vote is the same as the one we just passed in to the method, 
-      //it means the user is undoing their vote and therefore it should be reset back to 0 to indicate they have no vote anymore. 
-      //Otherwise, we should just set it to that value.
     }));
   }
 
@@ -185,28 +171,35 @@ class TakeQuiz extends Component {
 
   onReportSubmit = (e) => {
     e.preventDefault();
-    // axios.post(`http://localhost:9084/quizzes/add-quiz`, {
-    //   "report_form":this.state.report_form
-    // })
-    window.alert("Report Submited! 🥳 ");
-    console.log(this.state.report_form)
-    this.setState({
-      "report_form":""
-    })
+    let checked = ""
+    var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
+    for (var i = 0; i < checkboxes.length; i++) {
+      if (!checked.length > 0) {
+        checked = checked.concat(" " + checkboxes[i].id)
+      } else {
+        checked = checked.concat(", " + checkboxes[i].id)
+      }
+    }
+    const teacher = this.state.teacher
+    console.log(teacher)
+    let body = `Reporting Question ${this.state.currentQuestion + 1} for the quiz titled ${this.state.quizTitle}. Reporting for the following reasons: ${checked}.`
+    if (this.state.report_form.length > 0) {
+      body = body.concat(` Other reason includes: ${this.state.report_form}`)
+    }
+    const subject = "Reporting Question"
+    window.open(`mailto:${teacher}?subject=${subject}&body=${body}`); //problem is that anytime button window.open 
+    this.setState({"report_form":""})
+    this.handleClose()
   }
 
-  onReportChange(event) {
-    this.setState({report_form: event.target.value})
-    // console.log(this.state.report_form)
-  }
+  onReportChange(event) {this.setState({report_form: event.target.value})}
 
 
 
   componentDidMount () {
     this.mounted = true;
-    this.checkIfInstructor()
     let id = this.props.match.params.quiz_id;
-    axios.get('http://localhost:9084/quizzes/get-quiz/' + id).then(res => {
+    axios.get('http://pi.cs.oswego.edu:9084/quizzes/get-quiz/' + id).then(res => {
       if(this.mounted){
         this.setState({
           quizTitle: res.data.quizName,
@@ -216,6 +209,7 @@ class TakeQuiz extends Component {
           isStarred: res.data.starred,
           isLoading: false
         }, () => {
+          this.checkIfInstructor()
           this.setState({
             allAnswers: this.createRandom([...this.state.questions[this.state.currentQuestion].incorrect_answers, this.state.questions[this.state.currentQuestion].answer])
           })
@@ -260,7 +254,7 @@ class TakeQuiz extends Component {
         })
     } else {
       this.setState({showScore: true, selected: false, selectedID:""})
-      axios.put(`http://localhost:9081/users/quizzes-taken`, {
+      axios.put(`http://pi.cs.oswego.edu:9081/users/quizzes-taken`, {
         "id": this.props.match.params.quiz_id,
         "email": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
       }).then(res => {
@@ -272,23 +266,22 @@ class TakeQuiz extends Component {
   }
 
   sendRatingToDB = () => {
-    axios.put(`http://localhost:9084/quizzes/update-rating`, {
+    axios.put(`http://pi.cs.oswego.edu:9084/quizzes/update-rating`, {
         "id": this.props.match.params.quiz_id,
         "rating": this.state.totalRating
       }).then(res => {
-        this.checkIfInstructor()
+        this.setState({scoreLoading: false})
       }).catch(error =>{console.log(error); this.setState({scoreLoading: false})})
   }
 
   checkIfInstructor = () => {
     const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
-    axios.get('http://localhost:9083/courses/get-courses/' + this.state.courseID).then(res => {
-      this.setState({teacher:res.data[0]})
-    if (email === res.data[0].teacher) {
+    axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + this.state.courseID).then(res => {
+      this.setState({teacher:res.data[0].teacher})
+      if (email === res.data[0].teacher) {
         this.setState({isInstructor: true})
       }
-      this.setState({scoreLoading: false})
-    }).catch(err => {console.log(err); this.setState({scoreLoading: false})})
+    }).catch(err => {console.log(err)})
   }
 
   goBackToCourse = () => {
@@ -306,7 +299,7 @@ class TakeQuiz extends Component {
   }
 
   starQuiz = () => {
-    axios.put(`http://localhost:9084/quizzes/update-star`, {
+    axios.put(`http://pi.cs.oswego.edu:9084/quizzes/update-star`, {
         "id" : this.props.match.params.quiz_id
       }).then(res => {
         window.alert("Quiz favorite status changed! 🥳 ");
@@ -406,13 +399,9 @@ class TakeQuiz extends Component {
             </Col>
           </Form.Row>
 
-
           </Form.Group>
           </Card>
           <div className="small-spacer"></div>
-
-
-
         </>
       )
     })
@@ -460,12 +449,8 @@ class TakeQuiz extends Component {
         </Card>
 
         <div className="small-spacer"></div>
-
       
         <Card  className="score-card rounded-corner" >
-        
-        {/* <h1 className="subtitle">Question {currentQuestion + 1} </h1> */}
-        {/* <div className="small-spacer">{questions[currentQuestion].question}</div> */}
         
         {scoreQuestions}
         </Card>
@@ -498,93 +483,40 @@ class TakeQuiz extends Component {
               Downvote
             </AiOutlineDislike>
 
-            
-            {/* <Button variant="danger" className="rounded-corner" onClick={this.handleShow}> Report </Button>  */}
-
-            {/* <AiTwotoneFlag onClick={ this.sendEmail()} style={{cursor:'pointer', display:"inline-block", margin:"2px", float: "right"}} >test</AiTwotoneFlag> */}
-
             <AiTwotoneFlag onClick={this.handleShow} style={{cursor:'pointer', display:"inline-block", margin:"2px", float: "right"}}  > </AiTwotoneFlag>
             <Modal show={this.state.show} onHide={this.handleClose} backdrop="static">
-            <Modal.Header closeButton> 
-            <Modal.Title> Report </Modal.Title> 
-            </Modal.Header>
-            <Modal.Body>What is the problem?
-            
-            <Form id="report-form" onSubmit={this.onReportSubmit.bind(this)}>
-            
 
-            <Form.Group controlId="exampleForm.ControlInput1">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder={window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()} readOnly/>
-            </Form.Group>
-        
+            <Form id="report-form" onSubmit={this.onReportSubmit.bind(this)}>
+
+            <Modal.Header closeButton> <Modal.Title> Report </Modal.Title> </Modal.Header>
+
+            <Modal.Body>What is the problem?        
 
             {['checkbox'].map((type) => (
-            <div key={`default-${type}`} className="mb-3">
+              <div key={`default-${type}`} className="mb-3">
 
-           <Form.Check 
-           type={type}
-           id={`default-${type}1`}
-           label={`Spelling Mistake`}
-           />
-      
-            <Form.Check 
-           type={type}
-           id={`default-${type}2`}
-           label={`Wrong Question `}
-           />
+              <Form.Check type={type} id={`Spelling Mistake`} label={`Spelling Mistake`}/>
 
-           <Form.Check 
-           type={type}
-           id={`default-${type}3`}
-           label={`Wrong Answer`}
-           />
+              <Form.Check type={type} id={`Wrong Question`} label={`Wrong Question `}/>
 
-            
-          </div>
-          ))}
-            
-            {/* <Form.Group controlId="exampleForm.ControlSelect1">
-            <Form.Label>What seems to be the issue?</Form.Label>
-            <Form.Control as="select">
-              <option>Spelling Mistake</option>
-              <option>Wrong Question</option>
-              <option>Wrong Answer(s)</option>
-              <option>4</option>
-              <option>5</option>
-            </Form.Control>
-            </Form.Group> */}
+              <Form.Check type={type} id={`Wrong Answer`} label={`Wrong Answer`}/>
+
+              </div>
+            ))}
 
 
             <Form.Row>
-            <Form.Control 
-            required 
-            className="no-border" 
-            size="sm" 
-            type="text" 
-            // sender={window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()}
-            placeholder="If other please specify" 
-            value={this.state.report_form} 
-            onChange={this.onReportChange.bind(this)}/>
-           
+            <Form.Control  className="no-border" size="sm" type="text" placeholder="If other please specify" 
+            value={this.state.report_form} onChange={this.onReportChange.bind(this)}/>
             </Form.Row>
 
-            </Form>
-            
             </Modal.Body>
-            <Modal.Footer>
-            {/* <Button variant="secondary" onClick={this.handleClose}> Cancel </Button> */}
-            {/* <Button variant="primary" onClick={this.onReportSubmit}> Submit </Button> */}
-            <Button variant="primary" onClick={ () => this.sendEmail()}> Submit </Button>
-            {/* onClick={ this.sendEmail()} */}
-            
-            </Modal.Footer>
+
+            <Modal.Footer> <Button variant="primary" type="submit"> Submit </Button> </Modal.Footer>
+
+            </Form>
             </Modal>
 
-            
-            {/* <AiOutlineLike style={{display:"inline-block", margin:"2px"}} onClick={this.increment}/>
-            <AiOutlineDislike style={{display:"inline-block", margin:"2px"}} onClick={this.decrement}/>   
-            counter: {this.state.count} */}
             </h1>
 
             <div className="small-spacer" dangerouslySetInnerHTML={{__html: questions[currentQuestion].question}}></div>
