@@ -169,6 +169,11 @@
   font-weight: 100;
 }
 
+.ReactTable .rt-tr:hover .rt-td {
+  cursor: pointer;
+  background: #FE9C02;
+}
+
 
 
 
