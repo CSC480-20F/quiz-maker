@@ -87,8 +87,7 @@ class CreateQuiz extends Component {
         if(this.mounted){
           this.setState({courseIDs: res.data}, () => {this.getCoursesFromDB()})
         }
-      }).catch(err => {
-          console.log(err);
+      }).catch(err => {console.log(err); this.setState({isLoading: false})
       })
       }
   }
@@ -98,8 +97,7 @@ class CreateQuiz extends Component {
       if(this.mounted){
         this.setState({chosenCourse: res.data, isLoading: false, topicOptions: res.data[0].topics}, () => this.checkIfInstructor())
       }
-    }).catch(err => {
-        console.log(err);
+    }).catch(err => {console.log(err); this.setState({isLoading: false})
     })
   }
 
@@ -121,7 +119,7 @@ class CreateQuiz extends Component {
           if(this.mounted){
               this.setState({courses: res.data}, () => {this.getInstructorCourses()})
           }
-      }).catch(err => {console.log(err)})
+      }).catch(err => {console.log(err); this.setState({isLoading: false})})
     } else {
       this.getInstructorCourses()
     }
@@ -140,7 +138,7 @@ class CreateQuiz extends Component {
         } else {
           this.setState({isLoading: false})
         }
-      }).catch(err => {console.log(err);})
+      }).catch(err => {console.log(err); this.setState({isLoading: false})})
     }
   }
 
