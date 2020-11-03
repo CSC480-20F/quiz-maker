@@ -351,7 +351,7 @@ class CreateQuizForm extends React.Component{
 
       return (
         <Style>
-        <div className="container-middle">
+        <div className="container-middle" style={{backgroundColor: "#F2F2F2"}}>
         <Form id="quiz-form" onSubmit={this.handleSubmit.bind(this)}>
           <Form.Row>
           <Form.Control required className="header no-border" size="sm" type="text" placeholder="Quiz Title..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>

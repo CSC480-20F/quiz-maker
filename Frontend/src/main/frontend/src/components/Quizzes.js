@@ -122,7 +122,7 @@ class Quizzes extends Component {
         )
 
         return (
-            <div>
+            <div style={{backgroundColor: "#F2F2F2"}}>
                 <div> <TopNavbar/> </div>
                 
                 <div className="container-middle">

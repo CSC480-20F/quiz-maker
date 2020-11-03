@@ -253,7 +253,7 @@ class CreateQuiz extends Component {
     return (
       <>
       <TopNavbar/>
-        <div className="container-middle">
+        <div className="container-middle" style={{backgroundColor: "#F2F2F2"}}>
           <div className="small-spacer"></div>
             <Styles>
             {createQuizPart} 

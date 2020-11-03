@@ -12,7 +12,6 @@ import studentPic from '../assets/student.png';
 // import databasePic from '../assets/database.png';
 import topicsPic from '../assets/topics.png';
 import ManageTopics from './ManageTopics';
-import manageStudents from './ManageStudents';
 import ManageStudents from './ManageStudents';
 
 const Styles = styled.div`
@@ -185,7 +184,7 @@ class Course extends Component {
             </div>
         )
         return(
-            <div>
+            <div style={{backgroundColor: "#F2F2F2"}}>
                 {course}
                 <h1 className='header'> {this.state.textID} </h1>
             </div>

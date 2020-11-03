@@ -561,7 +561,7 @@ class TakeQuiz extends Component {
       <>
       <TopNavbar/>
       <Styles>
-      <div className="container">
+      <div className="container" style={{backgroundColor: "#F2F2F2"}}>
         <h1 className="header">{this.state.quizTitle}</h1>
         {takingQuiz}
       </div>
