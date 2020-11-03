@@ -68,7 +68,7 @@ const TopNavbar = () => {
   const teacher = useContext(UserContext).isInstructor
 
   const view = teacher ? (
-    <> <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none' }}>Course Creation</NavLink> </>
+    <> <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Course Creation</NavLink> </>
   ):(
     <> </>
   )
@@ -78,14 +78,14 @@ const TopNavbar = () => {
       <Styles>
       <Navbar className = "nav-bar-style"  variant="dark" >
       <Navbar.Brand as={Link} to="/">
-      <img className="login-quizmaker-logo" alt="QuizMaker Logo" src={quizmakerlogo} style={{maxWidth:'65%', paddingBottom:'20px', paddingLeft:'50px'}}/>
+      <img className="login-quizmaker-logo" alt="QuizMaker Logo" src={quizmakerlogo} style={{maxWidth:'65%', paddingBottom:'20px', paddingLeft:'50px', paddingTop:'10px'}}/>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Nav className="mr-auto">
-      <NavLink exact to="/" activeClassName="active" style={{ textDecoration: 'none' }}> Home </NavLink>
-      <NavLink to="/Courses" activeClassName="active" style={{ textDecoration: 'none' }}>Courses</NavLink>
-      <NavLink to="/Quizzes" activeClassName="active" style={{ textDecoration: 'none' }}>Quizzes</NavLink>
-      <NavLink to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none' }}>Create</NavLink>
+      <NavLink exact to="/" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}> Home </NavLink>
+      <NavLink to="/Courses" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Courses</NavLink>
+      <NavLink to="/Quizzes" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Quizzes</NavLink>
+      <NavLink to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Create</NavLink>
       {view}
       {/* <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none' }}>Course Creation</NavLink> */}
 
