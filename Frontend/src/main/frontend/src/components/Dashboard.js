@@ -9,6 +9,8 @@ import Loading from './Loading';
 import {UserContext} from '../context/UserContext';
 import InstructorCourses from './InstructorCourses';
 
+
+
 class Dashboard extends Component {
     static contextType = UserContext
 
@@ -18,6 +20,8 @@ class Dashboard extends Component {
         isLoading: true
     }
 
+
+
     componentDidMount() {
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
@@ -25,7 +29,7 @@ class Dashboard extends Component {
             if(this.mounted){
                 this.setState({createdQuizzes: res.data}, () => {this.getRecentQuizzes()})
             }
-        }).catch(err => {console.log(err)})
+        }).catch(err => {console.log(err); this.setState({isLoading: false})})
     }
 
     componentWillUnmount() {
@@ -43,7 +47,7 @@ class Dashboard extends Component {
 
     render () {
         if (this.state.isLoading) {
-            return <> <TopNavbar/> <div className="container-middle"><Loading type={'balls'} color={'#235937'}/> </div> </>
+            return <> <TopNavbar/> <div className="container-center"><Loading type={'spin'} color={'#235937'}/> </div> </>
         }
 
         const teacher = this.context.isInstructor;

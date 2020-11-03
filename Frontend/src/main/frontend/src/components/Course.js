@@ -9,8 +9,10 @@ import Loading from './Loading';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import studentPic from '../assets/student.png';
-import databasePic from '../assets/database.png';
+// import databasePic from '../assets/database.png';
 import topicsPic from '../assets/topics.png';
+import ManageTopics from './ManageTopics';
+import ManageStudents from './ManageStudents';
 
 const Styles = styled.div`
     .create-quiz {
@@ -33,18 +35,32 @@ const Styles = styled.div`
         background-color: #8F0047;
     }
 
+    .back {
+        min-width: fit-content; 
+        max-width: fit-content;
+    }
+
     .professor-panel-card {
         padding: 20px;
         align-items: center;
+    }
+
+    .manage-panel {
+        background-color: #F2F2F2;
+        border: #F2F2F2;
     }
 `;
 
 class Course extends Component {
     state = {
         course: null,
+        // course: {"topics": ["Bullshit", "Hello"], "courseName": "Bullshit", "_id":{"$oid": 213123123}},
         quizData: [],
         topRatedQuizzes: [],
-        isInstructor: false
+        isInstructor: false,
+        // isInstructor: true,
+        manageTopics: false,
+        manageStudents: false
     }
 
     componentDidMount() {
@@ -76,28 +92,54 @@ class Course extends Component {
         this.setState({topRatedQuizzes: obj.slice(0,3)})
     }
 
+    manageTopics = () => {
+        this.setState({manageTopics: !this.state.manageTopics})
+    }
+
+    manageStudents = () => {
+        this.setState({manageStudents: !this.state.manageStudents})
+    }
+
     render () {
         const professorPanel = this.state.isInstructor ? (
-            <>
-            <div className="container">
-                <h1 className="subtitle">Professor Panel</h1>
-                <CardGroup className="professor-panel rounded-corner">
-                    <Card className="professor-panel-card rounded-corner">
-                        <img src={databasePic} className="icon" alt="Database of Quizzes" />
-                        <Button variant="light" className="manage"> Quiz Database </Button>
+            this.state.manageTopics ? (
+                <div className="container">
+                <Card className="manage-panel">
+                <ManageTopics courseID={this.props.match.params.course_id}/>
+                <div className="container"><Button variant="light" className="manage back" onClick={() => this.manageTopics()}> Back to Panel </Button></div>
+                </Card>
+                </div>
+            ):(
+                this.state.manageStudents ? (
+                    <div className="container">
+                    <Card className="manage-panel">
+                    <ManageStudents courseID={this.props.match.params.course_id}/>
+                    <div className="container"><Button variant="light" className="manage back" onClick={() => this.manageStudents()}> Back to Panel </Button></div>
                     </Card>
-                    <Card className="professor-panel-card rounded-corner">
-                        <img src={studentPic} className="icon" alt="Database of Quizzes" />
-                        <Button variant="light" className="manage">Manage Students </Button>
-                    </Card>
-                    <Card className="professor-panel-card rounded-corner">
-                        <img src={topicsPic} className="icon" alt="Database of Quizzes" />
-                        <Button variant="light" className="manage">Manage Topics </Button>
-                    </Card>
-                </CardGroup>
-            </div>
-            <div className="spacer"></div>
-            </>
+                    </div>
+                ):(
+                    <>
+                    <div className="container">
+                        <h1 className="subtitle">Professor Panel</h1>
+                        <CardGroup className="rounded-corner">
+                            {/* <Card className="professor-panel-card rounded-corner">
+                                <img src={databasePic} className="icon" alt="Database of Quizzes" />
+                                <Button variant="light" className="manage"> Quiz Database </Button>
+                            </Card> */}
+                            <Card className="professor-panel-card rounded-corner">
+                                <img src={studentPic} className="icon" alt="Database of Quizzes" />
+                                <Button variant="light" className="manage" onClick={() => this.manageStudents()}>Manage Students </Button>
+                            </Card>
+                            <Card className="professor-panel-card rounded-corner">
+                                <img src={topicsPic} className="icon" alt="Database of Quizzes" />
+                                <Button variant="light" className="manage" onClick={() => this.manageTopics()}>Manage Topics </Button>
+                            </Card>
+                        </CardGroup>
+                    </div>
+                    <div className="spacer"></div>
+                    </>
+                )
+            )
         ):(
             <div style={{padding: '10px'}}> </div>
         )
@@ -119,7 +161,7 @@ class Course extends Component {
                 <div className='container-middle'> 
                     <h1 className="center header">{this.state.course.courseName}</h1>
                     <div style={{padding: '10px'}}> </div>
-                    <Link to={"/CreateQuiz/" + this.state.course.courseId}>
+                    <Link to={"/CreateQuiz/" + this.state.course._id.$oid}>
                     <Button variant='light' className='create-quiz center'>Create a Quiz</Button>
                     </Link>
                 </div>
@@ -138,11 +180,11 @@ class Course extends Component {
             </div>
         ) : (
             <div> <TopNavbar/>
-            <div className="container-center"> <Loading type={'balls'} color={'#235937'}/></div>
+            <div className="container-center"> <Loading type={'spin'} color={'#235937'}/></div>
             </div>
         )
         return(
-            <div>
+            <div style={{backgroundColor: "#F2F2F2"}}>
                 {course}
                 <h1 className='header'> {this.state.textID} </h1>
             </div>

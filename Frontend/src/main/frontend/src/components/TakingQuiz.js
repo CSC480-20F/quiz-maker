@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import TopNavbar from './TopNavbar';
 import Loading from './Loading';
 import axios from 'axios';
-import {Card, ProgressBar, Form, Col, Button, Modal} from 'react-bootstrap';
+import {Card, ProgressBar, Form, Col, Button, Modal, } from 'react-bootstrap';
 import { FcCheckmark, FcCancel } from "react-icons/fc"; //https://react-icons.github.io/react-icons/icons?name=fc
-import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai"; //https://react-icons.github.io/react-icons/icons?name=ai
+import { AiOutlineLike, AiOutlineDislike, AiTwotoneFlag } from "react-icons/ai"; //https://react-icons.github.io/react-icons/icons?name=ai
 
 const Styles = styled.div`
   .topics {
@@ -136,12 +136,23 @@ class TakeQuiz extends Component {
       "totalRating":0, //score of the post 
       "currentQuestionCounter":0,
       "show":false,
-      "report_form":""
+      "isStarred": null,
+      "report_form":"",
+      "scoreLoading": true,
+      "isInstructor": false,
+
+
+      //addition
+      "student": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
       
     }
 
     this.increment = this.increment.bind(this)
     this.decrement = this.decrement.bind(this)
+  }
+
+  sendEmail() {
+    window.open('mailto:test@example.com?subject=subject&body=body');
   }
 
   vote(type){ //type is either 1 for upvote or -1 for downvote;;;vote is a property of the state which describes the user's current vote: 0 = no vote; 1 = already upvoted; -1 already downvoted
@@ -197,6 +208,7 @@ class TakeQuiz extends Component {
           courseID: res.data.courseID,
           questions: res.data.quizQuestions,
           topics: res.data.quizTopics,
+          isStarred: res.data.starred,
           isLoading: false
         }, () => {
           this.setState({
@@ -242,11 +254,11 @@ class TakeQuiz extends Component {
           })
         })
     } else {
-      axios.put(`http://pi.cs.oswego.edu:9081/users/quizzes-taken`, {
+      this.setState({showScore: true, selected: false, selectedID:""})
+      axios.put(`http://localhost:9081/users/quizzes-taken`, {
         "id": this.props.match.params.quiz_id,
         "email": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
       }).then(res => {
-        console.log("Putting to users DB",res);
         this.sendRatingToDB();
       }).catch(error =>{
         console.log(error);
@@ -259,11 +271,18 @@ class TakeQuiz extends Component {
         "id": this.props.match.params.quiz_id,
         "rating": this.state.totalRating
       }).then(res => {
-        console.log("Updating Rating",res);
-        this.setState({showScore: true, selected: false, selectedID:""})
-      }).catch(error =>{
-        console.log(error);
-      })
+        this.checkIfInstructor()
+      }).catch(error =>{console.log(error); this.setState({scoreLoading: false})})
+  }
+
+  checkIfInstructor = () => {
+    const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
+    axios.get('http://localhost:9083/courses/get-courses/' + this.state.courseID).then(res => {
+      if (email === res.data[0].teacher) {
+        this.setState({isInstructor: true})
+      }
+      this.setState({scoreLoading: false})
+    }).catch(err => {console.log(err); this.setState({scoreLoading: false})})
   }
 
   goBackToCourse = () => {
@@ -280,19 +299,29 @@ class TakeQuiz extends Component {
     }
   }
 
-  
+  starQuiz = () => {
+    axios.put(`http://localhost:9084/quizzes/update-star`, {
+        "id" : this.props.match.params.quiz_id
+      }).then(res => {
+        window.alert("Quiz favorite status changed! 🥳 ");
+        document.getElementById("star-button").style.visibility="hidden";
+      }).catch(error =>{
+        window.alert("Problem starring the Quiz 😞" );
+        console.log(error);
+      })
+  }
 
   doNothing () {}
 
   render() {
-    if (this.state.isLoading) {return <div className="container-center"> <Loading type={'balls'} color={'#235937'}/> </div>}
+    if (this.state.isLoading) {return <div className="container-center"> <Loading type={'spin'} color={'#235937'}/> </div>}
 
     const answerLabels = ['A', 'B', 'C', 'D', 'E'];
 
     const questions = this.state.questions;
     const currentQuestion = this.state.currentQuestion;
 
-    const currentPlace = ((currentQuestion+1)/questions.length) * 100;
+    const currentPlace = Math.round(((currentQuestion+1)/questions.length) * 100);
 
     const allAnswers = this.state.allAnswers;
 
@@ -316,6 +345,72 @@ class TakeQuiz extends Component {
       )
     })
 
+    const scoreQuestions = this.state.questions.map((question,i) => {
+      return (
+        <>
+        <Card className="whole-question-card rounded-corner" key={i}>
+        <h1 className="subtitle" >
+          Question {i+1} 
+        </h1>
+        <div style={{fontSize:"20px"}} className="small-spacer" dangerouslySetInnerHTML={{__html: question.question}}></div>
+        <Form.Group>
+        <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>
+            <Col>
+            <Form.Control className="answer-field-correct"
+
+            size="lg" type="text" readOnly value={question.answer}/>
+            </Col>
+          </Form.Row>
+
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label>
+            <Col>
+            <Form.Control className="answer-field"
+
+            size="lg" type="text" readOnly value={question.incorrect_answers[0]}/>
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label>
+            <Col>
+            <Form.Control className="answer-field"
+
+            size="lg" type="text" readOnly value={question.incorrect_answers[1]}/>
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label>
+            <Col>
+            <Form.Control className="answer-field"
+
+            size="lg" type="text" readOnly value={question.incorrect_answers[2]}/>
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label>
+            <Col>
+            <Form.Control className="answer-field"
+
+            size="lg" type="text" readOnly value={question.incorrect_answers[3]}/>
+            </Col>
+          </Form.Row>
+
+
+          </Form.Group>
+          </Card>
+          <div className="small-spacer"></div>
+
+
+
+        </>
+      )
+    })
+
     const nextQuestionButton = this.state.selected ? (
       <Button variant="light" type="button" className="next-question-button" onClick={() => { this.goToNextQuestion()}}>Next Question</Button>
       ):(
@@ -325,25 +420,53 @@ class TakeQuiz extends Component {
 
       const scoreTally = this.state.setScore.map((score,i) => {
         if (score) {
-          return (<div style={{display:"inline-block", margin:"80px"}} key = {i} > Q{i+1}   <FcCheckmark style={{display:"inline-block", margin:"2px"}} className="correct-answer-icon"/> </div>)
+          return (<div style={{display:"inline-block", margin:"25px", textAlign: "center"}} key = {i} > Q{i+1}   <FcCheckmark style={{display:"inline-block", margin:"2px"}} className="correct-answer-icon"/> </div>)
         } else {
-          return (<div style={{display:"inline-block", margin:"80px"}}  key = {i}> Q{i+1}  <FcCancel style={{display:"inline-block", margin:"2px"}} className="incorrect-answer-icon"/> </div>)
+          return (<div style={{display:"inline-block", margin:"25px", textAlign: "center"}}  key = {i}> Q{i+1}  <FcCancel style={{display:"inline-block", margin:"2px"}} className="incorrect-answer-icon"/> </div>)
         }
         
       })
       
-    
+    const endButtons = this.state.isInstructor ? (
+      this.state.isStarred ? ( <>
+        <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}}>Un-favorite Quiz</Button>
+        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button> </>
+      ):( <>
+        <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}}>Favorite Quiz</Button>
+        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button> </>
+      )
+    ):(
+      <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
+    )
 
     const takingQuiz = this.state.showScore ? (
-      <>
-      <div className="subtitle">My Score</div>
-      <Card className="score-card rounded-corner" >
-      <h1 className="score-properties"> <span style={{color:"#1C9B2F", marginRight:"10px"}}>{this.state.score}</span> out of {questions.length} </h1>
-      <div>{scoreTally}</div>
-      <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
+      this.state.scoreLoading ? (
+        <div className="container-center"><Loading type={'spin'} color={'#235937'}/></div>
+      ):(
+        <>
+        <div className="subtitle">My Score</div>
+        <Card className="score-card rounded-corner" >
+        <h1 className="score-properties"> <span style={{color:"#1C9B2F", marginRight:"10px"}}>{this.state.score}</span> out of {questions.length} </h1>
+        <div style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>{scoreTally}</div>
+        
+        {endButtons}
 
-      </Card>
-      </>
+        </Card>
+
+        <div className="small-spacer"></div>
+
+      
+        <Card  className="score-card rounded-corner" >
+        
+        {/* <h1 className="subtitle">Question {currentQuestion + 1} </h1> */}
+        {/* <div className="small-spacer">{questions[currentQuestion].question}</div> */}
+        
+        {scoreQuestions}
+        </Card>
+        
+        
+        </>
+      )
     ):(
       <>
       <div className="spacer">{this.state.quizTitle} is about: <span className="topics"> {this.state.topics.join(', ')}. </span></div>
@@ -355,14 +478,14 @@ class TakeQuiz extends Component {
             <h1 className="subtitle">Question {currentQuestion + 1}
 
             <AiOutlineLike 
-              style={{display:"inline-block", margin:"2px"}}
+              style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
               id="upvote"
               className={this.state.vote === 1 ? "active-upvote" : undefined}
               onClick={() => this.vote(1)}>
               Upvote
             </AiOutlineLike>
             <AiOutlineDislike 
-              style={{display:"inline-block", margin:"2px"}}
+              style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
               id="downvote"
               className={this.state.vote === -1 ? "active-downvote" : undefined}
               onClick={() => this.vote(-1)}>
@@ -370,8 +493,8 @@ class TakeQuiz extends Component {
             </AiOutlineDislike>
 
             
-            <Button variant="danger" className="rounded-corner" onClick={this.handleShow}> Report </Button> 
-
+            {/* <Button variant="danger" className="rounded-corner" onClick={this.handleShow}> Report </Button>  */}
+            <AiTwotoneFlag onClick={this.handleShow} style={{cursor:'pointer', display:"inline-block", margin:"2px", float: "right"}}  > </AiTwotoneFlag>
             <Modal show={this.state.show} onHide={this.handleClose} backdrop="static">
             <Modal.Header closeButton> 
             <Modal.Title> Report </Modal.Title> 
@@ -380,6 +503,13 @@ class TakeQuiz extends Component {
             
             <Form id="report-form" onSubmit={this.onReportSubmit.bind(this)}>
             
+
+            <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control type="email" placeholder={window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()} readOnly/>
+            </Form.Group>
+        
+
             {['checkbox'].map((type) => (
             <div key={`default-${type}`} className="mb-3">
 
@@ -401,15 +531,30 @@ class TakeQuiz extends Component {
            label={`Wrong Answer`}
            />
 
+           <div class="button" href="mailto:@oswego.edu">Email The Driver</div>
          
           </div>
           ))}
+            
+            {/* <Form.Group controlId="exampleForm.ControlSelect1">
+            <Form.Label>What seems to be the issue?</Form.Label>
+            <Form.Control as="select">
+              <option>Spelling Mistake</option>
+              <option>Wrong Question</option>
+              <option>Wrong Answer(s)</option>
+              <option>4</option>
+              <option>5</option>
+            </Form.Control>
+            </Form.Group> */}
+
+
             <Form.Row>
             <Form.Control 
             required 
             className="no-border" 
             size="sm" 
             type="text" 
+            // sender={window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()}
             placeholder="If other please specify" 
             value={this.state.report_form} 
             onChange={this.onReportChange.bind(this)}/>
@@ -447,7 +592,7 @@ class TakeQuiz extends Component {
       <>
       <TopNavbar/>
       <Styles>
-      <div className="container">
+      <div className="container" style={{backgroundColor: "#F2F2F2"}}>
         <h1 className="header">{this.state.quizTitle}</h1>
         {takingQuiz}
       </div>

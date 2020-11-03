@@ -64,7 +64,7 @@ class Quizzes extends Component {
                     }
                 })
             }
-        }).catch(err => {console.log(err)})
+        }).catch(err => {console.log(err); this.setState({isLoading: false})})
     }
 
     componentWillUnmount () {
@@ -83,12 +83,12 @@ class Quizzes extends Component {
             if(this.mounted){
                 this.setState({takenQuizzesData: res.data, isLoading: false})
             }
-        }).catch(err => {console.log(err)})
+        }).catch(err => {console.log(err); this.setState({isLoading: false})})
     }
 
     render () {
         if (this.state.isLoading) {
-            return <> <TopNavbar/> <div className="container-middle"><Loading type={'balls'} color={'#235937'}/> </div> </>
+            return <> <TopNavbar/> <div className="container-center"><Loading type={'spin'} color={'#235937'}/> </div> </>
         }
 
         const teacher = this.context.isInstructor;
@@ -122,7 +122,7 @@ class Quizzes extends Component {
         )
 
         return (
-            <div>
+            <div style={{backgroundColor: "#F2F2F2"}}>
                 <div> <TopNavbar/> </div>
                 
                 <div className="container-middle">

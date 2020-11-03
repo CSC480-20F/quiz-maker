@@ -28,6 +28,8 @@ class MyCourses extends Component {
                 }
                 if (this.state.coursesIDs.length !== 0) {
                     this.getCoursesFromDB();
+                } else {
+                    this.setState({ isLoading: false})
                 }
             }
         }).catch(err => {
@@ -65,14 +67,14 @@ class MyCourses extends Component {
 
     render () {
         if (this.state.isLoading) {
-            return <div className="container-middle"><Loading type={'balls'} color={'#235937'}/></div>
+            return <div className="container-middle"><Loading type={'spin'} color={'#235937'}/></div>
         }
 
         const { myCourses } = this.state;
         const coursesList = myCourses.length ? (
             myCourses.map(course => {
                 return (
-                    <Link to={`/Courses/${course.courseId}`} className='regular-link' key={course.courseId}>
+                    <Link to={`/Courses/${course._id.$oid}`} className='regular-link' key={course._id.$oid}>
                         <Card className="course-card">
                             <Card.Title>{course.courseName}</Card.Title>
                         </Card>

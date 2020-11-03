@@ -9,6 +9,7 @@ public class QuizMakerCourse {
     private String courseName;
     private String courseTeacher;
     private ArrayList<String> courseRoster = new ArrayList<>();
+    private ArrayList<String> topics = new ArrayList<>();
 
     public QuizMakerCourse(){}
 
@@ -52,6 +53,7 @@ public class QuizMakerCourse {
     public DBObject convertCourse(QuizMakerCourse course){
         return new BasicDBObject().append("teacher", this.courseName)
                 .append("courseName", this.courseTeacher)
-                .append("courseRoster", this.courseRoster);
+                .append("courseRoster", this.courseRoster)
+                .append("topics", this.topics);
     }
 }

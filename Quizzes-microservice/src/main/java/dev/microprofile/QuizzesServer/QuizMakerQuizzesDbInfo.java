@@ -6,11 +6,14 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonValue;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -19,12 +22,11 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 @Path("/quizzes")
 public class QuizMakerQuizzesDbInfo {
     // Creates login username and password
-    MongoCredential frontendAuth = MongoCredential.createScramSha256Credential("frontend", "quizzesDB", "AdminPassword123".toCharArray());
-    // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
-    ServerAddress serverAddress = new ServerAddress("129.3.20.26", 27019);
+    MongoCredential frontendAuth = MongoCredential.createScramSha1Credential("frontend", "quizzesDB", "CsC480OswegoFrontendXD".toCharArray());    // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
+    ServerAddress serverAddress = new ServerAddress("68.172.33.6", 27019);
     CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
         fromProviders(PojoCodecProvider.builder().register(QuizMakerQuiz.class).automatic(true).build()));
-    MongoClient mongoClient = new MongoClient(serverAddress);
+    MongoClient mongoClient = new MongoClient(serverAddress, Collections.singletonList(frontendAuth));
     //MongoClient mongoClient = new MongoClient(27018);
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("quizzesDB");
@@ -210,5 +212,25 @@ public class QuizMakerQuizzesDbInfo {
 
         //System.out.println(query.toString());
         return Response.ok(starredQuizzes.toString(), MediaType.APPLICATION_JSON).build();
+    }
+
+    @Path("/populate-database-for-testing")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response populateDB(JsonArray mockData){
+        DBCollection collection = database.getCollection("quizzes");
+        int badQuizzes = 1;
+        BulkWriteOperation bulk = collection.initializeUnorderedBulkOperation();
+
+        for (JsonValue mockQuiz: mockData) {
+            if(badQuizzes > 2) {
+                DBObject o = BasicDBObject.parse(mockQuiz.toString());
+                bulk.insert(o);
+            }
+            badQuizzes++;
+        }
+        bulk.execute();
+
+        return Response.ok().build();
     }
 }

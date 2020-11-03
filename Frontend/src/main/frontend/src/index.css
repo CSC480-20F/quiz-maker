@@ -21,3 +21,8 @@ body {
   background-color:#F2F2F2;
   
 }
+
+html, body, body > div, .app {
+  height: 100%;
+  background-color:#F2F2F2;
+}

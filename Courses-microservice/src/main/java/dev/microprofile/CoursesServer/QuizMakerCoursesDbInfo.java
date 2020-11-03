@@ -3,19 +3,23 @@ package dev.microprofile.CoursesServer;
 import com.mongodb.*;
 import org.bson.types.ObjectId;
 
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonValue;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 @Path("/courses")
 public class QuizMakerCoursesDbInfo {
     // Creates login username and password
-    MongoCredential adminAuth = MongoCredential.createScramSha256Credential("superuser", "admin", "AdminPassword123".toCharArray());
+    MongoCredential frontendAuth = MongoCredential.createScramSha1Credential("frontend", "coursesDB", "CsC480OswegoFrontendXD".toCharArray());
     // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
-    ServerAddress serverAddress = new ServerAddress("129.3.20.26", 27018);
-    MongoClient mongoClient = new MongoClient(serverAddress);
+    ServerAddress serverAddress = new ServerAddress("68.172.33.6", 27018);
+    MongoClient mongoClient = new MongoClient(serverAddress, Collections.singletonList(frontendAuth));
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("coursesDB");
 
@@ -64,27 +68,19 @@ public class QuizMakerCoursesDbInfo {
 
         DBCollection collection = database.getCollection("courses");
         String[] course = courseId.split(",");
-        String courseOut = "[{";
         Object courseName;
         Object teacher;
-
+        ArrayList<DBObject> courses = new ArrayList<>();
         for (int i = 0; i < course.length; i++) {
             DBObject currentCourse = collection.findOne(new ObjectId(course[i]));
-
-            if(i > 0){
-                courseOut = courseOut.concat(",{");
-            }
-
-            courseName = currentCourse.get("courseName");
-            teacher = currentCourse.get("teacher");
-
-            courseOut = courseOut.concat("\"courseId\" : ").concat("\""+ course[i] + "\"" +  ",").concat("\"courseName\" : ").concat("\""+courseName.toString() + "\""+",").concat("\"teacher\" : " + "\""+teacher.toString()+"\"");
-            courseOut = courseOut.concat("}");
+            currentCourse.removeField("courseRoster");
+            courses.add(currentCourse);
         }
-        courseOut = courseOut.concat("]");
-        return Response.ok(courseOut, MediaType.APPLICATION_JSON).build();
+        //courseOut = courseOut.concat("]");
+        return Response.ok(courses.toString(), MediaType.APPLICATION_JSON).build();
     }
 
+    //GET accepts email and returns all courses that user is a instructor
     @Path("/get-instructor-courses/{email}")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
@@ -96,14 +92,94 @@ public class QuizMakerCoursesDbInfo {
         query.put("teacher", email);
 
         DBCursor instructor = collection.find(query);
-        System.out.println(instructor.toString());
         while (instructor.hasNext()){
             DBObject adding = instructor.next();
             adding.removeField("courseRoster");
-            adding.removeField("teacher");
             courseList.add(adding);
         }
         return Response.ok(courseList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
+    //needs testing
+    //adds topics to course
+    @Path("/add-topics")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addCourse(JsonObject topics){
+        DBCollection collection = database.getCollection("courses");
+        String courseId = topics.getString("courseID");
+        JsonArray topicArray = topics.getJsonArray("topics");
+
+        DBObject course = collection.findOne(new ObjectId(courseId));
+        BasicDBList topicsList = (BasicDBList)course.get("topics");
+
+        for(int index = 0; index < topicArray.size(); index++){
+            String topic = topicArray.getString(index);
+            if(!topicsList.contains(topic)) {
+                topicsList.add(topic);
+            }
+        }
+
+        BasicDBObject foundCourse = new BasicDBObject();
+        course.put("topics", topicsList);
+        foundCourse.put("_id", new ObjectId(courseId));
+        collection.findAndModify(foundCourse, course);
+        return Response.ok().build();
+    }
+
+    @Path("/update-topics")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateTopics(JsonObject freshTopics){
+        DBCollection collection = database.getCollection("courses");
+        String id = freshTopics.getString("courseID");
+        DBObject foundCourse = collection.findOne(new ObjectId(id));
+
+        BasicDBList convertList = new BasicDBList();
+        for (JsonValue value :freshTopics.getJsonArray("topics")) {
+            convertList.add(value.toString().replace('"',' ').trim());
+
+        }
+
+        foundCourse.put("topics", convertList);
+        System.out.println(foundCourse.toString());
+        BasicDBObject currentCourse = new BasicDBObject();
+        currentCourse.put("_id", new ObjectId(id));
+        collection.findAndModify(currentCourse, foundCourse);
+        return Response.ok().build();
+    }
+
+    @Path("/get-course-roster/{courseId}")
+    @GET
+    @Consumes("application/json")
+    public Response getCourseRoster(@PathParam("courseId") String courseId){
+        DBCollection collection = database.getCollection("courses");
+        BasicDBObject currentCourse = new BasicDBObject();
+        currentCourse.put("_id", new ObjectId(courseId));
+        DBObject currentRoster = collection.findOne(currentCourse);
+        BasicDBList foundRoster = (BasicDBList)currentRoster.get("courseRoster");
+        return Response.ok(foundRoster, MediaType.APPLICATION_JSON).build();
+    }
+
+    @Path("/update-course-roster/")
+    @PUT
+    @Consumes("application/json")
+    public Response addCourseRoster(JsonObject updatedCourse){
+        DBCollection collection = database.getCollection("courses");
+        String stringID = updatedCourse.getString("courseID");
+        ObjectId id = new ObjectId(stringID);
+        System.out.println(id.toString());
+
+        BasicDBList convertList = new BasicDBList();
+        for (JsonValue value :updatedCourse.getJsonArray("courseRoster")) {
+            convertList.add(value.toString().replace('"',' ').trim());
+        }
+
+        DBObject currentCourse = collection.findOne(id);
+        currentCourse.put("courseRoster", convertList);
+        BasicDBObject looker = new BasicDBObject();
+        looker.put("_id", id);
+        collection.findAndModify(looker,currentCourse);
+        return Response.ok().build();
+    }
 }

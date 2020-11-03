@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import TopNavbar from './TopNavbar';
-import { Button, Card, CardDeck, InputGroup, FormControl } from 'react-bootstrap';
+import { Button, Card, CardDeck } from 'react-bootstrap';
 import styled from 'styled-components';
 import CreateQuizForm from './CreateQuizForm';
 import Loading from './Loading';
+import {UserContext} from '../context/UserContext';
 
 // 💅 Styling  
 const Styles = styled.div`
@@ -32,6 +33,8 @@ const Styles = styled.div`
 
   .topics-deck {
     display: flex;
+    padding-left: 20px;
+    padding-right: 20px;
     justify-content: flex-start;
     flex-direction: row;
   }
@@ -47,17 +50,24 @@ const Styles = styled.div`
     align-self: center;
   }
 
+  .courses-deck {
+    max-width: 75rem !important;
+  }
+
 `;
 
 
 class CreateQuiz extends Component {
+  static contextType = UserContext
+
   state = {
     isLoading:true,
     courses: [],
     courseIDs: [],
     chosenCourseId:null,
     chosenCourse:null,
-    topicOptions: ["Option1","Option2", "Option3", "Option4", "Option5", "Option6", "Option7"],
+    instructorCourses: [],
+    topicOptions: [],
     topics: [],
     createQuizSection: false,
     isInstructor: false
@@ -75,22 +85,20 @@ class CreateQuiz extends Component {
       const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
       axios.get('http://pi.cs.oswego.edu:9081/users/' + email).then(res => {
         if(this.mounted){
-          this.setState({courseIDs: res.data,}, () => {this.getCoursesFromDB()})
+          this.setState({courseIDs: res.data}, () => {this.getCoursesFromDB()})
         }
       }).catch(err => {
           console.log(err);
-          if (this.mounted) {
-            this.setState({isLoading: false})
-          }
       })
       }
   }
 
   getChosenCourse = () => {
+
     // TODO: ALSO GET THE TOPICS FOR THAT COURSE
-    axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + this.state.chosenCourseId).then(res => {
+    axios.get('http://localhost:9083/courses/get-courses/' + this.state.chosenCourseId).then(res => {
       if(this.mounted){
-        this.setState({chosenCourse: res.data, isLoading: false}, () => this.checkIfInstructor())
+        this.setState({chosenCourse: res.data, isLoading: false, topicOptions: res.data[0].topics}, () => this.checkIfInstructor())
       }
     }).catch(err => {
         console.log(err);
@@ -109,29 +117,43 @@ class CreateQuiz extends Component {
   }
 
   getCoursesFromDB = () => {
-    const sendCourseIDs = this.state.courseIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
-    axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + sendCourseIDs).then(res => {
-        if(this.mounted){
-            this.setState({
-                courses: res.data,
-                isLoading: false
-            })
-        }
-    }).catch(err => {
-        if(this.mounted){
-            console.log(err);
-            this.setState({
-                isLoading: false
-            })
-        }
-    })
+
+     if (this.state.courseIDs.length > 0) {
+      const sendCourseIDs = this.state.courseIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
+      axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs).then(res => {
+          if(this.mounted){
+              this.setState({courses: res.data}, () => {this.getInstructorCourses()})
+          }
+      }).catch(err => {console.log(err)})
+    } else {
+      this.getInstructorCourses()
+    }
   }
 
-  onTopicChange(event) {this.setState({topic:event.target.value})}
+  getInstructorCourses = () => {
+    const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
+    if (this.context.isInstructor) {
+      axios.get('http://localhost:9083/courses/get-instructor-courses/' + email).then(res => {
+        if (res.data.length > 0) {
+          for (var course in res.data) {
+            if (this.mounted) {
+              this.setState({courses: [...this.state.courses, res.data[course]], isLoading: false})
+            }
+          }
+        } else {
+          this.setState({isLoading: false})
+        }
+      }).catch(err => {console.log(err);})
+    }
+  }
 
-  onSubmitTopic = (e) => {
-    e.preventDefault()
-    this.setState({topics: [...this.state.topics,this.state.topic], topic: ""})
+  addTopic = (topic) => {
+    if (!this.state.topics.includes(topic)){
+      this.setState({topics: [...this.state.topics, topic]})
+    } else {
+      const filteredArray = this.state.topics.filter(item => item !== topic)
+      this.setState({topics: filteredArray});
+    }
   }
 
   quizCreation = (e) => {
@@ -146,33 +168,22 @@ class CreateQuiz extends Component {
       chosenCourseId: id
     }, () => {
       const foundCourse = this.state.courses.filter(item => {
-        return item.courseId === this.state.chosenCourseId
+        return item._id.$oid === this.state.chosenCourseId
       })
-      this.setState ({
-        chosenCourse: foundCourse
-      })
+      this.setState ({chosenCourse: foundCourse, topicOptions: foundCourse[0].topics}, () => this.checkIfInstructor())
     })
-  }
-
-  addTopic = (topic) => {
-    if (!this.state.topics.includes(topic)){
-      this.setState({topics: [...this.state.topics, topic]})
-    } else {
-      const filteredArray = this.state.topics.filter(item => item !== topic)
-      this.setState({topics: filteredArray});
-    }
   }
 
   render () {
     if (this.state.isLoading) {
-      return <> <TopNavbar/> <div className="container-middle"><Loading type={'balls'} color={'#235937'}/> </div> </>
+      return <> <TopNavbar/> <div className="container-center"><Loading type={'spin'} color={'#235937'}/> </div> </>
     }
 
     // Once a specific course has been chosen, display this instead of all courses
     const specificCourse = this.state.chosenCourse !== null ? (
       this.state.chosenCourse.map(course => {
           return (
-            <Card className="course-card specific-course-card" key={course.courseId}>
+            <Card className="course-card specific-course-card" key={course._id.$oid}>
                 <Card.Title>{course.courseName}</Card.Title>
             </Card>
           )
@@ -185,7 +196,7 @@ class CreateQuiz extends Component {
     const coursesList = this.state.courses.length ? (
         this.state.courses.map(course => {
             return (
-              <Card className="course-card" key={course.courseId} onClick={e => this.courseChosen(course.courseId)}>
+              <Card className="course-card" key={course._id.$oid} onClick={e => this.courseChosen(course._id.$oid)}>
                   <Card.Title>{course.courseName}</Card.Title>
               </Card>
             )
@@ -196,7 +207,7 @@ class CreateQuiz extends Component {
 
     const topics = this.state.topicOptions.map((topic,i) => {
           return (
-            <Card className="topic-card" onClick={e => this.addTopic(topic)} className={this.state.topics.includes(topic) ? ("chosen-topic-card"):("topic-card")} key = {i}>
+            <Card onClick={e => this.addTopic(topic)} className={this.state.topics.includes(topic) ? ("chosen-topic-card"):("topic-card")} key = {i}>
                 {topic}
             </Card>
           )
@@ -245,8 +256,8 @@ class CreateQuiz extends Component {
     return (
       <>
       <TopNavbar/>
-        <div className="container-middle">
-          <div className="small-spacer"></div>
+        <div className="container-middle" style={{backgroundColor: "#F2F2F2"}}>
+          <div cla>>>>>>> masterssName="small-spacer"></div>
             <Styles>
             {createQuizPart} 
             </Styles>

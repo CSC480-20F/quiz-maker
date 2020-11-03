@@ -8,13 +8,16 @@ function UserProvider ({ children }) {
 
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
+    const signIn = signInData()
+
     useEffect(() => {
         async function fetchData() {
-            await delay(800);
+            await delay(1000);
             if (!window.gapi.auth2.getAuthInstance().isSignedIn.get()) {
               setInstructor(false);
             } else {
               const email = await window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
+              console.log('Checking with DB to see if user is an instructor')
               const { data } = await axios.get(
               `http://pi.cs.oswego.edu:9081/users/is-instructor/${email}`
               );
@@ -22,7 +25,7 @@ function UserProvider ({ children }) {
             }
         }
         fetchData();
-      }, [signInData()]);
+      }, [signIn]);
 
       async function signInData(){
         await delay(1000);
