@@ -140,6 +140,7 @@ class CreateQuiz extends Component {
         }
       }).catch(err => {console.log(err); this.setState({isLoading: false})})
     }
+    this.setState({isLoading: false})
   }
 
   addTopic = (topic) => {
