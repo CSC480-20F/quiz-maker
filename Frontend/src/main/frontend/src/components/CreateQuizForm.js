@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import {Modal, Button, Card, Form, Col, Spinner } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
 // 💅 Stylesheet for this babay
@@ -353,7 +353,6 @@ class CreateQuizForm extends React.Component{
 
       return (
         <Style>
-        <NotificationContainer/>
         <div className="container-middle" style={{backgroundColor: "#F2F2F2"}}>
         <Form id="quiz-form" onSubmit={this.handleSubmit.bind(this)}>
           <Form.Row>

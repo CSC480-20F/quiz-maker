@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Card, Form, Col, Button, Spinner, CardGroup, CardDeck} from 'react-bootstrap';
 import styled from 'styled-components';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import axios from 'axios';
 
@@ -242,7 +242,6 @@ class ManageStudents extends Component {
 
         return (
             <Style>
-            <NotificationContainer/>
             <div className="container">
             <h1 className="subtitle"> Manage Students </h1>
             <Card className="rounded-corner main-card">

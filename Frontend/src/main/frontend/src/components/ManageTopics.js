@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Card, Form, Col, Button, Spinner, Row} from 'react-bootstrap';
 import styled from 'styled-components';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import axios from 'axios';
 
@@ -76,6 +76,10 @@ class ManageTopics extends Component {
 
     addTopic = () => {
       if (this.state.topic.length > 0) {
+        if (this.state.topics.includes(this.state.topic)) {
+          NotificationManager.info('Topics already exists 🥴', 'Topics Exists', 3000); 
+          return;
+        }
         this.setState({
           topics: [...this.state.topics, this.state.topic],
           topic: ""
@@ -148,7 +152,6 @@ class ManageTopics extends Component {
 
         return (
             <Style>
-            <NotificationContainer/>
             <div className="container">
             <h1 className="subtitle"> Manage Topics </h1>
             <Card className="rounded-corner main-card">

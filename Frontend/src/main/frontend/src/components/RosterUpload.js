@@ -4,7 +4,7 @@ import TopNavbar from './TopNavbar';
 import { Button, Form, Card, Col } from 'react-bootstrap';
 import { CSVReader } from 'react-papaparse';
 import styled from 'styled-components';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
   
 const buttonRef = React.createRef()
@@ -173,6 +173,10 @@ class RosterUpload extends React.Component {
 
   addTopic = () => {
     if (this.state.topic.length > 0) {
+      if (this.state.topics.includes(this.state.topic)) {
+        NotificationManager.info('Topics already exists 🥴', 'Topics Exists', 3000); 
+        return;
+      }
       this.setState({
         topics: [...this.state.topics, this.state.topic],
         topic: ""
@@ -196,7 +200,6 @@ class RosterUpload extends React.Component {
       <>
         <Style>
         <TopNavbar/>
-        <NotificationContainer/>
         <div className="container">
         <div className="small-spacer"></div>
 
@@ -208,7 +211,7 @@ class RosterUpload extends React.Component {
         <div className="spacer"></div>
 
         {/* <ToggleContainer> */}
-        <Card className="main-card rounded-corner">
+        <Card id="card" className="main-card rounded-corner">
         <CSVReader
           required
           config={{header: true, skipEmptyLines: true}}
