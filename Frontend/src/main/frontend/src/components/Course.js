@@ -9,7 +9,6 @@ import Loading from './Loading';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import studentPic from '../assets/student.png';
-// import databasePic from '../assets/database.png';
 import topicsPic from '../assets/topics.png';
 import ManageTopics from './ManageTopics';
 import ManageStudents from './ManageStudents';
@@ -106,7 +105,7 @@ class Course extends Component {
                 <div className="container">
                 <Card className="manage-panel">
                 <ManageTopics courseID={this.props.match.params.course_id}/>
-                <div className="container"><Button variant="light" className="manage back" onClick={() => this.manageTopics()}> Back to Panel </Button></div>
+                <div className="container"><Button id="dark-mode-button" variant="light" className="manage back" onClick={() => this.manageTopics()}> Back to Panel </Button></div>
                 </Card>
                 </div>
             ):(
@@ -114,7 +113,7 @@ class Course extends Component {
                     <div className="container">
                     <Card className="manage-panel">
                     <ManageStudents courseID={this.props.match.params.course_id}/>
-                    <div className="container"><Button variant="light" className="manage back" onClick={() => this.manageStudents()}> Back to Panel </Button></div>
+                    <div className="container"><Button id="dark-mode-button" variant="light" className="manage back" onClick={() => this.manageStudents()}> Back to Panel </Button></div>
                     </Card>
                     </div>
                 ):(
@@ -122,17 +121,13 @@ class Course extends Component {
                     <div className="container">
                         <h1 className="subtitle">Professor Panel</h1>
                         <CardGroup className="rounded-corner">
-                            {/* <Card className="professor-panel-card rounded-corner">
-                                <img src={databasePic} className="icon" alt="Database of Quizzes" />
-                                <Button variant="light" className="manage"> Quiz Database </Button>
-                            </Card> */}
                             <Card className="professor-panel-card rounded-corner">
                                 <img src={studentPic} className="icon" alt="Database of Quizzes" />
-                                <Button variant="light" className="manage" onClick={() => this.manageStudents()}>Manage Students </Button>
+                                <Button id="dark-mode-button" variant="light" className="manage" onClick={() => this.manageStudents()}>Manage Students </Button>
                             </Card>
                             <Card className="professor-panel-card rounded-corner">
                                 <img src={topicsPic} className="icon" alt="Database of Quizzes" />
-                                <Button variant="light" className="manage" onClick={() => this.manageTopics()}>Manage Topics </Button>
+                                <Button id="dark-mode-button" variant="light" className="manage" onClick={() => this.manageTopics()}>Manage Topics </Button>
                             </Card>
                         </CardGroup>
                     </div>
@@ -162,7 +157,7 @@ class Course extends Component {
                     <h1 className="center header">{this.state.course.courseName}</h1>
                     <div style={{padding: '10px'}}> </div>
                     <Link to={"/CreateQuiz/" + this.state.course._id.$oid}>
-                    <Button variant='light' className='create-quiz center'>Create a Quiz</Button>
+                    <Button id="dark-mode-button" variant='light' className='create-quiz center'>Create a Quiz</Button>
                     </Link>
                 </div>
 
@@ -184,7 +179,7 @@ class Course extends Component {
             </div>
         )
         return(
-            <div style={{backgroundColor: "#F2F2F2"}}>
+            <div>
                 {course}
                 <h1 className='header'> {this.state.textID} </h1>
             </div>

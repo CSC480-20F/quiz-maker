@@ -212,7 +212,7 @@ class CreateQuiz extends Component {
   const quizCreationButton = this.state.topics.length ? (
     <div className="container">
     <div className="spacer"></div>
-    <Button className="create-quiz" variant="light" onClick={this.quizCreation}> Go to Quiz Creation </Button>
+    <Button id="dark-mode-button" className="create-quiz" variant="light" onClick={this.quizCreation}> Go to Quiz Creation </Button>
     </div>
   ):(
     <div className="container"></div>
@@ -252,7 +252,7 @@ class CreateQuiz extends Component {
     return (
       <>
       <TopNavbar/>
-        <div className="container-middle" style={{backgroundColor: "#F2F2F2"}}>
+        <div className="container-middle">
           <div className="small-spacer"></div>
             <Styles>
             {createQuizPart} 

@@ -75,6 +75,7 @@
   font-size: 20px;
   font-weight: 500;
   background-color: #8F0047;
+  border-color: #8F0047;
 }
 
 .create-quiz:hover{
@@ -167,6 +168,11 @@
   background: #f2f2f2;
   font-family: Roboto;
   font-weight: 100;
+}
+
+.ReactTable .rt-tr:hover .rt-td {
+  cursor: pointer;
+  background: #FE9C02;
 }
 
 

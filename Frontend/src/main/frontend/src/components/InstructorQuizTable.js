@@ -62,6 +62,7 @@ class InstructorQuizTable extends Component {
           accessor:customStarredAccessor
         }
     ]
+    
 
       return (
             <div style={{padding: '50px', textAlign: 'center'}}>

@@ -76,7 +76,7 @@ const TopNavbar = () => {
   return (
       <>
       <Styles>
-      <Navbar className = "nav-bar-style"  variant="dark" >
+      <Navbar id="topnavbar" className = "nav-bar-style"  variant="dark" >
       <Navbar.Brand as={Link} to="/">
       <img className="login-quizmaker-logo" alt="QuizMaker Logo" src={quizmakerlogo} style={{maxWidth:'65%', paddingBottom:'20px', paddingLeft:'50px', paddingTop:'10px'}}/>
       </Navbar.Brand>
@@ -94,7 +94,7 @@ const TopNavbar = () => {
       </Nav>
       
       <div style={{fontSize:'9px', margin:'25px'}}>
-      {/* <DarkModeApp id="edit-dark-mode-text"/>  */}
+      <DarkModeApp id="edit-dark-mode-text"/> 
       {/* <DarkModeApp  id="edit-dark-mode-text"></DarkModeApp> */}
       </div>
       <img src={logo} alt="SUNY Oswego Logo" style={{width:98, height: 36, marginTop: -8}} />

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import TopNavbar from './TopNavbar';
 import Loading from './Loading';
 import axios from 'axios';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import {NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import {Card, ProgressBar, Form, Col, Button, Modal, } from 'react-bootstrap';
 import { FcCheckmark, FcCancel } from "react-icons/fc"; //https://react-icons.github.io/react-icons/icons?name=fc
@@ -536,7 +536,6 @@ class TakeQuiz extends Component {
     return (
       <>
       <TopNavbar/>
-      <NotificationContainer/>
       <Styles>
       <div className="container" style={{backgroundColor: "#F2F2F2"}}>
         <h1 className="header">{this.state.quizTitle}</h1>

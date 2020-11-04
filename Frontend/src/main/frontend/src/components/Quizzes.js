@@ -95,12 +95,12 @@ class Quizzes extends Component {
 
         const view = teacher ? (
             <Tabs defaultActiveKey="MyQuizzes" id="uncontrolled-tab-example">
-            <Tab eventKey="MyQuizzes" title="My created quizzes">
+            <Tab eventKey="MyQuizzes" title="My Created Quizzes">
                 <Card className='rounded-corner'>
                     <InstructorQuizTable data ={this.state.createdQuizzesData} />
                 </Card>
             </Tab>
-            <Tab eventKey="QuizHistory" title="Quizzes I took">
+            <Tab eventKey="QuizHistory" title="Quizzes I Took">
                 <Card className='rounded-corner'>
                     <InstructorQuizTable data = {this.state.takenQuizzesData} />
                 </Card>
@@ -122,7 +122,7 @@ class Quizzes extends Component {
         )
 
         return (
-            <div style={{backgroundColor: "#F2F2F2"}}>
+            <div>
                 <div> <TopNavbar/> </div>
                 
                 <div className="container-middle">

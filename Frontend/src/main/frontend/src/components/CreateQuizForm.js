@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import {Modal, Button, Card, Form, Col, Spinner } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
 // 💅 Stylesheet for this babay
@@ -60,6 +60,7 @@ const Style = styled.div`
       margin-right: 15px;
       color: white;
       background-color:#E93232;
+      border-color:#E93232;
     }
 
     .publish-quiz-button {
@@ -67,6 +68,7 @@ const Style = styled.div`
       padding: 18px;
       color: white; 
       background-color: #1C9B2F;
+      border-color: #1C9B2F;
     }
 
     .add-topic-button {
@@ -268,10 +270,10 @@ class CreateQuizForm extends React.Component{
       
     render(){
       const instructorButton = this.state.isInstructor ? (
-        <> <Button variant="light" className="add-question-button rounded-corner" onClick={() => this.getStarredQuizzes()}> Import Questions </Button>
-        <Button type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> </>
+        <> <Button id="dark-mode-button" variant="light" className="add-question-button rounded-corner" onClick={() => this.getStarredQuizzes()} style={{marginRight: '5px'}}> Import Questions </Button>
+        <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> </>
       ):(
-        <Button type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> 
+        <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> 
       )
 
       const body = this.state.chosenQuiz.length ? (
@@ -343,27 +345,26 @@ class CreateQuizForm extends React.Component{
       )
 
       const footerButtons = this.state.chosenQuestion===null ? (
-        <Button variant="light" onClick={this.handleImportClose}> Cancel </Button>
+        <Button id="dark-mode-button" variant="light" onClick={this.handleImportClose}> Cancel </Button>
       ):(
         <>
-        <Button variant="light" onClick={this.handleImportClose}> Cancel </Button>
-        <Button variant="light" onClick={() => this.useQuestion()}> Use Question </Button>
+        <Button id="dark-mode-button" variant="light" onClick={this.handleImportClose}> Cancel </Button>
+        <Button id="dark-mode-button" variant="light" onClick={() => this.useQuestion()}> Use Question </Button>
         </>
       )
 
       return (
         <Style>
-        <NotificationContainer/>
-        <div className="container-middle" style={{backgroundColor: "#F2F2F2"}}>
+        <div className="container-middle">
         <Form id="quiz-form" onSubmit={this.handleSubmit.bind(this)}>
           <Form.Row>
-          <Form.Control required className="header no-border" size="sm" type="text" placeholder="Quiz Title..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
+          <Form.Control required id="form-input" className="header no-border" size="sm" type="text" placeholder="Quiz Title..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
           </Form.Row>
 
           <div className="spacer"></div>
 
-          <div className="description"> {this.state.quiz_title} is about: 
-            <span className="topicsColor"> {this.state.topics.join(', ')}</span>.
+          <div id="text" className="description"> {this.state.quiz_title} is about: 
+            <span id="purple-text" className="topicsColor"> {this.state.topics.join(', ')}</span>.
             <Button variant="light" className="publish-quiz-button rounded-corner" onClick={this.onCreateQuiz}> Publish Quiz </Button>
             <Button variant="light" className="delete-quiz-button rounded-corner" onClick={this.handleShow}> Delete Quiz </Button> 
           </div>
