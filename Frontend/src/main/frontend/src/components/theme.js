@@ -10,10 +10,16 @@ export const lightTheme = {
   export const darkTheme = {
     body: '#363537 ', //#363537
     text: 'white',
+    headerColor: 'white',
+    subtitleColor: '#99AAB5',
     toggleBorder: '#6B8096',//#6B8096
     gradient: 'linear-gradient(#091236, #1E215D)',
     card: '#707070',
-    color:'red'
+    color:'red',
+    goldenText: '#FE9C02',
+    navbarBackground: '#23272A',
+    createButtonColor: '#99AAB5',
+    createButtonText: '#23272A'
   }
 
   

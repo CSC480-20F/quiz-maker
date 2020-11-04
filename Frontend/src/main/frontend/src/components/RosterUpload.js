@@ -205,13 +205,13 @@ class RosterUpload extends React.Component {
 
         <Form id="course-form" onSubmit={this.handleSubmit.bind(this)}>
           <Form.Row>
-          <Form.Control required className="header no-border" size="sm" type="text" placeholder="Course Title..." value={this.state.course} onChange={this.onCourseChange.bind(this)}/>
+          <Form.Control required id="form-input" className="header no-border" size="sm" type="text" placeholder="Course Title..." value={this.state.course} onChange={this.onCourseChange.bind(this)}/>
           </Form.Row>
         
         <div className="spacer"></div>
 
         {/* <ToggleContainer> */}
-        <Card id="card" className="main-card rounded-corner">
+        <Card className="main-card rounded-corner">
         <CSVReader
           required
           config={{header: true, skipEmptyLines: true}}

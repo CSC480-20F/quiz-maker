@@ -76,7 +76,7 @@ const TopNavbar = () => {
   return (
       <>
       <Styles>
-      <Navbar className = "nav-bar-style"  variant="dark" >
+      <Navbar id="topnavbar" className = "nav-bar-style"  variant="dark" >
       <Navbar.Brand as={Link} to="/">
       <img className="login-quizmaker-logo" alt="QuizMaker Logo" src={quizmakerlogo} style={{maxWidth:'65%', paddingBottom:'20px', paddingLeft:'50px', paddingTop:'10px'}}/>
       </Navbar.Brand>
