@@ -118,7 +118,7 @@ class ManageTopics extends Component {
                 return (
                   <Row className="justify-content-md-center" style={{alignItems: "baseline"}} key={i}>
                     <Col xs lg="2" className="purpleColor">{topic}</Col>
-                    <Col xs lg="1"><Button variant="light" onClick={() => this.removeTopic(topic)} className="rounded-corner remove"> X </Button></Col>
+                    <Col xs lg="1"><Button variant="light" id="dark-mode-button" onClick={() => this.removeTopic(topic)} className="rounded-corner remove"> X </Button></Col>
                   </Row>
                 )
             })
@@ -141,11 +141,11 @@ class ManageTopics extends Component {
                 <Col xs="auto">
                 <Form.Control required className="topic-input mb-2 mr-sm-2" type="text" placeholder="Write a topic..." value={this.state.topic} onChange={this.onTopicChange.bind(this)} aria-label="Input a topic to add"/>
                 </Col>
-                <Col xs="auto"><Button variant="light" className="submit-button rounded-corner mb-2" onClick={() => this.addTopic()}> Add Topic </Button> </Col>
+                <Col xs="auto"><Button variant="light" id="dark-mode-button" className="submit-button rounded-corner mb-2" onClick={() => this.addTopic()}> Add Topic </Button> </Col>
             </Form>
             </div>
 
-            <Button variant="light" className="save-button rounded-corner" onClick={() => this.saveTopics()}>Save Changes</Button>
+            <Button variant="light" id="dark-mode-button" className="save-button rounded-corner" onClick={() => this.saveTopics()}>Save Changes</Button>
             </>
           )
         )

@@ -210,10 +210,10 @@ class ManageStudents extends Component {
                         <Form.Control required className="input mb-2 mr-sm-2" type="text" placeholder="Student's Full Name" value={this.state.inputName} onChange={this.onNameChange.bind(this)} aria-label="Input the student's full name"/>
                         <Form.Control required className="input mb-2 mr-sm-2" type="text" placeholder="Student's Oswego Email" value={this.state.inputEmail} onChange={this.onEmailChange.bind(this)} aria-label="Input the student's Oswego email"/>
                         </Col>
-                        <Col xs="auto"><Button variant="light" className="submit-button rounded-corner mb-2" onClick={() => this.addStudent()}> Add Student </Button> </Col>
+                        <Col xs="auto"><Button id="dark-mode-button" variant="light" className="submit-button rounded-corner mb-2" onClick={() => this.addStudent()}> Add Student </Button> </Col>
                     </Form>
                     </div>
-                    <Button variant="light" className="save-button rounded-corner" onClick={() => this.finishAddingStudents()}>Save Changes</Button>
+                    <Button variant="light" id="dark-mode-button" className="save-button rounded-corner" onClick={() => this.finishAddingStudents()}>Save Changes</Button>
                     </>
                 ):(
                     this.state.removeStudentMode ? (
@@ -224,15 +224,15 @@ class ManageStudents extends Component {
                         <div className="container-middle">Note: Select the students to be removed and click "Remove Students"</div>
                         <CardDeck style={{display: "flex", flexWrap: "wrap", alignContent: "flex-start"}}>{removeStudents}</CardDeck>
                         <div className="small-spacer"></div>
-                        <Button variant="light" className="save-button rounded-corner" onClick={() => this.finishRemovingStudents()}>Remove Students</Button>
+                        <Button variant="light" id="dark-mode-button" className="save-button rounded-corner" onClick={() => this.finishRemovingStudents()}>Remove Students</Button>
                         </>
                     ):(
                         <CardGroup className="rounded-corner">
                             <Card className="rounded-corner mode-card">
-                                <Button variant="light" className="mode rounded-corner" onClick={() => this.setState({addStudentMode: !this.state.addStudentMode})}>Add Students </Button>
+                                <Button variant="light" id="dark-mode-button" className="mode rounded-corner" onClick={() => this.setState({addStudentMode: !this.state.addStudentMode})}>Add Students </Button>
                             </Card>
                             <Card className="rounded-corner mode-card">
-                                <Button variant="light" className="mode rounded-corner" onClick={() => this.setState({removeStudentMode: !this.state.removeStudentMode})}>Remove Students </Button>
+                                <Button variant="light" id="dark-mode-button" className="mode rounded-corner" onClick={() => this.setState({removeStudentMode: !this.state.removeStudentMode})}>Remove Students </Button>
                             </Card>
                         </CardGroup>
                     )

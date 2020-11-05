@@ -96,6 +96,10 @@
   border-radius: 20px;
 }
 
+#toggle-icon {
+  color: white;
+}
+
 .courses-deck {
   padding-top: 20px;
   padding-bottom: 20px;
@@ -173,6 +177,40 @@
 .ReactTable .rt-tr:hover .rt-td {
   cursor: pointer;
   background: #FE9C02;
+}
+
+.manage-panel {
+  background-color: #F2F2F2;
+  border: #F2F2F2;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #F2F2F2;
+}
+
+.nav-tabs .nav-link{
+  font-size: 20px;
+  color: #235937;
+  background-color: #F2F2F2;
+  border: 1px solid #F2F2F2;
+  font-weight: bolder;
+  opacity: 0.5;
+}
+
+.nav-item.nav-link.active{
+  opacity: 1;
+  color: #235937;
+  background-color: #F2F2F2;
+  border: 1px solid #F2F2F2;
+}
+
+.this-subtitle {
+  font-family: Roboto;
+  color: #235937;
+  font-size: 30px;
+  font-weight: bolder;
+  margin-left: 10px;
+  padding-bottom: 5px;
 }
 
 

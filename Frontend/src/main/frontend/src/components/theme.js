@@ -1,5 +1,3 @@
-import { Card } from "react-bootstrap"
-
 export const lightTheme = {
     body: '#F2F2F2',
     text: '#363537',
@@ -19,7 +17,12 @@ export const lightTheme = {
     goldenText: '#FE9C02',
     navbarBackground: '#23272A',
     createButtonColor: '#99AAB5',
-    createButtonText: '#23272A'
+    createButtonText: '#23272A',
+    norounded: '0px',
+    black:'black',
+    white:'white',
+    darkGray: '#495057',
+    green:'green'
   }
 
   

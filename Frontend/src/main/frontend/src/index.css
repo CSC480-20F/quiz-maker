@@ -12,17 +12,8 @@ code {
     monospace;
 }
 
-html {
-  height: 100%;
-  background-color: #F2F2F2;
-}
-body {
-  min-height: 100%;
-  background-color:#F2F2F2;
-  
-}
 
-html, body, body > div{
+html, body{
   height: 100%;
   background-color:#F2F2F2;
 }

@@ -27,12 +27,12 @@ const Style = styled.div`
       margin-right: 0px;
     }
 
-    .answer-field {
+    ${'' /* .answer-field {
       box-shadow: 3px 3px 3px #ECECEC;
       border-color: #F5F3F3;
       border-radius: 15px;
       margin-left: 0px;
-    }
+    } */}
 
     .no-border {
       border: 0;
@@ -117,6 +117,10 @@ const Style = styled.div`
       border-radius: 15px;
       margin-left: 0px;
       background-color: white;
+    }
+
+    .correct-answer-field {
+      font-weight: bolder;
     }
 `;
 
@@ -276,6 +280,7 @@ class CreateQuizForm extends React.Component{
         <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> 
       )
 
+      // FOR INSTRUCTOR - WHEN IMPORTING A QUESTION ------------------------
       const body = this.state.chosenQuiz.length ? (
         this.state.chosenQuestion!== null ? (
           <>
@@ -285,7 +290,7 @@ class CreateQuizForm extends React.Component{
           <Form.Group>
           <Form.Row>
               <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>
-              <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.answer}/></Col>
+              <Col><Form.Control className="answer-field correct-answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.answer}/></Col>
           </Form.Row>
 
           <Form.Row>
@@ -343,6 +348,7 @@ class CreateQuizForm extends React.Component{
           ) 
         )
       )
+      // END --> FOR INSTRUCTOR - WHEN IMPORTING A QUESTION ------------------------
 
       const footerButtons = this.state.chosenQuestion===null ? (
         <Button id="dark-mode-button" variant="light" onClick={this.handleImportClose}> Cancel </Button>
@@ -400,9 +406,9 @@ class CreateQuizForm extends React.Component{
           <Form.Group>
 
           <Form.Row>
-            <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label >
+            <Form.Label id="correct-answer-field" className="label" column="lg" sm={0.5}> A </Form.Label >
             <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type your correct answer here..." value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
+            <Form.Control required className="answer-field correct-answer-field" size="lg" type="text" placeholder="Type your correct answer here..." value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
             </Col>
           </Form.Row>
           <br/>
@@ -410,7 +416,7 @@ class CreateQuizForm extends React.Component{
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label >
             <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer1} onChange={this.onIncorrect_answerChange1.bind(this)}/>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer1} onChange={this.onIncorrect_answerChange1.bind(this)}/>
             </Col>
           </Form.Row>
           <br/>
@@ -418,7 +424,7 @@ class CreateQuizForm extends React.Component{
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label >
             <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer2} onChange={this.onIncorrect_answerChange2.bind(this)}/>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer2} onChange={this.onIncorrect_answerChange2.bind(this)}/>
             </Col>
           </Form.Row>
           <br/>
@@ -426,7 +432,7 @@ class CreateQuizForm extends React.Component{
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label >
             <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer3} onChange={this.onIncorrect_answerChange3.bind(this)}/>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer3} onChange={this.onIncorrect_answerChange3.bind(this)}/>
             </Col>
           </Form.Row>
           <br/>
@@ -434,7 +440,7 @@ class CreateQuizForm extends React.Component{
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label >
             <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer4} onChange={this.onIncorrect_answerChange4.bind(this)}/>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer4} onChange={this.onIncorrect_answerChange4.bind(this)}/>
             </Col>
           </Form.Row>
           <br/>
