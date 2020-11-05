@@ -19,7 +19,8 @@ export const lightTheme = {
     goldenText: '#FE9C02',
     navbarBackground: '#23272A',
     createButtonColor: '#99AAB5',
-    createButtonText: '#23272A'
+    createButtonText: '#23272A',
+    norounded: '0px'
   }
 
   

@@ -82,6 +82,34 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.goldenText};
   }
 
+  .manage-panel{
+    background: ${({ theme }) => theme.body};
+    border: ${({ theme }) => theme.body};
+  }
+
+  #toggle-icon {
+    color: ${({ theme }) => theme.goldenText};
+  }
+
+  .nav-tabs {
+    border-bottom: 1px solid ${({ theme }) => theme.body};
+  }
+
+  .nav-tabs .nav-link{
+    font-size: 20px;
+    color: ${({ theme }) => theme.subtitleColor};
+    background-color: ${({ theme }) => theme.body};
+    border: 1px solid ${({ theme }) => theme.body};
+    font-weight: bolder;
+    opacity: 0.5;
+  }
+
+  .nav-item.nav-link.active{
+    opacity: 1;
+    color: ${({ theme }) => theme.subtitleColor};
+    background-color: ${({ theme }) => theme.body};
+    border: 1px solid ${({ theme }) => theme.body};
+  }
 
 
   `

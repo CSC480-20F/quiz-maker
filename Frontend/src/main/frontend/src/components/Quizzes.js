@@ -11,22 +11,19 @@ import InstructorQuizTable from './InstructorQuizTable';
 import Loading from './Loading';
 
 const Styles = styled.div`
-    .nav-tabs {
-        border-bottom: 1px solid #F2F2F2;
-    }
 
-    .nav-tabs .nav-link{
-        font-size: 20px;
-        color: #235937;
-        background-color: #F2F2F2;
-        border: 1px solid #F2F2F2;
-        font-weight: bolder;
-        opacity: 0.5;
-    }
+${'' /* .nav-tabs .nav-link{
+  font-size: 20px;
+  color: #235937;
+  background-color: #F2F2F2;
+  border: 1px solid #F2F2F2;
+  font-weight: bolder;
+  opacity: 0.5;
+}
 
-    .nav-item.nav-link.active{
-        opacity: 1;
-    }
+.nav-item.nav-link.active{
+  opacity: 1;
+} */}
 `;
 
 class Quizzes extends Component {
@@ -108,12 +105,12 @@ class Quizzes extends Component {
             </Tabs>
         ):(
             <Tabs defaultActiveKey="MyQuizzes" id="uncontrolled-tab-example">
-            <Tab eventKey="MyQuizzes" title="My created quizzes">
+            <Tab eventKey="MyQuizzes" title="My Created Quizzes">
                 <Card className='rounded-corner'>
                     <QuizTable data ={this.state.createdQuizzesData} />
                 </Card>
             </Tab>
-            <Tab eventKey="QuizHistory" title="Quizzes I took">
+            <Tab eventKey="QuizHistory" title="Quizzes I Took">
                 <Card className='rounded-corner'>
                     <QuizTable data = {this.state.takenQuizzesData} />
                 </Card>

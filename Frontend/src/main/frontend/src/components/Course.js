@@ -43,11 +43,6 @@ const Styles = styled.div`
         padding: 20px;
         align-items: center;
     }
-
-    .manage-panel {
-        background-color: #F2F2F2;
-        border: #F2F2F2;
-    }
 `;
 
 class Course extends Component {

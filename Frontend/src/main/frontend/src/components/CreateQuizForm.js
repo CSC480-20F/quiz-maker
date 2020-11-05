@@ -276,6 +276,7 @@ class CreateQuizForm extends React.Component{
         <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> 
       )
 
+      // FOR INSTRUCTOR - WHEN IMPORTING A QUESTION ------------------------
       const body = this.state.chosenQuiz.length ? (
         this.state.chosenQuestion!== null ? (
           <>
@@ -343,6 +344,7 @@ class CreateQuizForm extends React.Component{
           ) 
         )
       )
+      // END --> FOR INSTRUCTOR - WHEN IMPORTING A QUESTION ------------------------
 
       const footerButtons = this.state.chosenQuestion===null ? (
         <Button id="dark-mode-button" variant="light" onClick={this.handleImportClose}> Cancel </Button>

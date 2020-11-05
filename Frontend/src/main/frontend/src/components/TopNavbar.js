@@ -45,12 +45,12 @@ const Styles = styled.div`
   background-color:white;
   color:#235937;
 }
-  #toggle-dark-mode
+  ${'' /* #toggle-dark-mode
   {
     background-color:white;
     color:#235937;
     
-  }
+  } */}
 
   #edit-dark-mode-text {
     margin:100px;
