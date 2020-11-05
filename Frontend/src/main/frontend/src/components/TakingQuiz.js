@@ -54,14 +54,17 @@ const Styles = styled.div`
     border-radius: 15px;
     margin-left: 0px;
     background-color: white;
+    cursor: pointer !important;
   }
 
   .answer-field-correct {
     background-color: #D4F6C3;
+    cursor: pointer !important;
   }
 
   .answer-field-incorrect {
     background-color: #FBD9D9;
+    cursor: pointer !important;
   }
 
   .next-question{
@@ -90,11 +93,9 @@ const Styles = styled.div`
   }
 
   .score-properties{
- 
     font-size: 50px;
     display: flex;
     justify-content: center;
-
   }
 
   .correct-answer{

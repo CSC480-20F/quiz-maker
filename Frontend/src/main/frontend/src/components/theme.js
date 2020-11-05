@@ -1,5 +1,3 @@
-import { Card } from "react-bootstrap"
-
 export const lightTheme = {
     body: '#F2F2F2',
     text: '#363537',

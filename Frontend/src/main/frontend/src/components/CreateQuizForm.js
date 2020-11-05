@@ -120,11 +120,6 @@ const Style = styled.div`
     }
 
     .correct-answer-field {
-      box-shadow: 0 3px 3px 0 #ECECEC, 0 6px 6px 0 #ECECEC;
-      border-color: #F5F3F3;
-      border-radius: 15px;
-      margin-left: 0px;
-      background-color: green;
       font-weight: bolder;
     }
 `;
@@ -295,7 +290,7 @@ class CreateQuizForm extends React.Component{
           <Form.Group>
           <Form.Row>
               <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>
-              <Col><Form.Control className="correct-answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.answer}/></Col>
+              <Col><Form.Control className="answer-field correct-answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.answer}/></Col>
           </Form.Row>
 
           <Form.Row>
@@ -411,9 +406,9 @@ class CreateQuizForm extends React.Component{
           <Form.Group>
 
           <Form.Row>
-            <Form.Label id="correct-answer-label" className="label" column="lg" sm={0.5}> A </Form.Label >
+            <Form.Label id="correct-answer-field" className="label" column="lg" sm={0.5}> A </Form.Label >
             <Col>
-            <Form.Control required className="correct-answer-field" size="lg" type="text" placeholder="Type your correct answer here..." value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
+            <Form.Control required className="answer-field correct-answer-field" size="lg" type="text" placeholder="Type your correct answer here..." value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
             </Col>
           </Form.Row>
           <br/>
@@ -421,7 +416,7 @@ class CreateQuizForm extends React.Component{
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label >
             <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer1} onChange={this.onIncorrect_answerChange1.bind(this)}/>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer1} onChange={this.onIncorrect_answerChange1.bind(this)}/>
             </Col>
           </Form.Row>
           <br/>
@@ -429,7 +424,7 @@ class CreateQuizForm extends React.Component{
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label >
             <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer2} onChange={this.onIncorrect_answerChange2.bind(this)}/>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer2} onChange={this.onIncorrect_answerChange2.bind(this)}/>
             </Col>
           </Form.Row>
           <br/>
@@ -437,7 +432,7 @@ class CreateQuizForm extends React.Component{
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label >
             <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer3} onChange={this.onIncorrect_answerChange3.bind(this)}/>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer3} onChange={this.onIncorrect_answerChange3.bind(this)}/>
             </Col>
           </Form.Row>
           <br/>
@@ -445,7 +440,7 @@ class CreateQuizForm extends React.Component{
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label >
             <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type an incorrect answer here..." value={this.state.incorrect_answer4} onChange={this.onIncorrect_answerChange4.bind(this)}/>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer4} onChange={this.onIncorrect_answerChange4.bind(this)}/>
             </Col>
           </Form.Row>
           <br/>

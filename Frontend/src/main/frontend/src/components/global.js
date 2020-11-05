@@ -6,41 +6,21 @@ export const GlobalStyles = createGlobalStyle`
   *::before {
     box-sizing: border-box;
   }
-
-  body {
-    ${'' /* align-items: center; */}
-    background: ${({ theme }) => theme.body};
-    ${'' /* color: ${({ theme }) => theme.text}; */}
-    ${'' /* display: flex; */}
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    font-family: Roboto
-    transition: all 0.25s linear;    
-  }
   
   #dark-mode-icon {
     color: ${({ theme }) => theme.text};
   }
 
-  html, body, body > div{
+  html, body{
     background: ${({ theme }) => theme.body};
-    ${'' /* color: ${({ theme }) => theme.text}; */}
     flex-direction: column;
     justify-content: center;
     height: 100vh;
     margin: 0;
     padding: 0;
     font-family: Roboto
-    transition: all 0.25s linear; 
+    transition: all 2s linear; 
   }
-
-  ${'' /* #card {
-    background: ${({ theme }) => theme.card};
-    color: ${({ theme }) => theme.text};
-  } */}
 
   .header {
     color: ${({ theme }) => theme.headerColor};
@@ -96,40 +76,28 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   .nav-tabs .nav-link{
-    font-size: 20px;
     color: ${({ theme }) => theme.subtitleColor};
     background-color: ${({ theme }) => theme.body};
     border: 1px solid ${({ theme }) => theme.body};
-    font-weight: bolder;
-    opacity: 0.5;
   }
 
   .nav-item.nav-link.active{
-    opacity: 1;
     color: ${({ theme }) => theme.subtitleColor};
     background-color: ${({ theme }) => theme.body};
     border: 1px solid ${({ theme }) => theme.body};
   }
+
   #taking-quiz-title {
     color: ${({ theme }) => theme.white};
   }
 
- #taking-quiz-topic{
-  color: ${({ theme }) => theme.white};
- }
+  #taking-quiz-topic{
+    color: ${({ theme }) => theme.white};
+  }
 
- .this-subtitle{
-  color: ${({ theme }) => theme.darkGray};
- }
-
- #correct-answer-label{
-  background-color: ${({ theme }) => theme.green};
- }
-
- 
-
- 
-
+  .this-subtitle{
+    color: ${({ theme }) => theme.darkGray};
+  }
 
 
   `
