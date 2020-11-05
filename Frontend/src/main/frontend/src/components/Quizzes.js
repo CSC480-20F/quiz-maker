@@ -10,22 +10,6 @@ import {UserContext} from '../context/UserContext';
 import InstructorQuizTable from './InstructorQuizTable';
 import Loading from './Loading';
 
-const Styles = styled.div`
-
-${'' /* .nav-tabs .nav-link{
-  font-size: 20px;
-  color: #235937;
-  background-color: #F2F2F2;
-  border: 1px solid #F2F2F2;
-  font-weight: bolder;
-  opacity: 0.5;
-}
-
-.nav-item.nav-link.active{
-  opacity: 1;
-} */}
-`;
-
 class Quizzes extends Component {
     static contextType = UserContext
 
@@ -125,7 +109,7 @@ class Quizzes extends Component {
                 <div className="container-middle">
                 <div className="header"> Quizzes </div>
                 <div style={{padding: '10px'}}> </div>
-                <Button variant="light" className='create-quiz' as={Link} to="/CreateQuiz">Create a Quiz</Button>
+                <Button variant="light" id="#dark-mode-button" className='create-quiz' as={Link} to="/CreateQuiz">Create a Quiz</Button>
 
                 <div style={{padding: '10px'}}> </div>
                     <div className='container'>
@@ -133,9 +117,7 @@ class Quizzes extends Component {
                         <TopQuizzes data={this.state.topCreatedQuizzes}/>
 
                         <div className="spacer"></div>
-                        <Styles>
                         {view}
-                        </Styles>
                         <div style={{padding: '10px'}}> </div>
                     </div>
         
