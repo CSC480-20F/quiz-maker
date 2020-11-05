@@ -27,12 +27,12 @@ const Style = styled.div`
       margin-right: 0px;
     }
 
-    .answer-field {
+    ${'' /* .answer-field {
       box-shadow: 3px 3px 3px #ECECEC;
       border-color: #F5F3F3;
       border-radius: 15px;
       margin-left: 0px;
-    }
+    } */}
 
     .no-border {
       border: 0;
@@ -117,6 +117,15 @@ const Style = styled.div`
       border-radius: 15px;
       margin-left: 0px;
       background-color: white;
+    }
+
+    .correct-answer-field {
+      box-shadow: 0 3px 3px 0 #ECECEC, 0 6px 6px 0 #ECECEC;
+      border-color: #F5F3F3;
+      border-radius: 15px;
+      margin-left: 0px;
+      background-color: green;
+      font-weight: bolder;
     }
 `;
 
@@ -286,7 +295,7 @@ class CreateQuizForm extends React.Component{
           <Form.Group>
           <Form.Row>
               <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>
-              <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.answer}/></Col>
+              <Col><Form.Control className="correct-answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.answer}/></Col>
           </Form.Row>
 
           <Form.Row>
@@ -402,9 +411,9 @@ class CreateQuizForm extends React.Component{
           <Form.Group>
 
           <Form.Row>
-            <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label >
+            <Form.Label id="correct-answer-label" className="label" column="lg" sm={0.5}> A </Form.Label >
             <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Type your correct answer here..." value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
+            <Form.Control required className="correct-answer-field" size="lg" type="text" placeholder="Type your correct answer here..." value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
             </Col>
           </Form.Row>
           <br/>

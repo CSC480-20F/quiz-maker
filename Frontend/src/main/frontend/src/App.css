@@ -204,6 +204,15 @@
   border: 1px solid #F2F2F2;
 }
 
+.this-subtitle {
+  font-family: Roboto;
+  color: #235937;
+  font-size: 30px;
+  font-weight: bolder;
+  margin-left: 10px;
+  padding-bottom: 5px;
+}
+
 
 
 

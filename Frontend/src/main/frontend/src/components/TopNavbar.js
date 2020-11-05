@@ -93,7 +93,7 @@ const TopNavbar = () => {
      
       </Nav>
       
-      <div style={{fontSize:'9px', margin:'25px'}}>
+      <div style={{fontSize:'9px', margin:'25px', color:'red  '}}>
       <DarkModeApp id="edit-dark-mode-text"/> 
       {/* <DarkModeApp  id="edit-dark-mode-text"></DarkModeApp> */}
       </div>

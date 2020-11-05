@@ -20,7 +20,11 @@ export const lightTheme = {
     navbarBackground: '#23272A',
     createButtonColor: '#99AAB5',
     createButtonText: '#23272A',
-    norounded: '0px'
+    norounded: '0px',
+    black:'black',
+    white:'white',
+    darkGray: '#495057',
+    green:'green'
   }
 
   

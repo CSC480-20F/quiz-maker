@@ -462,13 +462,13 @@ class TakeQuiz extends Component {
       )
     ):(
       <>
-      <div className="spacer">{this.state.quizTitle} is about: <span className="topics"> {this.state.topics.join(', ')}. </span></div>
+      <div id="taking-quiz-topic" className="spacer">{this.state.quizTitle} is about: <span id="purple-text" className="topics"> {this.state.topics.join(', ')}. </span></div>
         <Card className="main-card rounded-corner">
           <ProgressBar variant="custom" now={currentPlace} label={`${currentPlace}%`} />
           <div className="small-spacer"></div>
           
           <Card className="whole-question-card rounded-corner">
-            <h1 className="subtitle">Question {currentQuestion + 1}
+            <h1 className="this-subtitle">Question {currentQuestion + 1}
 
             <AiOutlineLike 
               style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
@@ -537,8 +537,8 @@ class TakeQuiz extends Component {
       <>
       <TopNavbar/>
       <Styles>
-      <div className="container" style={{backgroundColor: "#F2F2F2"}}>
-        <h1 className="header">{this.state.quizTitle}</h1>
+      <div className="container" >
+        <h1 id="taking-quiz-title" className="header">{this.state.quizTitle}</h1>
         {takingQuiz}
       </div>
       </Styles>

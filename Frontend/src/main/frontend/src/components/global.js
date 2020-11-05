@@ -110,6 +110,26 @@ export const GlobalStyles = createGlobalStyle`
     background-color: ${({ theme }) => theme.body};
     border: 1px solid ${({ theme }) => theme.body};
   }
+  #taking-quiz-title {
+    color: ${({ theme }) => theme.white};
+  }
+
+ #taking-quiz-topic{
+  color: ${({ theme }) => theme.white};
+ }
+
+ .this-subtitle{
+  color: ${({ theme }) => theme.darkGray};
+ }
+
+ #correct-answer-label{
+  background-color: ${({ theme }) => theme.green};
+ }
+
+ 
+
+ 
+
 
 
   `
