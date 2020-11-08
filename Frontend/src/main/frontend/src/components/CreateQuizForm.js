@@ -27,13 +27,6 @@ const Style = styled.div`
       margin-right: 0px;
     }
 
-    ${'' /* .answer-field {
-      box-shadow: 3px 3px 3px #ECECEC;
-      border-color: #F5F3F3;
-      border-radius: 15px;
-      margin-left: 0px;
-    } */}
-
     .no-border {
       border: 0;
       box-shadow: none;
@@ -121,6 +114,22 @@ const Style = styled.div`
 
     .correct-answer-field {
       font-weight: bolder;
+    }
+
+    .next-button{
+      float: right;
+      background-color: #8F0047;
+      font-family: Roboto;
+      color: white;
+      max-width: fit-content;
+    }
+
+    .prev-button{
+      float: left;
+      background-color: #8F0047;
+      font-family: Roboto;
+      color: white;
+      max-width: fit-content;
     }
 `;
 
@@ -227,7 +236,7 @@ class CreateQuizForm extends React.Component{
       }).catch(error =>{
         NotificationManager.error('Problem posting the Quiz 😞', 'Error', 4000);
         console.log(error);
-      })  
+      }) 
     }
 
     handleClose = () => {this.setState({show: false})}
@@ -271,6 +280,78 @@ class CreateQuizForm extends React.Component{
       })
       this.handleImportClose()
     }
+
+    displayCurrentQuestion = () => {
+      this.setState({
+        "question":this.state.questions[this.state.index].question,
+        "correct_answer":this.state.questions[this.state.index].answer,
+        "incorrect_answer1":this.state.questions[this.state.index].incorrect_answers[0],
+        "incorrect_answer2":this.state.questions[this.state.index].incorrect_answers[1],
+        "incorrect_answer3":this.state.questions[this.state.index].incorrect_answers[2],
+        "incorrect_answer4":this.state.questions[this.state.index].incorrect_answers[3]
+      })
+    }
+
+    prevQuestion = () => {
+      if (this.state.index < this.state.questions.length) {
+        if (this.state.question.length < 1 || this.state.correct_answer.length < 1 || this.state.incorrect_answer1.length < 1 || this.state.incorrect_answer2.length < 1 || this.state.incorrect_answer3.length < 1 || this.state.incorrect_answer4.length < 1) {
+          NotificationManager.info('Make sure all the fields are filled in! 🧐 ', 'Fill in fields', 4000);
+          return;
+        }
+        this.setState({
+          incorrect_answers: [...this.state.incorrect_answers, this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3, this.state.incorrect_answer4]
+        }, () => {
+          var obj = {question: this.state.question, answer: this.state.correct_answer, incorrect_answers: this.state.incorrect_answers};
+          let temp = this.state.questions.slice(); //creates the clone of the state
+          temp[this.state.index] = obj;
+          this.setState({
+            questions: temp,
+            incorrect_answers: []
+          }, ()=> {
+            this.setState({index: this.state.index - 1}, () => {
+              this.displayCurrentQuestion()
+            })
+          })
+        })
+      } else {
+        this.setState({index: this.state.index - 1}, () => {
+          this.displayCurrentQuestion()
+        })
+      }
+    }
+
+    nextQuestion = () => {
+      if (this.state.question.length < 1 || this.state.correct_answer.length < 1 || this.state.incorrect_answer1.length < 1 || this.state.incorrect_answer2.length < 1 || this.state.incorrect_answer3.length < 1 || this.state.incorrect_answer4.length < 1) {
+        NotificationManager.info('Make sure all the fields are filled in! 🧐 ', 'Fill in fields', 4000);
+        return;
+      }
+      this.setState({
+        incorrect_answers: [...this.state.incorrect_answers, this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3, this.state.incorrect_answer4]
+      }, () => {
+        var obj = {question: this.state.question, answer: this.state.correct_answer, incorrect_answers: this.state.incorrect_answers};
+        let temp = this.state.questions.slice(); //creates the clone of the state
+        temp[this.state.index] = obj;
+        this.setState({
+          questions: temp,
+          incorrect_answers: []
+        }, ()=> {
+          this.setState({ index: this.state.index + 1}, () => {
+            if (this.state.questions.length > this.state.index) {
+              this.displayCurrentQuestion()
+            } else {
+              this.setState({
+                "question":"",
+                "correct_answer":"",
+                "incorrect_answer1":"",
+                "incorrect_answer2":"",
+                "incorrect_answer3":"",
+                "incorrect_answer4":""
+              })
+            }
+          })
+        })
+      })
+    }
       
     render(){
       const instructorButton = this.state.isInstructor ? (
@@ -280,7 +361,25 @@ class CreateQuizForm extends React.Component{
         <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> 
       )
 
-      // FOR INSTRUCTOR - WHEN IMPORTING A QUESTION ------------------------
+      const prevButton = this.state.index > 0 ? (
+        <Button id="dark-mode-button" className="prev-button rounded-corner" onClick={() => this.prevQuestion()} variant="light"> Previous Question </Button>
+      ):(
+        <> </>
+      )
+      
+      const nextButton = this.state.index < this.state.questions.length ? (
+        <Button id="dark-mode-button" className="next-button rounded-corner" onClick={() => this.nextQuestion()} variant="light"> Next Question </Button>
+      ):(
+        <> </>
+      )
+
+      const changeIndexButtons = this.state.questions.length > 0 ? (
+        <> {prevButton} {nextButton} </>
+      ):(
+        <> </>
+      )
+
+      // FOR INSTRUCTOR - WHEN IMPORTING A QUESTION ---------------------------
       const body = this.state.chosenQuiz.length ? (
         this.state.chosenQuestion!== null ? (
           <>
@@ -384,10 +483,6 @@ class CreateQuizForm extends React.Component{
             </Modal.Footer>
           </Modal>
 
-          {/* <div className="small-spacer"> 
-            <Button variant="light" className="add-topic-button rounded-corner"> Add Topic </Button> 
-          </div> */}
-
           <div className="spacer"></div>
 
           <Card className="quiz-question rounded-corner">
@@ -446,6 +541,7 @@ class CreateQuizForm extends React.Component{
           <br/>
 
           </Form.Group>
+          <div> {changeIndexButtons} </div>
           </Card>
 
           <div className="small-spacer">  </div>

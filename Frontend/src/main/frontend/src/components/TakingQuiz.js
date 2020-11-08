@@ -351,7 +351,7 @@ class TakeQuiz extends Component {
       return (
         <>
         <Card className="whole-question-card rounded-corner" key={i}>
-        <h1 className="subtitle" >
+        <h1 className="this-subtitle">
           Question {i+1} 
         </h1>
         <div style={{fontSize:"20px"}} className="small-spacer" dangerouslySetInnerHTML={{__html: question.question}}></div>
