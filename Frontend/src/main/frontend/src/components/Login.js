@@ -2,6 +2,7 @@ import React from 'react'
 import Card from 'react-bootstrap/Card'
 import quizmakerlogo from '../assets/quizmakerloginlogo.png'
 // import quizmakerlogo from '../assets/Artboard22.png'
+import { Link } from 'react-router-dom'
 
 import oswegologo from '../assets/non-invert-logo.png'
 
@@ -19,7 +20,22 @@ class Login extends React.Component {
         })
     }
 
+    
+
     render() {
+
+        const ColoredLine = ({ color }) => (
+            <hr
+            
+                style={{
+                    color: color,
+                    backgroundColor: color,
+                    height: '0.5px',
+                    marginTop: '5px'
+                }}
+            />
+        );
+
         return (
             
             <div className = "container-center">
@@ -35,8 +51,15 @@ class Login extends React.Component {
             <div>
             {/* <div style={{display: 'flex',  justifyContent:'center', alignItems: 'center'}}> </div> */}
             <div className="login-border" id="login-button">Sign in</div>
-            
+            {/* <ColoredLine color="black" /> */}
+            <Card.Footer className="login-footer">
+            <Link to="/About">About</Link>
+            </Card.Footer>
+
             </div>  
+
+         
+
             </Card.Body>
           </Card>
           </div>

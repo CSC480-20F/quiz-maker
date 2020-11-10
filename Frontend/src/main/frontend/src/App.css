@@ -41,6 +41,21 @@
   align-self: center;
 }
 
+.login-footer{
+  height: auto; 
+  width: auto; 
+  max-width:100%;
+  align-self: center;
+  margin-top:40px;
+  background-color:white;
+  border:none;
+  align-items: center;
+  display: flex;
+  justify-content:center;
+  font-size: 10px;
+  
+}
+
 .login-border{
   display: flex;
   justify-content:center;

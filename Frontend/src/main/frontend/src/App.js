@@ -14,6 +14,7 @@ import CreateQuizForm from './components/CreateQuizForm'
 import UserProvider from './context/UserContext';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import About from './components/About';
 
 
 class ProtectedRoute extends React.Component {
@@ -102,6 +103,7 @@ class App extends React.Component {
                   <ProtectedRoute path="/Quizzes/:quiz_id" condition={this.state.isSignedIn} component={TakeQuiz}/>
                   <ProtectedRoute path="/RosterUpload" condition={this.state.isSignedIn} component={RosterUpload}/>
                   {/* <ProtectedRoute path="/CreateQuizForm" condition={this.state.isSignedIn} component={CreateQuizForm}/> */}
+                  <Route path="/About" component={About}/>
               </Switch>
           </BrowserRouter>
         </UserProvider>
