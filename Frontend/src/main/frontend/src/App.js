@@ -10,9 +10,9 @@ import Courses from './components/Courses';
 import Quizzes from './components/Quizzes';
 import TakeQuiz from './components/TakingQuiz';
 import RosterUpload from './components/RosterUpload';
-import CreateQuizForm from './components/CreateQuizForm'
+// import CreateQuizForm from './components/CreateQuizForm'
 import UserProvider from './context/UserContext';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import {NotificationContainer} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import About from './components/About';
 

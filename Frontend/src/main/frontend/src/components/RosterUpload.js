@@ -6,6 +6,7 @@ import { CSVReader } from 'react-papaparse';
 import styled from 'styled-components';
 import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import {UserContext} from '../context/UserContext';
   
 const buttonRef = React.createRef()
 
@@ -56,6 +57,8 @@ const Style = styled.div`
 `;
 
 class RosterUpload extends React.Component {
+  static contextType = UserContext
+
   constructor(props) {
     super(props);
     this.state = {
@@ -185,6 +188,7 @@ class RosterUpload extends React.Component {
   }
 
   render() {
+    const teacher = this.context.isInstructor;
 
     const topics = this.state.topics.length ? (
       this.state.topics.map((topic,i) => {
@@ -195,11 +199,9 @@ class RosterUpload extends React.Component {
     ): (
       <span> No topics added yet </span>
     )
-    
-    return (
+
+    const view = teacher === true ? (
       <>
-        <Style>
-        <TopNavbar/>
         <div className="container">
         <div className="small-spacer"></div>
 
@@ -245,8 +247,19 @@ class RosterUpload extends React.Component {
         {/* </ToggleContainer> */}
         </Form>
         </div>
-        </Style>
       </>
+    ):(
+      <div className="container">
+        <span role="img" aria-label="Restricted Access" className="header"> You do not have access to this page ❌ </span> 
+      </div>
+
+    )
+    
+    return (
+      <Style>
+        <TopNavbar/>
+        {view}
+      </Style>
     )
   }
 

@@ -52,7 +52,7 @@ class Dashboard extends Component {
 
         const teacher = this.context.isInstructor;
 
-        const view = teacher ? (
+        const view = teacher === true ? (
             <InstructorCourses limit="3"/>
         ):(
             <MyCourses limit="3"/>

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Button, Tabs, Tab, Card } from "react-bootstrap";
 import TopQuizzes from './QuizzesDeck';
 import TopNavbar from './TopNavbar';
-import styled from 'styled-components';
 import QuizTable from './QuizTable';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -74,7 +73,7 @@ class Quizzes extends Component {
 
         const teacher = this.context.isInstructor;
 
-        const view = teacher ? (
+        const view = teacher === true ? (
             <Tabs defaultActiveKey="MyQuizzes" id="uncontrolled-tab-example">
             <Tab eventKey="MyQuizzes" title="My Created Quizzes">
                 <Card className='rounded-corner'>

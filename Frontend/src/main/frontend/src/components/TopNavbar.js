@@ -67,7 +67,7 @@ const TopNavbar = () => {
   const name = profile.getName()
   const teacher = useContext(UserContext).isInstructor
 
-  const view = teacher ? (
+  const view = teacher === true ? (
     <> <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Course Creation</NavLink> </>
   ):(
     <> </>
