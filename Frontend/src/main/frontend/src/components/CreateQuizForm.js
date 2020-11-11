@@ -356,9 +356,9 @@ class CreateQuizForm extends React.Component{
     render(){
       const instructorButton = this.state.isInstructor ? (
         <> <Button id="dark-mode-button" variant="light" className="add-question-button rounded-corner" onClick={() => this.getStarredQuizzes()} style={{marginRight: '5px'}}> Import Questions </Button>
-        <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> </>
+        <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add This Question</Button> </>
       ):(
-        <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add Question</Button> 
+        <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add This Question</Button> 
       )
 
       const prevButton = this.state.index > 0 ? (

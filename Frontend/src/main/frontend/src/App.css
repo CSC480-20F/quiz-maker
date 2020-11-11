@@ -6,6 +6,7 @@
 💅 Stylesheet for this babay
 💅 Stylesheet for this babay
 💅 Stylesheet for this babay */
+
 .container-middle {
   display: flex;
   justify-content: center;
@@ -105,6 +106,14 @@
   font-weight: bolder;
   margin-left: 10px;
   padding-bottom: 5px;
+}
+
+.margin-subtitle {
+  font-family: Roboto;
+  color: #235937;
+  font-size: 30px;
+  font-weight: bolder;
+  
 }
 
 .rounded-corner {
