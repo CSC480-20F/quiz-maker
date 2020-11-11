@@ -201,7 +201,7 @@ class RosterUpload extends React.Component {
     )
 
     const view = teacher === true ? (
-      <>
+      <Style>
         <div className="container">
         <div className="small-spacer"></div>
 
@@ -247,7 +247,7 @@ class RosterUpload extends React.Component {
         {/* </ToggleContainer> */}
         </Form>
         </div>
-      </>
+      </Style>
     ):(
       <div className="container">
         <span role="img" aria-label="Restricted Access" className="header"> You do not have access to this page ❌ </span> 
@@ -256,10 +256,10 @@ class RosterUpload extends React.Component {
     )
     
     return (
-      <Style>
+      <>
         <TopNavbar/>
         {view}
-      </Style>
+      </>
     )
   }
 

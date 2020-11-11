@@ -210,12 +210,7 @@ class CreateQuizForm extends React.Component{
       this.setState({incorrect_answer4:event.target.value});
     }
 
-    onCreateQuiz = (e) => {
-      e.preventDefault();
-      if (this.state.questions.length === 0) {
-        NotificationManager.info('You need to add at least one question! 😅', 'Question Needed', 4000);
-        return; 
-      }
+    postQuizToDB = () => {
       axios.post(`http://pi.cs.oswego.edu:9084/quizzes/add-quiz`, {
         "quizName":this.state.quiz_title,
         "creator":this.state.creator,
@@ -237,6 +232,25 @@ class CreateQuizForm extends React.Component{
         NotificationManager.error('Problem posting the Quiz 😞', 'Error', 4000);
         console.log(error);
       }) 
+    }
+
+    onCreateQuiz = (e) => {
+      e.preventDefault();
+      if (this.state.questions.length === 0) {
+        NotificationManager.info('You need to add at least one question! 😅', 'Question Needed', 4000);
+        return; 
+      }
+
+      if (this.state.question.length > 0 && this.state.correct_answer.length > 0 && this.state.incorrect_answer1.length > 0 && this.state.incorrect_answer2.length > 0 && this.state.incorrect_answer3.length > 0 && this.state.incorrect_answer4.length > 0) {
+        this.setState({
+          incorrect_answers: [...this.state.incorrect_answers, this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3, this.state.incorrect_answer4]
+        }, () => {
+          var obj = {question: this.state.question, answer: this.state.correct_answer, incorrect_answers: this.state.incorrect_answers};
+          this.setState({questions: [...this.state.questions, obj]}, () => {this.postQuizToDB()});
+        })
+      } else {
+        this.postQuizToDB();
+      }
     }
 
     handleClose = () => {this.setState({show: false})}
