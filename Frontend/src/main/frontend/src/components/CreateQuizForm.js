@@ -541,7 +541,7 @@ class CreateQuizForm extends React.Component{
           <br/>
 
           </Form.Group>
-          <div> {changeIndexButtons} </div>
+          {/* <div> {changeIndexButtons} </div> */}
           </Card>
 
           <div className="small-spacer">  </div>
