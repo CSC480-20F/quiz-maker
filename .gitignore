@@ -4,3 +4,4 @@ target/
 node/
 static/
 webapp/
+.idea/
