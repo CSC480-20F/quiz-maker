@@ -236,11 +236,6 @@ class CreateQuizForm extends React.Component{
 
     onCreateQuiz = (e) => {
       e.preventDefault();
-      if (this.state.questions.length === 0) {
-        NotificationManager.info('You need to add at least one question! 😅', 'Question Needed', 4000);
-        return; 
-      }
-
       if (this.state.question.length > 0 && this.state.correct_answer.length > 0 && this.state.incorrect_answer1.length > 0 && this.state.incorrect_answer2.length > 0 && this.state.incorrect_answer3.length > 0 && this.state.incorrect_answer4.length > 0) {
         this.setState({
           incorrect_answers: [...this.state.incorrect_answers, this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3, this.state.incorrect_answer4]
@@ -249,6 +244,10 @@ class CreateQuizForm extends React.Component{
           this.setState({questions: [...this.state.questions, obj]}, () => {this.postQuizToDB()});
         })
       } else {
+        if (this.state.questions.length === 0) {
+          NotificationManager.info('You need to add at least one question! 😅', 'Question Needed', 4000);
+          return; 
+        }
         this.postQuizToDB();
       }
     }
