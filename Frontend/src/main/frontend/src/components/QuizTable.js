@@ -14,11 +14,16 @@ class QuizTable extends Component {
       }
 
       const getDate = (mongoID) => {
+        return ((new Date(parseInt(mongoID.substring(0, 8), 16) * 1000)))
+      }
+
+      const getDateView = (mongoID) => {
         return ((new Date(parseInt(mongoID.substring(0, 8), 16) * 1000)).toDateString())
       }
 
       const customTopicAccesor = row => getTopics(row.quizTopics)
       const customDateAccesor = row => getDate(row._id.$oid)
+      const customDateCell = row => getDateView(row.original._id.$oid)
 
       const data = this.props.data;
 
@@ -47,7 +52,8 @@ class QuizTable extends Component {
         {
           id: 'date',
           Header: 'Date',
-          accessor: customDateAccesor
+          accessor: customDateAccesor,
+          Cell: customDateCell
         },
 
         {
@@ -55,6 +61,17 @@ class QuizTable extends Component {
           accessor: 'rating'
         }
     ]
+
+    function filterCaseInsensitive(filter, row) {
+      const id = filter.pivotId || filter.id;
+      return (
+          row[id] !== undefined ?
+              String(row[id].toLowerCase()).startsWith(filter.value.toLowerCase())
+          :
+              true
+      );
+    }
+
 
       return (
             <div style={{padding: '50px', textAlign: 'center'}}>
@@ -70,6 +87,7 @@ class QuizTable extends Component {
                     }}
                     defaultPageSize = {10}
                     filterable
+                    defaultFilterMethod={(filter, row) => filterCaseInsensitive(filter, row) }
                     pageSizeOptions = {[5,10,20,25]}
                 />
             </div>
