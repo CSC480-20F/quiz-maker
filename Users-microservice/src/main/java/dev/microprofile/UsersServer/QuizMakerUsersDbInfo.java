@@ -2,6 +2,8 @@ package dev.microprofile.UsersServer;
 
 import com.mongodb.*;
 
+import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.RequestScoped;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
@@ -9,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
 
-
+@RequestScoped
 @Path("/users")
 public class QuizMakerUsersDbInfo {
     // Creates login username and password
@@ -22,8 +24,10 @@ public class QuizMakerUsersDbInfo {
     DB database = mongoClient.getDB("usersDB");
 
     //Dumps whole db
-    @Path("/all")
+
     @GET
+    @RolesAllowed({"admin"})
+    @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response dbDump() {
         //Variable decelerations
