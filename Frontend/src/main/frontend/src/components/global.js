@@ -99,6 +99,10 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.darkGray};
   }
 
+  #edit-dark-mode-text {
+    title: ${({ theme }) => theme.title};
+  }
+
 
 
   `

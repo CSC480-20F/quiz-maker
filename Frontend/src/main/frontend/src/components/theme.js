@@ -22,7 +22,8 @@ export const lightTheme = {
     black:'black',
     white:'white',
     darkGray: '#495057',
-    green:'green'
+    green:'green',
+    title:'Light Mode Theme'
   }
 
   

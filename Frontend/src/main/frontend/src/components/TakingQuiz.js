@@ -428,10 +428,12 @@ class TakeQuiz extends Component {
     const endButtons = this.state.isInstructor ? (
       this.state.isStarred ? ( <>
         <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}}>Un-favorite Quiz</Button>
-        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button> </>
+        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
+        <div> "Favoriting a Quiz  will allow you to import its questions when creating your own Quiz"</div> </>
       ):( <>
         <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}}>Favorite Quiz</Button>
-        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button> </>
+        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button> 
+        <div styles={{color:'red'}}> <b> "Favoriting a Quiz will allow you to import its questions when creating your own Quiz" </b> </div> </>
       )
     ):(
       <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
@@ -472,13 +474,15 @@ class TakeQuiz extends Component {
             <h1 className="this-subtitle">Question {currentQuestion + 1}
 
             <AiOutlineLike 
+              title="Like this question"
               style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
               id="upvote"
               className={this.state.vote === 1 ? "active-upvote" : undefined}
               onClick={() => this.vote(1)}>
               Upvote
             </AiOutlineLike>
-            <AiOutlineDislike 
+            <AiOutlineDislike
+              title="Dislike this question" 
               style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
               id="downvote"
               className={this.state.vote === -1 ? "active-downvote" : undefined}
@@ -486,7 +490,7 @@ class TakeQuiz extends Component {
               Downvote
             </AiOutlineDislike>
 
-            <AiTwotoneFlag onClick={this.handleShow} style={{cursor:'pointer', display:"inline-block", margin:"2px", float: "right"}}  > </AiTwotoneFlag>
+            <AiTwotoneFlag title="Report this question" onClick={this.handleShow} style={{cursor:'pointer', display:"inline-block", margin:"2px", float: "right"}}  > </AiTwotoneFlag>
             <Modal show={this.state.show} onHide={this.handleClose} backdrop="static">
 
             <Form id="report-form" onSubmit={this.onReportSubmit.bind(this)}>
