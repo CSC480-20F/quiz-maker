@@ -21,6 +21,7 @@ const Styles = styled.div`
     min-width: fit-content;
     font-family: Roboto;
     border-color: white;
+    cursor:pointer;
   }
 
   .chosen-topic-card{

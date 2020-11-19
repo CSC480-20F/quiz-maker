@@ -5,6 +5,7 @@ import {Modal, Button, Card, Form, Col, Spinner } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import TopNavbar from './TopNavbar';
 
 // 💅 Stylesheet for this babay
 const Style = styled.div`
@@ -13,7 +14,9 @@ const Style = styled.div`
     }
 
     .header {
-      background-color:#F2F2F2;
+      background-color:white;
+      margin-top: 15px;
+      border-radius: 15px;
     }
 
     .label {
@@ -85,7 +88,7 @@ const Style = styled.div`
     }
 
     .button-group {
-      text-align: -webkit-center;
+      text-align: center;
     }
 
     .whole-question-card {
@@ -131,6 +134,10 @@ const Style = styled.div`
       color: white;
       max-width: fit-content;
     }
+
+    .topOfQuiz {
+      margin-top: 30px;
+    }
 `;
 
 
@@ -140,9 +147,12 @@ class CreateQuizForm extends React.Component{
     this.state = {
       "quiz_title":"",
       "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
-      "isInstructor": this.props.professor,
-      "courseID":this.props.courseID,
-      "topics":this.props.topics,
+      // "isInstructor": this.props.professor,
+      // "courseID":this.props.courseID,
+      // "topics":this.props.topics,
+      "isInstructor": "akc@oswego.edu",
+      "courseID":1234,
+      "topics":["Killing", "Myself"],
       "index":0,
       "question":"",
       "correct_answer":"",
@@ -156,8 +166,120 @@ class CreateQuizForm extends React.Component{
       "importShow": false,
       "chosenQuiz": [],
       "chosenQuestion": null,
-      "starredQuizzes": [],
-      "gettingQuizzes": true
+      "starredQuizzes": [{
+        "_id": {
+          "$oid": "5fa3247b2a71540c8786ae9e"
+        },
+        "quizName": "Just some basic math",
+        "creator": "jdoe@oswego.edu",
+        "courseID": "5fa3222f4302427409239bed",
+        "quizTopics": [
+          "Algebra",
+          "Percentages",
+          "Fractions"
+        ],
+        "quizQuestions": [
+          {
+            "question": "4 + ? = 20",
+            "answer": "16",
+            "incorrect_answers": [
+              "15",
+              "14",
+              "17",
+              "12"
+            ]
+          },
+          {
+            "question": "What is 9 ÷ 3? ",
+            "answer": "3",
+            "incorrect_answers": [
+              "3,5",
+              "1/2",
+              "4",
+              "2,5"
+            ]
+          },
+          {
+            "question": " Which percent equals 1/4? ",
+            "answer": "25%",
+            "incorrect_answers": [
+              "14%",
+              "41%",
+              "52%",
+              "None of the above"
+            ]
+          },
+          {
+            "question": "Convert 75 minutes to days.",
+            "answer": "0.052 days",
+            "incorrect_answers": [
+              "0.061 days",
+              "0.054 days",
+              "0.03 days",
+              "0.075 days"
+            ]
+          }
+        ],
+        "rating": 7,
+        "starred": true
+      },
+      {
+        "_id": {
+          "$oid": "5fa325d02a71540c8786aec7"
+        },
+        "quizName": "Fun multiplications!",
+        "creator": "sandy@oswego.edu",
+        "courseID": "5fa3222f4302427409239bed",
+        "quizTopics": [
+          "Multiplication"
+        ],
+        "quizQuestions": [
+          {
+            "question": "5x6?",
+            "answer": "30",
+            "incorrect_answers": [
+              "40",
+              "28",
+              "35",
+              "24"
+            ]
+          },
+          {
+            "question": "2 x 4.256",
+            "answer": "8.512",
+            "incorrect_answers": [
+              "4.235",
+              "8.1232",
+              "8.912",
+              "8.012"
+            ]
+          },
+          {
+            "question": "3x9?",
+            "answer": "27",
+            "incorrect_answers": [
+              "42",
+              "30",
+              "24",
+              "18"
+            ]
+          },
+          {
+            "question": "92 x 4320",
+            "answer": "397,440",
+            "incorrect_answers": [
+              "424,440",
+              "123,440",
+              "625,440",
+              "823,440"
+            ]
+          }
+        ],
+        "rating": 7,
+        "starred": true
+      }],
+      // "gettingQuizzes": true
+      "gettingQuizzes": false
     }
   }
         
@@ -182,33 +304,19 @@ class CreateQuizForm extends React.Component{
     })
   }
 
-    onQuizTitleChange(event) {
-      this.setState({quiz_title: event.target.value})
-    }
+    onQuizTitleChange(event) { this.setState({quiz_title: event.target.value})}
 
-    onQuestionChange(event) {
-      this.setState({question: event.target.value})
-    }
+    onQuestionChange(event) {this.setState({question: event.target.value})}
 
-    onCorrect_answerChange(event){
-      this.setState({correct_answer: event.target.value})
-    }
+    onCorrect_answerChange(event){this.setState({correct_answer: event.target.value})}
 
-    onIncorrect_answerChange1(event){
-      this.setState({incorrect_answer1:event.target.value});
-    }
+    onIncorrect_answerChange1(event){this.setState({incorrect_answer1:event.target.value});}
 
-    onIncorrect_answerChange2(event){
-      this.setState({incorrect_answer2:event.target.value});
-    }
+    onIncorrect_answerChange2(event){this.setState({incorrect_answer2:event.target.value});}
 
-    onIncorrect_answerChange3(event){
-      this.setState({incorrect_answer3:event.target.value});
-    }
+    onIncorrect_answerChange3(event){this.setState({incorrect_answer3:event.target.value});}
 
-    onIncorrect_answerChange4(event){
-      this.setState({incorrect_answer4:event.target.value});
-    }
+    onIncorrect_answerChange4(event){this.setState({incorrect_answer4:event.target.value});}
 
     postQuizToDB = () => {
       axios.post(`http://pi.cs.oswego.edu:9084/quizzes/add-quiz`, {
@@ -265,9 +373,9 @@ class CreateQuizForm extends React.Component{
 
     getStarredQuizzes = () => {
       this.handleImportShow()
-      axios.get('http://pi.cs.oswego.edu:9084/quizzes/course-starred-quizzes/' + this.state.courseID).then(res => {
-        this.setState({starredQuizzes: res.data, gettingQuizzes: false})
-      }).catch(err => {console.log(err)})
+      // axios.get('http://pi.cs.oswego.edu:9084/quizzes/course-starred-quizzes/' + this.state.courseID).then(res => {
+      //   this.setState({starredQuizzes: res.data, gettingQuizzes: false})
+      // }).catch(err => {console.log(err)})
     }
 
     choseQuiz = (id) => {
@@ -473,20 +581,29 @@ class CreateQuizForm extends React.Component{
 
       return (
         <Style>
+        <TopNavbar />
         <div className="container-middle">
         <Form id="quiz-form" onSubmit={this.handleSubmit.bind(this)}>
-          <Form.Row>
-          <Form.Control required id="form-input" className="header no-border" size="sm" type="text" placeholder="Quiz Title..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
+          {/* <Form.Row>
+          <Form.Control required id="form-input" className="header no-border" size="sm" type="text" placeholder="Type Quiz Title Here..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
           </Form.Row>
 
-          <div className="spacer"></div>
+          <div className="spacer"></div> */}
 
-          <div id="text" className="description"> {this.state.quiz_title} is about: 
+          <div id="text" className="description topOfQuiz"> {this.state.quiz_title} is about: 
             <span id="purple-text" className="topicsColor"> {this.state.topics.join(', ')}</span>.
             <Button variant="light" className="publish-quiz-button rounded-corner" onClick={this.onCreateQuiz}> Publish Quiz </Button>
             <Button variant="light" className="delete-quiz-button rounded-corner" onClick={this.handleShow}> Delete Quiz </Button> 
           </div>
 
+          <div className="spacer"></div>
+
+          <Form.Row>
+          <Form.Control required id="form-input" className="header no-border" size="sm" type="text" placeholder="Type Quiz Title Here..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
+          </Form.Row>
+
+          <div className="small-spacer"></div>
+          
           <Modal show={this.state.show} onHide={this.handleClose} backdrop="static">
             <Modal.Header closeButton> <Modal.Title> Delete Quiz </Modal.Title> </Modal.Header>
             <Modal.Body>Are you sure you want to discard this quiz?</Modal.Body>
@@ -495,8 +612,6 @@ class CreateQuizForm extends React.Component{
               <Button variant="primary" onClick={this.onDeleteQuiz}> Yes </Button>
             </Modal.Footer>
           </Modal>
-
-          <div className="spacer"></div>
 
           <Card className="quiz-question rounded-corner">
 

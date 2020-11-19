@@ -17,7 +17,7 @@ class Quizzes extends Component {
         topCreatedQuizzes: [],
         takenQuizzesData: [],
         takenQuizzes: [],
-        isLoading: true
+        isLoading: false
     }
 
     componentDidMount () {        

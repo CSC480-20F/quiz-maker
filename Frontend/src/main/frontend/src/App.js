@@ -10,7 +10,7 @@ import Courses from './components/Courses';
 import Quizzes from './components/Quizzes';
 import TakeQuiz from './components/TakingQuiz';
 import RosterUpload from './components/RosterUpload';
-// import CreateQuizForm from './components/CreateQuizForm'
+import CreateQuizForm from './components/CreateQuizForm'
 import UserProvider from './context/UserContext';
 import {NotificationContainer} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -102,7 +102,7 @@ class App extends React.Component {
                   <ProtectedRoute exact path="/Quizzes" condition={this.state.isSignedIn} component={Quizzes}/>
                   <ProtectedRoute path="/Quizzes/:quiz_id" condition={this.state.isSignedIn} component={TakeQuiz}/>
                   <ProtectedRoute path="/RosterUpload" condition={this.state.isSignedIn} component={RosterUpload}/>
-                  {/* <ProtectedRoute path="/CreateQuizForm" condition={this.state.isSignedIn} component={CreateQuizForm}/> */}
+                  <ProtectedRoute path="/CreateQuizForm" condition={this.state.isSignedIn} component={CreateQuizForm}/>
                   <Route path="/About" component={About}/>
               </Switch>
           </BrowserRouter>

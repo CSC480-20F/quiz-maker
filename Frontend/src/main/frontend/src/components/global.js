@@ -47,7 +47,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   #form-input {
-    background: ${({ theme }) => theme.body};
+    ${'' /* background: ${({ theme }) => theme.body}; */}
   }
 
   #text {
@@ -78,13 +78,13 @@ export const GlobalStyles = createGlobalStyle`
   .nav-tabs .nav-link{
     color: ${({ theme }) => theme.subtitleColor};
     background-color: ${({ theme }) => theme.body};
-    border: 1px solid ${({ theme }) => theme.body};
+    ${'' /* border: 2px solid ${({ theme }) => theme.body}; */}
   }
 
   .nav-item.nav-link.active{
     color: ${({ theme }) => theme.subtitleColor};
     background-color: ${({ theme }) => theme.body};
-    border: 1px solid ${({ theme }) => theme.body};
+    border: 2px solid ${({ theme }) => theme.subtitleColor};
   }
 
   #taking-quiz-title {

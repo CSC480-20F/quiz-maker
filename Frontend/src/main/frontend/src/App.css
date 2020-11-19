@@ -216,16 +216,20 @@
   font-size: 20px;
   color: #235937;
   background-color: #F2F2F2;
-  border: 1px solid #F2F2F2;
+  /* border: 2px solid #FE9C02; */
+  /* border-radius: 1ex; */
   font-weight: bolder;
   opacity: 0.5;
+  margin-left: 20px;
 }
 
 .nav-item.nav-link.active{
   opacity: 1;
   color: #235937;
   background-color: #F2F2F2;
-  border: 1px solid #F2F2F2;
+  border: 2px solid  #235937;
+  border-radius: 15px 15px 0px 0px;
+  /* border-radius: 1ex; */
 }
 
 .this-subtitle {
