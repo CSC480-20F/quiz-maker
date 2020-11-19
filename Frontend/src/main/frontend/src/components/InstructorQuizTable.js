@@ -17,9 +17,17 @@ class InstructorQuizTable extends Component {
         return ((new Date(parseInt(mongoID.substring(0, 8), 16) * 1000)).toDateString())
       }
 
+      const getStarred = (star) => {
+        if (star) {
+          return "Yes"
+        } else {
+          return "No"
+        }
+      }
+
       const customTopicAccesor = row => getTopics(row.quizTopics)
       const customDateAccesor = row => getDate(row._id.$oid)
-      const customStarredAccessor = row => (row.starred.toString())
+      const customStarredAccessor = row => (getStarred(row.starred))
 
       const data = this.props.data;
 
