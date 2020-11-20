@@ -115,7 +115,13 @@ const Styles = styled.div`
     color:red;
   }
 
+  .active-none{
+    color:#8F0047;
+  }
+
 `;
+
+
 
 class TakeQuiz extends Component {
   constructor(props){
@@ -477,7 +483,7 @@ class TakeQuiz extends Component {
               title="Like this question"
               style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
               id="upvote"
-              className={this.state.vote === 1 ? "active-upvote" : undefined}
+              className={this.state.vote === 1 ? "active-upvote" : "active-none"}
               onClick={() => this.vote(1)}>
               Upvote
             </AiOutlineLike>
@@ -485,7 +491,7 @@ class TakeQuiz extends Component {
               title="Dislike this question" 
               style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
               id="downvote"
-              className={this.state.vote === -1 ? "active-downvote" : undefined}
+              className={this.state.vote === -1 ? "active-downvote" : "active-none"}
               onClick={() => this.vote(-1)}>
               Downvote
             </AiOutlineDislike>

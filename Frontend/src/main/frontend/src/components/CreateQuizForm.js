@@ -7,6 +7,7 @@ import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import TopNavbar from './TopNavbar';
 
+
 // 💅 Stylesheet for this babay
 const Style = styled.div`
     .edit {
@@ -78,7 +79,8 @@ const Style = styled.div`
       background-color: #8F0047;
       color: white;
       font-family: Roboto;
-      min-width: 25%
+      min-width: 15%;
+      margin:10px;
     }
 
     .quiz-question {
@@ -150,7 +152,7 @@ class CreateQuizForm extends React.Component{
       // "isInstructor": this.props.professor,
       // "courseID":this.props.courseID,
       // "topics":this.props.topics,
-      "isInstructor": "akc@oswego.edu",
+      "isInstructor": "npayag@oswego.edu",
       "courseID":1234,
       "topics":["Killing", "Myself"],
       "index":0,
@@ -476,10 +478,12 @@ class CreateQuizForm extends React.Component{
       
     render(){
       const instructorButton = this.state.isInstructor ? (
-        <> <Button id="dark-mode-button" variant="light" className="add-question-button rounded-corner" onClick={() => this.getStarredQuizzes()} style={{marginRight: '5px'}}> Import Questions </Button>
+        <> 
+        <Button id="dark-mode-button" variant="light" className="add-question-button rounded-corner" onClick={() => this.getStarredQuizzes()} style={{marginRight: '5px'}}> Import Questions </Button>
         <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add This Question</Button> </>
       ):(
         <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add This Question</Button> 
+        
       )
 
       const prevButton = this.state.index > 0 ? (
@@ -580,6 +584,8 @@ class CreateQuizForm extends React.Component{
       )
 
       return (
+        <>
+        
         <Style>
         <TopNavbar />
         <div className="container-middle">
@@ -616,7 +622,8 @@ class CreateQuizForm extends React.Component{
           <Card className="quiz-question rounded-corner">
 
           <div>
-          <Form.Label className="description center" column="lg" lg={3}> Question {this.state.index + 1} </Form.Label>
+          <Form.Label className="description center" column="lg" lg={3}> Question {this.state.index + 1}  {instructorButton} </Form.Label>
+          {/* <div style={{float:'left'}}> {instructorButton} </div> */}
           <Form.Row>
             <Form.Label style={{visibility: "hidden"}} column="lg" sm={0.5}> Q </Form.Label >
             <Col>
@@ -670,10 +677,11 @@ class CreateQuizForm extends React.Component{
 
           </Form.Group>
           <div> {changeIndexButtons} </div>
+          {/* <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add This Question</Button>  */}
           </Card>
 
           <div className="small-spacer">  </div>
-          <div className="button-group"> {instructorButton} </div>
+          
           <div className="small-spacer"> </div>
           
           <Modal show={this.state.importShow} onHide={this.handleImportClose} backdrop="static">
@@ -685,7 +693,8 @@ class CreateQuizForm extends React.Component{
         </Form>
         </div>
         </Style>
-      )
+        </>
+        )
     }
   }
 
