@@ -63,8 +63,7 @@ class Dashboard extends Component {
                 <div> <TopNavbar/> </div>
                 
                 <div className="container-middle">
-                <div className="header"> Fall 2020 </div>
-    
+                <div className="header"> Fall 2020 </div>    
                 <div style={{padding: '10px'}}> </div>
                 <Button variant="light" id="dark-mode-button" className='create-quiz' as={Link} to="/CreateQuiz">Create a Quiz</Button>
                     <div className='container'>
