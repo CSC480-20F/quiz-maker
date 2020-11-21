@@ -15,8 +15,6 @@
     <packaging>war</packaging>
 
     <properties>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
         <liberty.var.default.http.port>9081</liberty.var.default.http.port>
         <liberty.var.default.https.port>9444</liberty.var.default.https.port>
         <liberty.var.app.context.root>/</liberty.var.app.context.root>
@@ -91,7 +89,6 @@
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
-            <version>1.0.4</version>
             <scope>test</scope>
         </dependency>
         <!-- Support for JDK 9 and above -->
@@ -115,6 +112,7 @@
             <artifactId>activation</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Support for MongoDB -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
