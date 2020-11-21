@@ -45,6 +45,13 @@ class Dashboard extends Component {
         this.setState({quizzesDeckData: temp.slice(0,3), isLoading: false})
     }
 
+    testingJWT = () => {
+        const api = "http://pi.cs.oswego.edu:9081/users/all";
+        const token = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+        axios.get(api, { headers: {"Authorization" : `Bearer ${token}`} })
+            .then(res => {console.log(res.data);})
+    }
+
     render () {
         if (this.state.isLoading) {
             return <> <TopNavbar/> <div className="container-center"><Loading type={'spin'} color={'#235937'}/> </div> </>
@@ -64,6 +71,8 @@ class Dashboard extends Component {
                 
                 <div className="container-middle">
                 <div className="header"> Fall 2020 </div>
+
+                <Button variant="dark" onClick={() => {this.testingJWT()}}>TESTING JWT REQUEST WITH HEADER</Button>
     
                 <div style={{padding: '10px'}}> </div>
                 <Button variant="light" id="dark-mode-button" className='create-quiz' as={Link} to="/CreateQuiz">Create a Quiz</Button>
