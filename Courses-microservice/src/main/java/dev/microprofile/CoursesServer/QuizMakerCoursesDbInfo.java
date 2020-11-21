@@ -3,14 +3,13 @@ package dev.microprofile.CoursesServer;
 import com.mongodb.*;
 import org.bson.types.ObjectId;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import javax.json.*;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
+import javax.ws.rs.core.*;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 
 
 @Path("/courses")
@@ -22,6 +21,11 @@ public class QuizMakerCoursesDbInfo {
     MongoClient mongoClient = new MongoClient(serverAddress, Collections.singletonList(frontendAuth));
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("coursesDB");
+
+    GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder()
+            .setAudience(Collections.singletonList("frontend"))
+            .build();
+
 
     //Dumps whole db
     @Path("/all")
