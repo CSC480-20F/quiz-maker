@@ -14,10 +14,16 @@ const Style = styled.div`
       max-height: 20%;
     }
 
-    .header {
+    .this-header {
       background-color:white;
       margin-top: 15px;
       border-radius: 15px;
+      text-align: center;
+      font-size: 50px;
+      padding-top: 20px;
+      font-weight: bold;
+      color: #235937;
+      font-family: Roboto;
     }
 
     .label {
@@ -139,6 +145,20 @@ const Style = styled.div`
     .topOfQuiz {
       margin-top: 30px;
     }
+
+  .answer-field-correct {
+    background-color: #D4F6C3;
+    cursor: default !important;
+  }
+
+  .review-answer-field {
+    box-shadow: 0 3px 3px 0 #ECECEC, 0 6px 6px 0 #ECECEC;
+    border-color: #F5F3F3;
+    border-radius: 15px;
+    margin-left: 0px;
+    background-color: white;
+    cursor: default !important;
+  }
 `;
 
 
@@ -280,7 +300,8 @@ class CreateQuizForm extends React.Component{
         "starred": true
       }],
       // "gettingQuizzes": true
-      "gettingQuizzes": false
+      "gettingQuizzes": false,
+      "reviewQuizzesSection": false
     }
   }
         
@@ -344,20 +365,27 @@ class CreateQuizForm extends React.Component{
     }
 
     onCreateQuiz = (e) => {
+      console.log("Publishing Quiz")
+      e.preventDefault();
+      this.postQuizToDB();
+    }
+
+    onReviewQuiz = (e) => {
+      console.log("Reviewing Quiz")
       e.preventDefault();
       if (this.state.question.length > 0 && this.state.correct_answer.length > 0 && this.state.incorrect_answer1.length > 0 && this.state.incorrect_answer2.length > 0 && this.state.incorrect_answer3.length > 0 && this.state.incorrect_answer4.length > 0) {
         this.setState({
           incorrect_answers: [...this.state.incorrect_answers, this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3, this.state.incorrect_answer4]
         }, () => {
           var obj = {question: this.state.question, answer: this.state.correct_answer, incorrect_answers: this.state.incorrect_answers};
-          this.setState({questions: [...this.state.questions, obj]}, () => {this.postQuizToDB()});
+          this.setState({questions: [...this.state.questions, obj]}, () => {this.setState({reviewQuizzesSection: true})});
         })
       } else {
         if (this.state.questions.length === 0) {
           NotificationManager.info('You need to add at least one question! 😅', 'Question Needed', 4000);
           return; 
         }
-        this.postQuizToDB();
+        this.setState({reviewQuizzesSection: true})
       }
     }
 
@@ -515,7 +543,7 @@ class CreateQuizForm extends React.Component{
         this.state.chosenQuestion!== null ? (
           <>
           <Style>
-          <Card className="whole-question-card rounded-corner">
+          <Card className="whole-question-card rounded-corner" style={{minWidth: "50%"}}>
           <div style={{fontSize:"20px"}} className="small-spacer" dangerouslySetInnerHTML={{__html: this.state.chosenQuestion.question}}></div>
           <Form.Group>
           <Form.Row>
@@ -589,8 +617,87 @@ class CreateQuizForm extends React.Component{
         </>
       )
 
+      const showReviewQuestions = this.state.questions.map((question, i) => {
+        return (
+          <>
+        <Card className="whole-question-card rounded-corner" key={i} style={{minWidth: "70%"}}>
+        <h1 className="this-subtitle">
+          Question {i+1} 
+        </h1>
+        <div style={{fontSize:"20px"}} className="small-spacer" dangerouslySetInnerHTML={{__html: question.question}}></div>
+        <Form.Group>
+        <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>
+            <Col>
+            <Form.Control className="answer-field-correct"
+
+            size="lg" type="text" readOnly value={question.answer}/>
+            </Col>
+          </Form.Row>
+
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label>
+            <Col>
+            <Form.Control className="review-answer-field"
+
+            size="lg" type="text" readOnly value={question.incorrect_answers[0]}/>
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label>
+            <Col>
+            <Form.Control className="review-answer-field"
+
+            size="lg" type="text" readOnly value={question.incorrect_answers[1]}/>
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label>
+            <Col>
+            <Form.Control className="review-answer-field"
+
+            size="lg" type="text" readOnly value={question.incorrect_answers[2]}/>
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label>
+            <Col>
+            <Form.Control className="review-answer-field"
+
+            size="lg" type="text" readOnly value={question.incorrect_answers[3]}/>
+            </Col>
+          </Form.Row>
+
+          </Form.Group>
+          </Card>
+          <div className="small-spacer"></div>
+        </>
+        )
+      })
+
       return (
-        <>
+        this.state.reviewQuizzesSection ? (
+          <>
+          <TopNavbar />
+          <Style>
+          <div className="container-middle">
+          <h1 className="header"> Review Quiz </h1>
+          <div id="text" className="description topOfQuiz"> {this.state.quiz_title} is about: 
+            <span id="purple-text" className="topicsColor"> {this.state.topics.join(', ')}</span>.
+            <Button variant="light" className="publish-quiz-button rounded-corner" onClick={(e) => this.onCreateQuiz(e)}> Publish Quiz </Button>
+            <Button variant="light" className="delete-quiz-button rounded-corner" onClick={() => this.handleShow()} style={{marginLeft: "25px"}}> Delete Quiz </Button> 
+          </div>
+          <div className="small-spacer"></div>
+          {showReviewQuestions}
+          </div>
+          </Style>
+          </>
+        ):(
+          <>
         
         <Style>
         <TopNavbar />
@@ -604,14 +711,14 @@ class CreateQuizForm extends React.Component{
 
           <div id="text" className="description topOfQuiz"> {this.state.quiz_title} is about: 
             <span id="purple-text" className="topicsColor"> {this.state.topics.join(', ')}</span>.
-            <Button variant="light" className="publish-quiz-button rounded-corner" onClick={this.onCreateQuiz}> Publish Quiz </Button>
-            <Button variant="light" className="delete-quiz-button rounded-corner" onClick={this.handleShow}> Delete Quiz </Button> 
+            <Button variant="light" className="publish-quiz-button rounded-corner" onClick={(e) => this.onReviewQuiz(e)}> Review Quiz </Button>
+            <Button variant="light" className="delete-quiz-button rounded-corner" onClick={() => this.handleShow()}> Delete Quiz </Button> 
           </div>
 
           <div className="spacer"></div>
 
           <Form.Row>
-          <Form.Control required id="form-input" className="header no-border" size="sm" type="text" placeholder="Type Quiz Title Here..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
+          <Form.Control required id="form-input" className="this-header no-border" size="sm" type="text" placeholder="Type Quiz Title Here..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
           </Form.Row>
 
           <div className="small-spacer"></div>
@@ -701,6 +808,7 @@ class CreateQuizForm extends React.Component{
         </div>
         </Style>
         </>
+        )
         )
     }
   }

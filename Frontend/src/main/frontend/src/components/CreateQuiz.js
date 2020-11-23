@@ -29,6 +29,7 @@ const Styles = styled.div`
     color: #8F0047;
     font-family: Roboto;
     font-size: bold;
+    cursor:pointer;
     border-color: white;
   }
 
@@ -62,13 +63,16 @@ class CreateQuiz extends Component {
   static contextType = UserContext
 
   state = {
-    isLoading:true,
+    isLoading:false,
     courses: [],
     courseIDs: [],
-    chosenCourseId:null,
-    chosenCourse:null,
+    // chosenCourseId:null,
+    chosenCourseId:1234,
+    // chosenCourse:null,
+    chosenCourse: [{courseName: "Name of Course", _id: {$oid: 123123}}],
     instructorCourses: [],
-    topicOptions: [],
+    // topicOptions: [],
+    topicOptions: ["Topic1","Topic2"],
     topics: [],
     createQuizSection: false,
     isInstructor: false
@@ -76,21 +80,21 @@ class CreateQuiz extends Component {
 
 
   componentDidMount() {
-    this.mounted = true;
-    if (this.props.match.params.course_id !== undefined) {
-      this.setState({
-        courseIDs: this.props.match.params.course_id,
-        chosenCourseId: this.props.match.params.course_id
-      }, () => {this.getChosenCourse()})
-    } else {
-      const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-      axios.get('http://pi.cs.oswego.edu:9081/users/' + email).then(res => {
-        if(this.mounted){
-          this.setState({courseIDs: res.data}, () => {this.getCoursesFromDB()})
-        }
-      }).catch(err => {console.log(err); this.setState({isLoading: false})
-      })
-      }
+    // this.mounted = true;
+    // if (this.props.match.params.course_id !== undefined) {
+    //   this.setState({
+    //     courseIDs: this.props.match.params.course_id,
+    //     chosenCourseId: this.props.match.params.course_id
+    //   }, () => {this.getChosenCourse()})
+    // } else {
+    //   const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
+    //   axios.get('http://pi.cs.oswego.edu:9081/users/' + email).then(res => {
+    //     if(this.mounted){
+    //       this.setState({courseIDs: res.data}, () => {this.getCoursesFromDB()})
+    //     }
+    //   }).catch(err => {console.log(err); this.setState({isLoading: false})
+    //   })
+    //   }
   }
 
   getChosenCourse = () => {
@@ -230,7 +234,7 @@ class CreateQuiz extends Component {
         <CardDeck className="courses-deck">
           {specificCourse}
         </CardDeck>
-        
+        <span style={{textAlign: "center"}}>Choose topic(s) for the quiz: </span>
         <CardDeck className="topics-deck">
           {topics}
         </CardDeck>
