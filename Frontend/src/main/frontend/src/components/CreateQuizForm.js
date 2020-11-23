@@ -80,7 +80,6 @@ const Style = styled.div`
       color: white;
       font-family: Roboto;
       min-width: 15%;
-      margin:10px;
     }
 
     .quiz-question {
@@ -154,7 +153,7 @@ class CreateQuizForm extends React.Component{
       // "topics":this.props.topics,
       "isInstructor": "npayag@oswego.edu",
       "courseID":1234,
-      "topics":["Killing", "Myself"],
+      "topics":["Some", "Fucking", "Topics"],
       "index":0,
       "question":"",
       "correct_answer":"",
@@ -479,10 +478,10 @@ class CreateQuizForm extends React.Component{
     render(){
       const instructorButton = this.state.isInstructor ? (
         <> 
-        <Button id="dark-mode-button" variant="light" className="add-question-button rounded-corner" onClick={() => this.getStarredQuizzes()} style={{marginRight: '5px'}}> Import Questions </Button>
-        <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add This Question</Button> </>
+        <Button id="dark-mode-button" variant="light" className="add-question-button rounded-corner" name="starredQuizzesButton" onClick={() => this.getStarredQuizzes()} style={{marginRight: '5px', float: "right"}}> Import Questions </Button>
+       </>
       ):(
-        <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add This Question</Button> 
+        <></>
         
       )
 
@@ -499,9 +498,16 @@ class CreateQuizForm extends React.Component{
       )
 
       const changeIndexButtons = this.state.questions.length > 0 ? (
-        <> {prevButton} {nextButton} </>
+        this.state.index === this.state.questions.length ? (
+          <> {prevButton} 
+          <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add This Question</Button>
+            {nextButton} </>
+        ):(
+          <> {prevButton} 
+            {nextButton} </>
+        )
       ):(
-        <> </>
+        <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add This Question</Button>
       )
 
       // FOR INSTRUCTOR - WHEN IMPORTING A QUESTION ---------------------------
@@ -676,7 +682,8 @@ class CreateQuizForm extends React.Component{
           <br/>
 
           </Form.Group>
-          <div> {changeIndexButtons} </div>
+          <div style={{textAlign: "center"}}> {changeIndexButtons} 
+          </div>
           {/* <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add This Question</Button>  */}
           </Card>
 

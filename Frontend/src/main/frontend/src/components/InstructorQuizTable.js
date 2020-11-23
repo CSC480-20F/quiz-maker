@@ -5,6 +5,23 @@ import { withRouter } from 'react-router-dom';
 
 class InstructorQuizTable extends Component {
 
+  addFilterPlaceholder = () => {
+    const filters = document.querySelectorAll("div.rt-th > input");
+    let index = 0;
+    const placeHolders = ["Quiz Name...", "Author's email...", "Topic(s)...", "Number of questions...", "Date created...","Quiz Rating...", "Quiz starred?..."]
+    for (let filter of filters) {
+      filter.placeholder = placeHolders[index];
+      index++;
+      if (index >= placeHolders.length) {
+        index = 0;
+      }
+    }
+  }
+
+  componentDidMount() {
+    this.addFilterPlaceholder();
+  }
+
     render() {
       const getTopics = (topics) => {
         if (topics.length > 0) {
