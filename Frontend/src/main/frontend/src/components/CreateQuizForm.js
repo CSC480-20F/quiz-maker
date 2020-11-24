@@ -5,7 +5,7 @@ import {Modal, Button, Card, Form, Col, Spinner, Row } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-import TopNavbar from './TopNavbar';
+// import TopNavbar from './TopNavbar';
 import { FiArrowLeftCircle,  FiArrowRightCircle,  } from "react-icons/fi"; //https://react-icons.github.io/react-icons/icons?name=fi
 
 // 💅 Stylesheet for this babay
@@ -377,6 +377,10 @@ class CreateQuizForm extends React.Component{
     onReviewQuiz = (e) => {
       console.log("Reviewing Quiz")
       e.preventDefault();
+      if (this.state.quiz_title.length < 1) {
+        NotificationManager.info('Please give your quiz a title! 😅', 'Title Needed', 4000);
+        return; 
+      }
       if (this.state.question.length > 0 && this.state.correct_answer.length > 0 && this.state.incorrect_answer1.length > 0 && this.state.incorrect_answer2.length > 0 && this.state.incorrect_answer3.length > 0 && this.state.incorrect_answer4.length > 0) {
         this.setState({
           incorrect_answers: [...this.state.incorrect_answers, this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3, this.state.incorrect_answer4]
@@ -424,14 +428,18 @@ class CreateQuizForm extends React.Component{
     }
 
     useQuestion = () => {
+      var obj = {question: this.state.chosenQuestion.question, answer: this.state.chosenQuestion.answer, incorrect_answers: this.state.chosenQuestion.incorrect_answers};
       this.setState({
-        "question":this.state.chosenQuestion.question,
-        "correct_answer":this.state.chosenQuestion.answer,
-        "incorrect_answer1":this.state.chosenQuestion.incorrect_answers[0],
-        "incorrect_answer2":this.state.chosenQuestion.incorrect_answers[1],
-        "incorrect_answer3":this.state.chosenQuestion.incorrect_answers[2],
-        "incorrect_answer4":this.state.chosenQuestion.incorrect_answers[3]
-      })
+        questions: [...this.state.questions, obj],
+        question:"",
+        correct_answer:"",
+        incorrect_answer1:"",
+        incorrect_answer2:"",
+        incorrect_answer3:"",
+        incorrect_answer4:"",
+        incorrect_answers:[],
+        index:this.state.index + 1
+      });
       this.handleImportClose()
     }
 
@@ -547,32 +555,32 @@ class CreateQuizForm extends React.Component{
         this.state.chosenQuestion!== null ? (
           <>
           <Style>
-          <Card className="whole-question-card rounded-corner" style={{minWidth: "50%"}}>
+          <Card className="whole-question-card rounded-corner" style={{minWidth: "50%", cursor: "default"}}>
           <div style={{fontSize:"20px"}} className="small-spacer" dangerouslySetInnerHTML={{__html: this.state.chosenQuestion.question}}></div>
           <Form.Group>
           <Form.Row>
               <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>
-              <Col><Form.Control className="answer-field correct-answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.answer}/></Col>
+              <Col><Form.Control className="answer-field correct-answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.answer} style={{cursor: "default"}}/></Col>
           </Form.Row>
 
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label>
-            <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[0]}/></Col>
+            <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[0]} style={{cursor: "default"}}/></Col>
           </Form.Row>
 
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label>
-            <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[1]}/></Col>
+            <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[1]} style={{cursor: "default"}}/></Col>
           </Form.Row>
 
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label>
-            <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[2]}/></Col>
+            <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[2]} style={{cursor: "default"}}/></Col>
           </Form.Row>
 
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label>
-            <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[3]}/></Col>
+            <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[3]} style={{cursor: "default"}}/></Col>
           </Form.Row>
           </Form.Group>
           </Card>
@@ -583,8 +591,8 @@ class CreateQuizForm extends React.Component{
             return (
               <Card key={i} onClick={() => this.choseQuestion(i)}>
                 <Card.Body>
-                  <div style={{fontFamily: "Roboto", color: "#8F0047", fontSize: "20px"}}> Q{i+1} </div>
-                  <div style={{fontFamily: "Roboto"}}> {question.question} </div>
+                  <div style={{fontFamily: "Roboto", color: "#8F0047", fontSize: "20px", cursor: "pointer"}}> Q{i+1} </div>
+                  <div style={{fontFamily: "Roboto", cursor: "pointer"}}> {question.question} </div>
                 </Card.Body> 
               </Card>
             )
@@ -596,8 +604,8 @@ class CreateQuizForm extends React.Component{
             return (
               <Card key={i} onClick={() => this.choseQuiz(quiz._id.$oid)}>
                 <Card.Body>
-                <div style={{fontFamily: "Roboto", color: "#8F0047", fontSize: "20px"}}> {quiz.quizName} </div>
-                <div style={{fontFamily: "Roboto"}}> {quiz.quizQuestions.length} questions </div> 
+                <div style={{fontFamily: "Roboto", color: "#8F0047", fontSize: "20px", cursor: "pointer"}}> {quiz.quizName} </div>
+                <div style={{fontFamily: "Roboto", cursor:"pointer"}}> {quiz.quizQuestions.length} questions </div> 
                 </Card.Body>
               </Card>
             )
@@ -624,11 +632,11 @@ class CreateQuizForm extends React.Component{
       const showReviewQuestions = this.state.questions.map((question, i) => {
         return (
           <>
-        <Card className="whole-question-card rounded-corner" key={i} style={{minWidth: "70%"}}>
-        <h1 className="this-subtitle">
+        <Card className="whole-question-card rounded-corner" key={i} style={{minWidth: "100%"}}>
+        <h1 className="this-subtitle" style={{cursor: "default"}}>
           Question {i+1} 
         </h1>
-        <div style={{fontSize:"20px"}} className="small-spacer" dangerouslySetInnerHTML={{__html: question.question}}></div>
+        <div style={{fontSize:"20px"}} className="small-spacer" dangerouslySetInnerHTML={{__html: question.question}} style={{cursor: "default"}}></div>
         <Form.Group>
         <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>
@@ -689,13 +697,23 @@ class CreateQuizForm extends React.Component{
           {/* <TopNavbar /> */}
           <Style>
           <div className="container-middle">
-          <h1 className="header"> Review Quiz </h1>
-          <div id="text" className="description topOfQuiz"> {this.state.quiz_title} is about: 
-            <span id="purple-text" className="topicsColor"> {this.state.topics.join(', ')}</span>.
+          <h1 className="header" style={{cursor: "default"}}> Review Quiz </h1>
+          <div id="text" className="description topOfQuiz" style={{cursor: "default"}}> {this.state.quiz_title} is about: 
+            <span id="purple-text" className="topicsColor" style={{cursor: "default"}}> {this.state.topics.join(', ')}</span>.
             <Button variant="light" className="publish-quiz-button rounded-corner" onClick={(e) => this.onCreateQuiz(e)}> Publish Quiz </Button>
             <Button variant="light" className="delete-quiz-button rounded-corner" onClick={() => this.handleShow()} style={{marginLeft: "25px"}}> Delete Quiz </Button> 
           </div>
           <div className="small-spacer"></div>
+
+          <Modal show={this.state.show} onHide={this.handleClose} backdrop="static">
+            <Modal.Header closeButton> <Modal.Title> Delete Quiz </Modal.Title> </Modal.Header>
+            <Modal.Body>Are you sure you want to discard this quiz?</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleClose}> Cancel </Button>
+              <Button variant="primary" onClick={this.onDeleteQuiz}> Yes </Button>
+            </Modal.Footer>
+          </Modal>
+
           {showReviewQuestions}
           </div>
           </Style>
@@ -713,8 +731,8 @@ class CreateQuizForm extends React.Component{
 
           <div className="spacer"></div> */}
 
-          <div id="text" className="description topOfQuiz"> {this.state.quiz_title} is about: 
-            <span id="purple-text" className="topicsColor"> {this.state.topics.join(', ')}</span>.
+          <div id="text" className="description topOfQuiz" style={{cursor: "default"}}> {this.state.quiz_title} is about: 
+            <span id="purple-text" className="topicsColor" style={{cursor: "default"}}> {this.state.topics.join(', ')}</span>.
             <Button variant="light" className="publish-quiz-button rounded-corner" onClick={(e) => this.onReviewQuiz(e)}> Review Quiz </Button>
             <Button variant="light" className="delete-quiz-button rounded-corner" onClick={() => this.handleShow()}> Delete Quiz </Button> 
           </div>

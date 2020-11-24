@@ -14,7 +14,8 @@ const Styles = styled.div`
   }
 
   .specific-course-card {
-    max-width: fit-content !important;;
+    max-width: fit-content !important;
+    cursor:default;
   }
 
   .topic-card {
