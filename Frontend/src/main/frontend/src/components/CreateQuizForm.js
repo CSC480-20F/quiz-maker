@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import {Modal, Button, Card, Form, Col, Spinner } from "react-bootstrap";
+import {Modal, Button, Card, Form, Col, Spinner, Row } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -739,8 +739,14 @@ class CreateQuizForm extends React.Component{
           <Card className="quiz-question rounded-corner">
 
           <div>
-          <Form.Label className="description center" column="lg" lg={3}> Question {this.state.index + 1}  {instructorButton} </Form.Label>
+          <Form.Group as={Row} controlId="formHorizontalEmail">
+          <Form.Label className="description center" column="lg" lg={3}> Question {this.state.index + 1}  </Form.Label>
           {/* <div style={{float:'left'}}> {instructorButton} </div> */}
+          <Col lg={0}>
+          {instructorButton}  
+          </Col>
+          </Form.Group>
+
           <Form.Row>
             <Form.Label style={{visibility: "hidden"}} column="lg" sm={0.5}> Q </Form.Label >
             <Col>
