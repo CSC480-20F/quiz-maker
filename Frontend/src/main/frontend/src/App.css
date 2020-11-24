@@ -36,6 +36,14 @@
   padding-top: 90px;
 }
 
+.login-oswego-logo-2{
+  /* height: auto; 
+  width: auto;  */
+  max-width:25%;
+  align-self: center;
+  padding-top: 10px;
+}
+
 .login-quizmaker-logo{
   height: auto; 
   width: auto; 

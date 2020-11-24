@@ -49,13 +49,11 @@ const Styles = styled.div`
   #nav-drop-down-little-box{
   background-color:white;
   color:#235937;
-}
-  ${'' /* #toggle-dark-mode
-  {
-    background-color:white;
-    color:#235937;
-    
-  } */}
+  }
+
+  #nav-drop-down-little-box-darkmode{
+  color:#235937;
+  }
 
   #edit-dark-mode-text-2{
     margin:100px;
@@ -127,9 +125,14 @@ const TopNavbar = () => {
       <NavDropdown className="justify-content-end" title={name} id="collasible-nav-dropdown">
 
 
-      <NavDropdown.Item id="nav-drop-down-little-box" onClick={DarkModeApp}> Switch Themes </NavDropdown.Item>
+      {/* <NavDropdown.Item id="nav-drop-down-little-box-darkmode"> 
+      
+      <DarkModeApp style={{color:'black'}}> Switch Theme </DarkModeApp>
+      
+      </NavDropdown.Item> */}
+
       <NavDropdown.Item id="nav-drop-down-little-box" as={Link} to="/About">About </NavDropdown.Item>
-      <NavDropdown.Item id="nav-drop-down-little-box" onClick={authInstance.signOut} href="/">Sign Out </NavDropdown.Item>
+      <NavDropdown.Item title="" id="nav-drop-down-little-box" onClick={authInstance.signOut} href="/">Sign Out </NavDropdown.Item>
       
       
    

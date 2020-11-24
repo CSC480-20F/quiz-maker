@@ -7,9 +7,10 @@ const ToggleDark = ({ theme, toggleTheme }) => {
   const isLight = theme === 'light';
   return (
 
-    <HiMoon id="toggle-icon"
-
-    onClick={toggleTheme} style={{ fontSize:'20px', cursor:'pointer'}}>
+    <HiMoon 
+      id="toggle-icon"
+      onClick={toggleTheme} 
+      style={{ fontSize:'20px', cursor:'pointer'}}>
     </HiMoon>
     
 
