@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import TopNavbar from './TopNavbar';
-
+import { FiArrowLeftCircle,  FiArrowRightCircle,  } from "react-icons/fi"; //https://react-icons.github.io/react-icons/icons?name=fi
 
 // 💅 Stylesheet for this babay
 const Style = styled.div`
@@ -131,7 +131,9 @@ const Style = styled.div`
       background-color: #8F0047;
       font-family: Roboto;
       color: white;
-      max-width: fit-content;
+      height:40px;
+      width:40px;
+      cursor:pointer;
     }
 
     .prev-button{
@@ -139,7 +141,9 @@ const Style = styled.div`
       background-color: #8F0047;
       font-family: Roboto;
       color: white;
-      max-width: fit-content;
+      height:40px;
+      width:40px;
+      cursor:pointer;
     }
 
     .topOfQuiz {
@@ -514,13 +518,13 @@ class CreateQuizForm extends React.Component{
       )
 
       const prevButton = this.state.index > 0 ? (
-        <Button id="dark-mode-button" className="prev-button rounded-corner" onClick={() => this.prevQuestion()} variant="light"> Previous Question </Button>
+        <FiArrowLeftCircle title="Go to previous Question" id="dark-mode-button" className="prev-button rounded-corner" onClick={() => this.prevQuestion()} variant="light"> Previous Question </FiArrowLeftCircle>
       ):(
         <> </>
       )
       
       const nextButton = this.state.index < this.state.questions.length ? (
-        <Button id="dark-mode-button" className="next-button rounded-corner" onClick={() => this.nextQuestion()} variant="light"> Next Question </Button>
+        <FiArrowRightCircle title="Go to next Question" id="dark-mode-button" className="next-button rounded-corner" onClick={() => this.nextQuestion()} variant="light"> Next Question </FiArrowRightCircle>
       ):(
         <> </>
       )
@@ -682,7 +686,7 @@ class CreateQuizForm extends React.Component{
       return (
         this.state.reviewQuizzesSection ? (
           <>
-          <TopNavbar />
+          {/* <TopNavbar /> */}
           <Style>
           <div className="container-middle">
           <h1 className="header"> Review Quiz </h1>
@@ -700,7 +704,7 @@ class CreateQuizForm extends React.Component{
           <>
         
         <Style>
-        <TopNavbar />
+        {/* <TopNavbar /> */}
         <div className="container-middle">
         <Form id="quiz-form" onSubmit={this.handleSubmit.bind(this)}>
           {/* <Form.Row>

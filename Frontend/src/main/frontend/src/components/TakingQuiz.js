@@ -8,6 +8,7 @@ import 'react-notifications/lib/notifications.css';
 import {Card, ProgressBar, Form, Col, Button, Modal, } from 'react-bootstrap';
 import { FcCheckmark, FcCancel } from "react-icons/fc"; //https://react-icons.github.io/react-icons/icons?name=fc
 import { AiOutlineLike, AiOutlineDislike, AiTwotoneFlag } from "react-icons/ai"; //https://react-icons.github.io/react-icons/icons?name=ai
+import { FiArrowLeftCircle,  FiArrowRightCircle,  } from "react-icons/fi"; //https://react-icons.github.io/react-icons/icons?name=fi
 
 const Styles = styled.div`
   .topics {
@@ -75,6 +76,8 @@ const Styles = styled.div`
     float: right;
     background-color: #8F0047;
     color: white;
+    height:40px;
+    width:40px;
   }
 
   .back-course-button {
@@ -416,7 +419,7 @@ class TakeQuiz extends Component {
     })
 
     const nextQuestionButton = this.state.selected ? (
-      <Button variant="light" type="button" className="next-question-button" onClick={() => { this.goToNextQuestion()}}>Next Question</Button>
+      <FiArrowRightCircle variant="light" type="button" className="next-question-button" onClick={() => { this.goToNextQuestion()}}>Next Question</FiArrowRightCircle>
       ):(
         <h1 style={{visibility: "hidden"}}> hehe </h1>
       )
