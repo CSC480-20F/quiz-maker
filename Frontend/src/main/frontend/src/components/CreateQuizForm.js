@@ -6,7 +6,9 @@ import { withRouter } from "react-router-dom";
 import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 // import TopNavbar from './TopNavbar';
-import { FiArrowLeftCircle,  FiArrowRightCircle,  } from "react-icons/fi"; //https://react-icons.github.io/react-icons/icons?name=fi
+import { FiArrowLeftCircle,  FiArrowRightCircle, FiCheckCircle, FiPlusCircle  } from "react-icons/fi"; //https://react-icons.github.io/react-icons/icons?name=fi
+
+
 
 // 💅 Stylesheet for this babay
 const Style = styled.div`
@@ -164,6 +166,18 @@ const Style = styled.div`
     cursor: default !important;
   }
 
+  .active-upvote{
+    color:#37bf84;
+  }
+
+  .active-downvote{
+    color:red;
+  }
+
+  .active-none{
+    color:#8F0047;
+  }
+
 `;
 
 
@@ -306,7 +320,10 @@ class CreateQuizForm extends React.Component{
       }],
       // "gettingQuizzes": true
       "gettingQuizzes": false,
-      "reviewQuizzesSection": false
+      "reviewQuizzesSection": false,
+      "importMultipleQuestionToggleFalse":false,
+      "importMultipleQuestionToggleTrue":false
+
     }
   }
         
@@ -518,6 +535,8 @@ class CreateQuizForm extends React.Component{
         })
       })
     }
+
+    doNothing () {}
       
     render(){
       const instructorButton = this.state.isInstructor ? (
@@ -594,9 +613,58 @@ class CreateQuizForm extends React.Component{
           this.state.chosenQuiz[0].quizQuestions.map((question,i) => {
             return (
               <Card key={i} onClick={() => this.choseQuestion(i)} style={this.state.chosenQuestions.includes(question) ? ({borderColor: "#8F0047", borderWidth: "3px"}):({borderColor: "#F5F3F3"})}>
+              
                 <Card.Body>
-                  <div style={{fontFamily: "Roboto", color: "#8F0047", fontSize: "20px", cursor: "pointer"}}> Q{i+1} </div>
+
+                  
+                  <div style={{fontFamily: "Roboto", color: "#8F0047", fontSize: "20px", cursor: "pointer", display:'flex', justifyContent: "space-between", flexWrap: "wrap"}}> Q{i+1} 
+                  
+                  <FiPlusCircle
+                  title="Import this question"
+                  style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
+                  id="upvote"
+                  size = "18px"
+                  label = "Select this question to import"
+                  key = {i}
+                  onClick={() => this.choseQuestion(i)} style={this.state.chosenQuestions.includes(question) ? ({color: "#FE9C02"}):({color: "white"})}
+                  />
+                  
+                  </div>
                   <div style={{fontFamily: "Roboto", cursor: "pointer"}}> {question.question} </div>
+
+                 
+
+                  {/* <FiPlusCircle
+                  title="Import this question"
+                  style={{display:"inline-block", margin:"2px", cursor:'pointer', float:'right'}}
+                  id="upvote"
+                  size = "18px"
+                  label = "Select this question to import"
+                  key = {i}
+                  onClick={() => this.choseQuestion(i)} style={this.state.chosenQuestions.includes(question) ? ({color: "#FE9C02"}):({color: "black"})}
+                  /> */}
+                  
+                    
+                  
+                  {/* <form>
+                    
+                      <input
+                      name = "asd"
+                      type = "checkbox"
+                      checked= {this.state.importMultipleQuestionToggleFalse}
+                      // onChange={this.state.importMultipleQuestionToggleTrue} 
+
+                      />
+                      <label>
+                      Select This Question(s)
+                    </label>
+                  </form> */}
+
+                  {/* <Form>
+                  <Form.Group controlId="formBasicCheckbox" onClick={() => this.choseQuestion(i)} style={this.state.chosenQuestions.includes(question) ? ({borderColor: "#8F0047", borderWidth: "3px"}):({borderColor: "#F5F3F3"})}>
+                  <Form.Check type="checkbox" label="Select this question to import" />
+                  </Form.Group>
+                  </Form> */}
                 </Card.Body> 
               </Card>
             )
@@ -832,7 +900,8 @@ class CreateQuizForm extends React.Component{
           
           <Modal show={this.state.importShow} onHide={this.handleImportClose} backdrop="static">
             <Modal.Header closeButton> <Modal.Title> Import Quiz Question </Modal.Title> </Modal.Header>
-            <Modal.Body>{body}</Modal.Body>
+            {/* <div style={{fontFamily:'Roboto', justifyContent:'center', fontSize:'12px'}}>Click on the questions you want to import and click "Use Question(s)</div> */}
+            <Modal.Body style={{fontFamily:'Roboto'}}>Click on the questions you want to import and click "Use Question(s)"{body}</Modal.Body>
             <Modal.Footer> {footerButtons} </Modal.Footer>
           </Modal>
 
