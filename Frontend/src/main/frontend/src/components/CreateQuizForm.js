@@ -163,6 +163,7 @@ const Style = styled.div`
     background-color: white;
     cursor: default !important;
   }
+
 `;
 
 
@@ -190,7 +191,7 @@ class CreateQuizForm extends React.Component{
       "show": false,
       "importShow": false,
       "chosenQuiz": [],
-      "chosenQuestion": null,
+      "chosenQuestions": [],
       "starredQuizzes": [{
         "_id": {
           "$oid": "5fa3247b2a71540c8786ae9e"
@@ -381,7 +382,7 @@ class CreateQuizForm extends React.Component{
         NotificationManager.info('Please give your quiz a title! 😅', 'Title Needed', 4000);
         return; 
       }
-      if (this.state.question.length > 0 && this.state.correct_answer.length > 0 && this.state.incorrect_answer1.length > 0 && this.state.incorrect_answer2.length > 0 && this.state.incorrect_answer3.length > 0 && this.state.incorrect_answer4.length > 0) {
+      if (this.state.question.length > 0 && this.state.correct_answer.length > 0 && this.state.incorrect_answer1.length > 0 && this.state.incorrect_answer2.length > 0 && this.state.incorrect_answer3.length > 0 && this.state.incorrect_answer4.length > 0 && this.state.index === this.state.questions.length) {
         this.setState({
           incorrect_answers: [...this.state.incorrect_answers, this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3, this.state.incorrect_answer4]
         }, () => {
@@ -400,7 +401,7 @@ class CreateQuizForm extends React.Component{
     handleClose = () => {this.setState({show: false})}
     handleShow = () => {this.setState({show: true})}
 
-    handleImportClose = () => {this.setState({importShow: false, "chosenQuiz": [], "chosenQuestion": null})}
+    handleImportClose = () => {this.setState({importShow: false, "chosenQuiz": [], "chosenQuestions": []})}
     handleImportShow = () => {this.setState({importShow: true})}
 
     onDeleteQuiz = (e) => {
@@ -424,21 +425,24 @@ class CreateQuizForm extends React.Component{
 
     choseQuestion = (id) => {
       const foundQuestion = this.state.chosenQuiz[0].quizQuestions[id]
-      this.setState ({chosenQuestion: foundQuestion})
+      if (!this.state.chosenQuestions.includes(foundQuestion)){
+        this.setState({chosenQuestions: [...this.state.chosenQuestions, foundQuestion]})
+      } else {
+        const filteredArray = this.state.chosenQuestions.filter(item => item !== foundQuestion)
+        this.setState({chosenQuestions: filteredArray});
+      }
     }
 
     useQuestion = () => {
-      var obj = {question: this.state.chosenQuestion.question, answer: this.state.chosenQuestion.answer, incorrect_answers: this.state.chosenQuestion.incorrect_answers};
+      let newQuestions = [...this.state.questions]
+      let newIndex = this.state.index
+      for (const question in this.state.chosenQuestions) {
+        newQuestions.push(this.state.chosenQuestions[question]);
+        newIndex++;
+      }
       this.setState({
-        questions: [...this.state.questions, obj],
-        question:"",
-        correct_answer:"",
-        incorrect_answer1:"",
-        incorrect_answer2:"",
-        incorrect_answer3:"",
-        incorrect_answer4:"",
-        incorrect_answers:[],
-        index:this.state.index + 1
+        questions: newQuestions,
+        index: newIndex
       });
       this.handleImportClose()
     }
@@ -552,44 +556,44 @@ class CreateQuizForm extends React.Component{
 
       // FOR INSTRUCTOR - WHEN IMPORTING A QUESTION ---------------------------
       const body = this.state.chosenQuiz.length ? (
-        this.state.chosenQuestion!== null ? (
-          <>
-          <Style>
-          <Card className="whole-question-card rounded-corner" style={{minWidth: "50%", cursor: "default"}}>
-          <div style={{fontSize:"20px"}} className="small-spacer" dangerouslySetInnerHTML={{__html: this.state.chosenQuestion.question}}></div>
-          <Form.Group>
-          <Form.Row>
-              <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>
-              <Col><Form.Control className="answer-field correct-answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.answer} style={{cursor: "default"}}/></Col>
-          </Form.Row>
+        // this.state.chosenQuestions!== null ? (
+        //   <>
+        //   <Style>
+        //   <Card className="whole-question-card rounded-corner" style={{minWidth: "50%", cursor: "default"}}>
+        //   <div style={{fontSize:"20px"}} className="small-spacer" dangerouslySetInnerHTML={{__html: this.state.chosenQuestion.question}}></div>
+        //   <Form.Group>
+        //   <Form.Row>
+        //       <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>
+        //       <Col><Form.Control className="answer-field correct-answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.answer} style={{cursor: "default"}}/></Col>
+        //   </Form.Row>
 
-          <Form.Row>
-            <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label>
-            <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[0]} style={{cursor: "default"}}/></Col>
-          </Form.Row>
+        //   <Form.Row>
+        //     <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label>
+        //     <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[0]} style={{cursor: "default"}}/></Col>
+        //   </Form.Row>
 
-          <Form.Row>
-            <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label>
-            <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[1]} style={{cursor: "default"}}/></Col>
-          </Form.Row>
+        //   <Form.Row>
+        //     <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label>
+        //     <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[1]} style={{cursor: "default"}}/></Col>
+        //   </Form.Row>
 
-          <Form.Row>
-            <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label>
-            <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[2]} style={{cursor: "default"}}/></Col>
-          </Form.Row>
+        //   <Form.Row>
+        //     <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label>
+        //     <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[2]} style={{cursor: "default"}}/></Col>
+        //   </Form.Row>
 
-          <Form.Row>
-            <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label>
-            <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[3]} style={{cursor: "default"}}/></Col>
-          </Form.Row>
-          </Form.Group>
-          </Card>
-          </Style>
-          </>
-        ):(
+        //   <Form.Row>
+        //     <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label>
+        //     <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[3]} style={{cursor: "default"}}/></Col>
+        //   </Form.Row>
+        //   </Form.Group>
+        //   </Card>
+        //   </Style>
+        //   </>
+        // ):(
           this.state.chosenQuiz[0].quizQuestions.map((question,i) => {
             return (
-              <Card key={i} onClick={() => this.choseQuestion(i)}>
+              <Card key={i} onClick={() => this.choseQuestion(i)} style={this.state.chosenQuestions.includes(question) ? ({borderColor: "#8F0047", borderWidth: "3px"}):({borderColor: "#F5F3F3"})}>
                 <Card.Body>
                   <div style={{fontFamily: "Roboto", color: "#8F0047", fontSize: "20px", cursor: "pointer"}}> Q{i+1} </div>
                   <div style={{fontFamily: "Roboto", cursor: "pointer"}}> {question.question} </div>
@@ -597,7 +601,7 @@ class CreateQuizForm extends React.Component{
               </Card>
             )
           })
-        )
+        // )
       ):(
         this.state.starredQuizzes.length ? (
           this.state.starredQuizzes.map((quiz,i) => {
@@ -620,12 +624,12 @@ class CreateQuizForm extends React.Component{
       )
       // END --> FOR INSTRUCTOR - WHEN IMPORTING A QUESTION ------------------------
 
-      const footerButtons = this.state.chosenQuestion===null ? (
+      const footerButtons = this.state.chosenQuestions.length < 1 ? (
         <Button id="dark-mode-button" variant="light" onClick={this.handleImportClose}> Cancel </Button>
       ):(
         <>
         <Button id="dark-mode-button" variant="light" onClick={this.handleImportClose}> Cancel </Button>
-        <Button id="dark-mode-button" variant="light" onClick={() => this.useQuestion()}> Use Question </Button>
+        <Button id="dark-mode-button" variant="light" onClick={() => this.useQuestion()}> Use Question(s) </Button>
         </>
       )
 
@@ -636,7 +640,7 @@ class CreateQuizForm extends React.Component{
         <h1 className="this-subtitle" style={{cursor: "default"}}>
           Question {i+1} 
         </h1>
-        <div style={{fontSize:"20px"}} className="small-spacer" dangerouslySetInnerHTML={{__html: question.question}} style={{cursor: "default"}}></div>
+        <div style={{fontSize:"20px", cursor: "default"}} className="small-spacer" dangerouslySetInnerHTML={{__html: question.question}}></div>
         <Form.Group>
         <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>

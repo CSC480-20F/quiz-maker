@@ -8,7 +8,7 @@ import 'react-notifications/lib/notifications.css';
 import {Card, ProgressBar, Form, Col, Button, Modal, } from 'react-bootstrap';
 import { FcCheckmark, FcCancel } from "react-icons/fc"; //https://react-icons.github.io/react-icons/icons?name=fc
 import { AiOutlineLike, AiOutlineDislike, AiTwotoneFlag } from "react-icons/ai"; //https://react-icons.github.io/react-icons/icons?name=ai
-import { FiArrowLeftCircle,  FiArrowRightCircle,  } from "react-icons/fi"; //https://react-icons.github.io/react-icons/icons?name=fi
+import { FiArrowRightCircle  } from "react-icons/fi"; //https://react-icons.github.io/react-icons/icons?name=fi
 
 const Styles = styled.div`
   .topics {

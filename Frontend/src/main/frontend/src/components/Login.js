@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card'
 import quizmakerlogo from '../assets/quizmakerloginlogo.png'
 // import quizmakerlogo from '../assets/Artboard22.png'
 import { Link } from 'react-router-dom'
-import quizmakerlogov2 from '../assets/Final_White_Background.png'
+// import quizmakerlogov2 from '../assets/Final_White_Background.png'
 import oswegologo from '../assets/non-invert-logo.png'
 
 class Login extends React.Component {

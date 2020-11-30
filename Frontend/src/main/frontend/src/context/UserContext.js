@@ -4,7 +4,7 @@ import axios from 'axios';
 export const UserContext = createContext();
 
 function UserProvider ({ children }) {
-    const [isInstructor, setInstructor] = useState([true]);
+    const [isInstructor, setInstructor] = useState([false]);
 
     // const delay = ms => new Promise(res => setTimeout(res, ms));
 
