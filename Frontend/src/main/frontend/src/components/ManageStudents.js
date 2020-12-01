@@ -180,13 +180,13 @@ class ManageStudents extends Component {
 
         const students = this.state.courseRoster.map((student,i) => {
             return (
-                <Card key={i} className="student-card" border="secondary"> {student} </Card>
+                <Card key={i} className="student-card" border="secondary" style={{cursor: "default"}}> {student} </Card>
             )
         })
 
         const removeStudents = this.state.courseRoster.map((student,i) => {
             return (
-                <Card key={i} onClick={e => this.toggleStudent(student)} className={this.state.removeStudents.includes(student) ? ("removed student-card"):("student-card")} border="secondary"> {student} </Card>
+                <Card key={i} onClick={e => this.toggleStudent(student)} className={this.state.removeStudents.includes(student) ? ("removed student-card"):("student-card")} border="secondary" style={{cursor: "pointer"}}> {student} </Card>
             )
         })
 

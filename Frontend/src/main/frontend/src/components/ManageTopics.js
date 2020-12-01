@@ -117,7 +117,7 @@ class ManageTopics extends Component {
             this.state.topics.map((topic,i) => {
                 return (
                   <Row className="justify-content-md-center" style={{alignItems: "baseline"}} key={i}>
-                    <Col xs lg="2" className="purpleColor">{topic}</Col>
+                    <Col xs lg="2" className="purpleColor" style={{cursor: "default"}}>{topic}</Col>
                     <Col xs lg="1"><Button variant="light" id="dark-mode-button" onClick={() => this.removeTopic(topic)} className="rounded-corner remove"> X </Button></Col>
                   </Row>
                 )

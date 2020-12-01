@@ -90,6 +90,30 @@ const Style = styled.div`
       min-width: 15%;
     }
 
+    .edit-question-button {
+      background-color: #8F0047;
+      color: white;
+      font-family: Roboto;
+      width: fit-content;
+      align-self: flex-end;
+    }
+
+    .editing-cancel-button {
+      background-color: #8F0047;
+      color: white;
+      font-family: Roboto;
+      width: fit-content;
+      float: left;
+    }
+
+    .editing-save-button {
+      background-color: #8F0047;
+      color: white;
+      font-family: Roboto;
+      width: fit-content;
+      float: right;
+    }
+
     .quiz-question {
       padding: 20px 50px 20px 50px;
       min-width: 70rem;
@@ -322,8 +346,10 @@ class CreateQuizForm extends React.Component{
       "gettingQuizzes": false,
       "reviewQuizzesSection": false,
       "importMultipleQuestionToggleFalse":false,
-      "importMultipleQuestionToggleTrue":false
-
+      "importMultipleQuestionToggleTrue":false,
+      "reviewQuizEditing": false,
+      "editingIndex": 0,
+      "editingQuestion": null
     }
   }
         
@@ -537,6 +563,37 @@ class CreateQuizForm extends React.Component{
     }
 
     doNothing () {}
+
+    setUpEditing = (i, question) => {
+      this.setState({
+        reviewQuizEditing: true, 
+        editingIndex: i, 
+        editingQuestion: question,
+        "question":question.question,
+        "correct_answer":question.answer,
+        "incorrect_answer1":question.incorrect_answers[0],
+        "incorrect_answer2":question.incorrect_answers[1],
+        "incorrect_answer3":question.incorrect_answers[2],
+        "incorrect_answer4":question.incorrect_answers[3],
+        "incorrect_answers":[]
+      })
+    }
+
+    saveEditedQuestion = () => {
+      if (this.state.question.length > 0 && this.state.correct_answer.length > 0 && this.state.incorrect_answer1.length > 0 && this.state.incorrect_answer2.length > 0 && this.state.incorrect_answer3.length > 0 && this.state.incorrect_answer4.length > 0) {
+        this.setState({
+          incorrect_answers: [...this.state.incorrect_answers, this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3, this.state.incorrect_answer4]
+        }, () => {
+          var obj = {question: this.state.question, answer: this.state.correct_answer, incorrect_answers: this.state.incorrect_answers};
+          let newQuestions = [...this.state.questions]
+          newQuestions[this.state.editingIndex] = obj
+          this.setState({questions: newQuestions}, () => {this.setState({reviewQuizEditing: false})});
+        })
+      } else {
+        NotificationManager.info('You need to fill in all the fields! 😅', 'Fill in fields', 4000);
+        return; 
+      }
+    }
       
     render(){
       const instructorButton = this.state.isInstructor ? (
@@ -757,11 +814,81 @@ class CreateQuizForm extends React.Component{
           </Form.Row>
 
           </Form.Group>
+          <Button variant="light" id="dark-mode-button" onClick={() => {this.setUpEditing(i, question)}} className="edit-question-button rounded-corner"> Edit Question </Button>
           </Card>
           <div className="small-spacer"></div>
         </>
         )
       })
+
+      const reviewOrEdit = this.state.reviewQuizEditing ? (
+        <>
+        <Card style={{minWidth: "100%", padding: "15px"}} className="rounded-corner">
+        <Form.Group controlId="formHorizontalEmail">
+          <Form.Label className="description center" column="lg" lg={3}> Question {this.state.editingIndex + 1}  </Form.Label>
+          </Form.Group>
+
+          <Form.Row>
+            <Form.Label style={{visibility: "hidden"}} column="lg" sm={0.5}> Q </Form.Label >
+            <Col>
+            <Form.Control required className="no-border" size="lg" type="text" placeholder="Click to write your question..." value={this.state.question} onChange={this.onQuestionChange.bind(this)}/>
+            </Col>
+          </Form.Row>
+          <br/>
+        
+          <Form.Group>
+
+          <Form.Row>
+            <Form.Label id="correct-answer-field" className="label" column="lg" sm={0.5}> A </Form.Label >
+            <Col>
+            <Form.Control required className="answer-field correct-answer-field" size="lg" type="text" placeholder="Type your correct answer here..." value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
+            </Col>
+          </Form.Row>
+          <br/>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label >
+            <Col>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer1} onChange={this.onIncorrect_answerChange1.bind(this)}/>
+            </Col>
+          </Form.Row>
+          <br/>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label >
+            <Col>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer2} onChange={this.onIncorrect_answerChange2.bind(this)}/>
+            </Col>
+          </Form.Row>
+          <br/>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label >
+            <Col>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer3} onChange={this.onIncorrect_answerChange3.bind(this)}/>
+            </Col>
+          </Form.Row>
+          <br/>
+
+          <Form.Row>
+            <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label >
+            <Col>
+            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer4} onChange={this.onIncorrect_answerChange4.bind(this)}/>
+            </Col>
+          </Form.Row>
+          <br/>
+
+          </Form.Group>
+          <div style={{textAlign: "center"}}>  
+            <Button id="dark-mode-button" variant="light" className="editing-cancel-button rounded-corner" onClick={() => {this.setState({reviewQuizEditing: false})}}> Cancel </Button>
+            <Button id="dark-mode-button" variant="light" className="editing-save-button rounded-corner" onClick={() => {this.saveEditedQuestion()}}> Save Changes </Button>
+          </div>
+          </Card>
+          <div className="small-spacer"></div>
+        </>
+      ):(
+        showReviewQuestions
+      )
 
       return (
         this.state.reviewQuizzesSection ? (
@@ -786,7 +913,9 @@ class CreateQuizForm extends React.Component{
             </Modal.Footer>
           </Modal>
 
-          {showReviewQuestions}
+          {/* {showReviewQuestions} */}
+          {reviewOrEdit}
+
           </div>
           </Style>
           </>
