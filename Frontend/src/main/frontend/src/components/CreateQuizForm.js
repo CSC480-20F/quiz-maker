@@ -5,7 +5,7 @@ import {Modal, Button, Card, Form, Col, Spinner, Row } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-import { FiArrowLeftCircle,  FiArrowRightCircle } from "react-icons/fi"; //https://react-icons.github.io/react-icons/icons?name=fi
+import { FiArrowLeftCircle,  FiArrowRightCircle, FiPlusCircle } from "react-icons/fi"; //https://react-icons.github.io/react-icons/icons?name=fi
 
 
 
