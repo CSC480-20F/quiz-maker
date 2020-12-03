@@ -6,9 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Frontend" />
         <module name="CoursesServer" />
         <module name="QuestionsServer" />
+        <module name="Frontend" />
         <module name="QuizzesServer" />
         <module name="UsersServer" />
       </profile>
@@ -23,5 +23,13 @@
       <module name="QuizzesServer (1) (Quizzes-DB)" target="1.8" />
       <module name="UsersServer" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="CoursesServer" options="" />
+      <module name="Frontend" options="" />
+      <module name="QuizzesServer" options="" />
+      <module name="UsersServer" options="" />
+    </option>
   </component>
 </project>

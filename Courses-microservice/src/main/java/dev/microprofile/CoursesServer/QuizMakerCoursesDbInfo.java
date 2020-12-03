@@ -17,9 +17,10 @@ import java.util.Collections;
 public class QuizMakerCoursesDbInfo {
     // Creates login username and password
     MongoCredential frontendAuth = MongoCredential.createScramSha1Credential("frontend", "coursesDB", "CsC480OswegoFrontendXD".toCharArray());
-    // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
+    // Creates the db-server address whicBuilder builder = MongoClientOptions.builder().connectTimeout(3000);  h  is locally hosted currently (Unable to access with outside machine (working))
     ServerAddress serverAddress = new ServerAddress("129.3.20.26", 27018);
-    MongoClient mongoClient = new MongoClient(serverAddress, Collections.singletonList(frontendAuth));
+    MongoClientOptions.Builder builder = MongoClientOptions.builder().maxConnectionLifeTime(1000);
+    MongoClient mongoClient = new MongoClient(serverAddress, Collections.singletonList(frontendAuth), builder.build());
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("coursesDB");
 
@@ -41,6 +42,7 @@ public class QuizMakerCoursesDbInfo {
             }
         }
         dbInfo = dbInfo.concat("]");
+        mongoClient.close();
         return Response.ok(dbInfo, MediaType.APPLICATION_JSON).build();
     }
 
@@ -56,7 +58,8 @@ public class QuizMakerCoursesDbInfo {
         //Save and send course id back
         collection.save(courseIn);
         ObjectId id = (ObjectId)courseIn.get("_id");
-
+        mongoClient.close();
+        database.getMongoClient().close();
         return Response.ok(id.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -77,6 +80,7 @@ public class QuizMakerCoursesDbInfo {
             courses.add(currentCourse);
         }
         //courseOut = courseOut.concat("]");
+        database.getMongoClient().close();
         return Response.ok(courses.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -97,6 +101,7 @@ public class QuizMakerCoursesDbInfo {
             adding.removeField("courseRoster");
             courseList.add(adding);
         }
+        database.getMongoClient().close();
         return Response.ok(courseList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -124,6 +129,7 @@ public class QuizMakerCoursesDbInfo {
         course.put("topics", topicsList);
         foundCourse.put("_id", new ObjectId(courseId));
         collection.findAndModify(foundCourse, course);
+        database.getMongoClient().close();
         return Response.ok().build();
     }
 
@@ -146,6 +152,7 @@ public class QuizMakerCoursesDbInfo {
         BasicDBObject currentCourse = new BasicDBObject();
         currentCourse.put("_id", new ObjectId(id));
         collection.findAndModify(currentCourse, foundCourse);
+        database.getMongoClient().close();
         return Response.ok().build();
     }
 
@@ -158,6 +165,7 @@ public class QuizMakerCoursesDbInfo {
         currentCourse.put("_id", new ObjectId(courseId));
         DBObject currentRoster = collection.findOne(currentCourse);
         BasicDBList foundRoster = (BasicDBList)currentRoster.get("courseRoster");
+        database.getMongoClient().close();
         return Response.ok(foundRoster, MediaType.APPLICATION_JSON).build();
     }
 
@@ -180,6 +188,8 @@ public class QuizMakerCoursesDbInfo {
         BasicDBObject looker = new BasicDBObject();
         looker.put("_id", id);
         collection.findAndModify(looker,currentCourse);
+        database.getMongoClient().close();
         return Response.ok().build();
     }
+
 }

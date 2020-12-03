@@ -52,6 +52,7 @@ public class QuizMakerQuizzesDbInfo {
             }
         }
         dbInfo = dbInfo.concat("]");
+        mongoClient.close();
         return Response.ok(dbInfo, MediaType.APPLICATION_JSON).build();
     }
 
@@ -78,7 +79,7 @@ public class QuizMakerQuizzesDbInfo {
           quiz.put("quiz-length", questSize);
           quizList.add(quiz);
         }
-
+        mongoClient.close();
         return Response.ok(quizList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -103,7 +104,7 @@ public class QuizMakerQuizzesDbInfo {
           cq.put("quiz-length", questSize);
           quizList.add(cq);
         }
-
+        mongoClient.close();
         return Response.ok(quizList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -126,6 +127,7 @@ public class QuizMakerQuizzesDbInfo {
           quiz.put("quiz-length", questSize);
           quizList.add(quiz);
         }
+        mongoClient.close();
         return Response.ok(quizList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -137,6 +139,7 @@ public class QuizMakerQuizzesDbInfo {
         //db connection and local var statements
         DBCollection collection = database.getCollection("quizzes");
         DBObject quiz = collection.findOne(new ObjectId(quizId));
+        mongoClient.close();
         return Response.ok(quiz.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -148,6 +151,7 @@ public class QuizMakerQuizzesDbInfo {
         DBCollection collection = database.getCollection("quizzes");
         DBObject o = BasicDBObject.parse(fuck.toString());
         collection.save(o);
+        mongoClient.close();
         return Response.ok().build();
     }
 
@@ -171,6 +175,7 @@ public class QuizMakerQuizzesDbInfo {
         //System.out.println(update.toString());
         foundQuiz.put("_id", new ObjectId(quizId));
         collection.findAndModify(foundQuiz, quiz);
+        mongoClient.close();
         return Response.ok().build();
     }
 
@@ -190,6 +195,7 @@ public class QuizMakerQuizzesDbInfo {
 
         System.out.println(query.toString());
         collection.findAndModify(foundQuiz, query);
+        mongoClient.close();
         return Response.ok().build();
     }
 
@@ -208,9 +214,8 @@ public class QuizMakerQuizzesDbInfo {
                 starredQuizzes.add(fC);
             }
         }
-
-
         //System.out.println(query.toString());
+        mongoClient.close();
         return Response.ok(starredQuizzes.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -230,7 +235,7 @@ public class QuizMakerQuizzesDbInfo {
             badQuizzes++;
         }
         bulk.execute();
-
+        mongoClient.close();
         return Response.ok().build();
     }
 }
