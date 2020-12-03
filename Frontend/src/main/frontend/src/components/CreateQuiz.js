@@ -73,7 +73,8 @@ class CreateQuiz extends Component {
     topicOptions: [],
     topics: [],
     createQuizSection: false,
-    isInstructor: false
+    isInstructor: false,
+    token: window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
   }
 
 
@@ -92,7 +93,7 @@ class CreateQuiz extends Component {
         }
       }).catch(err => {console.log(err); this.setState({isLoading: false})
       })
-    }
+      }
   }
 
   getChosenCourse = () => {
