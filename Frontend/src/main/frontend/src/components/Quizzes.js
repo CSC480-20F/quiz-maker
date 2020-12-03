@@ -24,11 +24,10 @@ class Quizzes extends Component {
     componentDidMount () {        
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        fetch('http://localhost:9082/quizzes/get-created-quizzes/' + email, {method: 'GET'}, { headers: {"Authorization" : `Bearer ${this.state.token}`}})
-            .then(response => response.json()).then(quizzes => {
+        axios.get('http://localhost:9082/quizzes/get-created-quizzes/' + email, {method: 'GET'}, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             if (this.mounted) {
                 this.setState({
-                    createdQuizzesData: quizzes
+                    createdQuizzesData: res.data
                 }, () => {
                     if (this.state.createdQuizzesData.length > 0) {
                         this.getTopRatedQuizzes()
