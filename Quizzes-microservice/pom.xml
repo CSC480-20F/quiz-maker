@@ -17,8 +17,8 @@
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <liberty.var.default.http.port>9084</liberty.var.default.http.port>
-        <liberty.var.default.https.port>9447</liberty.var.default.https.port>
+        <liberty.var.default.http.port>9082</liberty.var.default.http.port>
+        <liberty.var.default.https.port>9445</liberty.var.default.https.port>
         <liberty.var.app.context.root>/</liberty.var.app.context.root>
         <app.name>${project.artifactId}</app.name>
     </properties>
