@@ -46,10 +46,10 @@ class Dashboard extends Component {
     }
 
     testingJWT = () => {
-        const api = "http://pi.cs.oswego.edu:9081/users/all";
+        const api = "http://localhost:9081/users/all";
         const token = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
-        axios.get(api, { headers: {"Authorization" : `Bearer ${token}`} })
-            .then(res => {console.log(res.data);})
+        axios.get(api, { headers: {"Authorization" : `Bearer ${token}`}})
+            .then(res => {console.log(res.data);}).catch(err => {console.log(err);})
     }
 
     render () {

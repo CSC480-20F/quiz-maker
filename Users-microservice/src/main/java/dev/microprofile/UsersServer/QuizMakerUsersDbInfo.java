@@ -7,11 +7,14 @@ import javax.enterprise.context.RequestScoped;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
 
 @RequestScoped
+//@RolesAllowed({"oswego.edu"})
 @Path("/users")
 public class QuizMakerUsersDbInfo {
     // Creates login username and password
@@ -26,11 +29,12 @@ public class QuizMakerUsersDbInfo {
     //Dumps whole db
 
     @GET
-    @RolesAllowed({"admin"})
+    @RolesAllowed({"oswego.edu"})
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response dbDump() {
+    public Response dbDump(@Context HttpHeaders hh) {
         //Variable decelerations
+        System.out.printf(hh.toString());
         String dbInfo = "[";
         //Gathers the specific collection we want
         DBCollection collection = database.getCollection("users");
@@ -50,6 +54,7 @@ public class QuizMakerUsersDbInfo {
 
     //receives users email and returns list of courseIDs they are in
     @Path("/{email}")
+    @RolesAllowed({"admin"})
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response usersCoursesList(@PathParam("email") String email) {
@@ -68,6 +73,7 @@ public class QuizMakerUsersDbInfo {
     //needs testing
     //GET passes in the user email gets all taken quizzes
     @Path("/get-quizzes/{email}")
+    @RolesAllowed({"admin"})
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response usersQuizzesList(@PathParam("email") String email) {

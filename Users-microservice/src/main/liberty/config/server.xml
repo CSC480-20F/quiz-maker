@@ -1,28 +1,32 @@
 <server description="Liberty server">
     <featureManager>
+        <feature>jsp-2.3</feature>
         <feature>mpJwt-1.1</feature>
+        <feature>transportSecurity-1.0</feature>
         <feature>microProfile-3.2</feature>
         <feature>jaxrs-2.1</feature>
-        <feature>jsonp-1.1</feature>
-        <feature>cdi-2.0</feature>
         <feature>appSecurity-3.0</feature>
     </featureManager>
 
     <httpEndpoint host="*" httpPort="${default.http.port}"
         httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
 
-    <webApplication location="UsersServer.war" contextRoot="${app.context.root}"/>
+    <webApplication location="UsersServer.war"
+                    contextRoot="${app.context.root}"/>
 
-    <keyStore id="defaultKeyStore" location="keystore.jceks" type="JCEKS"
-              password="secret" />
+    <keyStore id="defaultKeyStore"
+              password="keyspass" />
 
-    <mpJwt id="jwtUserConsumer" keyName="default" audiences="simpleapp"
-           issuer="${jwt.issuer}"/>
+    <logging traceSpecification="com.ibm.ws.security*=all:com.ibm.ws.webcontainer.security.*=all:io.openliberty.security.*=all"/>
+
+    <mpJwt id="mympjwt" issuer="https://accounts.google.com" groupNameAttribute="hd"
+           jwksUri="https://www.googleapis.com/oauth2/v3/certs"/>
+
     <!-- http://localhost:9080 -->
     <cors domain="/users"
       allowedOrigins="*"
       allowedMethods="POST, GET, DELETE, PUT"
-      allowedHeaders="origin, content-type, accept, authorization, cache-control"
+      allowedHeaders="*"
       maxAge="3600" />
 
 </server>
