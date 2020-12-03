@@ -2,6 +2,8 @@ package dev.microprofile.UsersServer;
 
 import com.mongodb.*;
 
+import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.RequestScoped;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
@@ -9,7 +11,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
 
-
+@RequestScoped
+@RolesAllowed({"oswego.edu"})
 @Path("/users")
 public class QuizMakerUsersDbInfo {
     // Creates login username and password

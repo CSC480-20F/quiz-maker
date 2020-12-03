@@ -24,6 +24,19 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>transportSecurity-1.0</artifactId>
+            <version>19.0.0.6</version>
+            <type>esa</type>
+          </dependency>
+
+        <dependency>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>mpJwt-1.1</artifactId>
+            <version>20.0.0.12</version>
+            <type>esa</type>
+        </dependency>
 
         <!-- Aggregate of MicroProfile APIs -->
         <dependency>
