@@ -74,8 +74,8 @@ const Styles = styled.div`
 
   .next-question-button{
     float: right;
-    background-color: #8F0047;
-    color: white;
+    background-color: white;
+    color: #8F0047;
     height:40px;
     width:40px;
   }
