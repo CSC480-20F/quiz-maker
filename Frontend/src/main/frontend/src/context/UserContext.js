@@ -19,7 +19,7 @@ function UserProvider ({ children }) {
               const email = await window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
               const token = await window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
               console.log('Checking with DB to see if user is an instructor')
-              const { data } = await axios.get(`http://localhost:9081/users/is-instructor/${email}`, { headers: {"Authorization" : `Bearer ${this.state.token}`}});
+              const { data } = await axios.get(`http://localhost:9081/users/is-instructor/${email}`, { headers: {"Authorization" : `Bearer ${token}`}});
               setInstructor(data);
             }
         }
