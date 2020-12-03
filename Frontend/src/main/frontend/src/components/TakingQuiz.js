@@ -153,7 +153,8 @@ class TakeQuiz extends Component {
       "scoreLoading": true,
       "isInstructor": false,
       "student": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
-      "teacher":""
+      "teacher":"",
+      "token": window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
 
     this.increment = this.increment.bind(this)
@@ -211,7 +212,7 @@ class TakeQuiz extends Component {
   componentDidMount () {
     this.mounted = true;
     let id = this.props.match.params.quiz_id;
-    axios.get('http://pi.cs.oswego.edu:9084/quizzes/get-quiz/' + id).then(res => {
+    axios.get('http://localhost:9082/quizzes/get-quiz/' + id, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
       if(this.mounted){
         this.setState({
           quizTitle: res.data.quizName,
@@ -266,10 +267,10 @@ class TakeQuiz extends Component {
         })
     } else {
       this.setState({showScore: true, selected: false, selectedID:""})
-      axios.put(`http://pi.cs.oswego.edu:9081/users/quizzes-taken`, {
+      axios.put(`http://localhost:9081/users/quizzes-taken`, {
         "id": this.props.match.params.quiz_id,
         "email": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
-      }).then(res => {
+      }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
         this.sendRatingToDB();
       }).catch(error =>{
         console.log(error);
@@ -278,17 +279,17 @@ class TakeQuiz extends Component {
   }
 
   sendRatingToDB = () => {
-    axios.put(`http://pi.cs.oswego.edu:9084/quizzes/update-rating`, {
+    axios.put(`http://localhost:9082/quizzes/update-rating`, {
         "id": this.props.match.params.quiz_id,
         "rating": this.state.totalRating
-      }).then(res => {
+      }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
         this.setState({scoreLoading: false})
       }).catch(error =>{console.log(error); this.setState({scoreLoading: false})})
   }
 
   checkIfInstructor = () => {
     const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
-    axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + this.state.courseID).then(res => {
+    axios.get('http://localhost:9083/courses/get-courses/' + this.state.courseID, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
       this.setState({teacher:res.data[0].teacher})
       if (email === res.data[0].teacher) {
         this.setState({isInstructor: true})
@@ -311,9 +312,9 @@ class TakeQuiz extends Component {
   }
 
   starQuiz = () => {
-    axios.put(`http://pi.cs.oswego.edu:9084/quizzes/update-star`, {
+    axios.put(`http://localhost:9082/quizzes/update-star`, {
         "id" : this.props.match.params.quiz_id
-      }).then(res => {
+      }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
         NotificationManager.success('Quiz favorite status changed! 🥳', 'Favorite Changed', 4000);
         document.getElementById("star-button").style.visibility="hidden";
       }).catch(error =>{

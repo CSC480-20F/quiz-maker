@@ -17,7 +17,8 @@ class Dashboard extends Component {
     state = {
         quizzesDeckData: [],
         createdQuizzes: [],
-        isLoading: true
+        isLoading: true,
+        token: window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
 
 
@@ -25,7 +26,7 @@ class Dashboard extends Component {
     componentDidMount() {
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        axios.get('http://pi.cs.oswego.edu:9084/quizzes/get-created-quizzes/' + email).then(res => {
+        axios.get('http://localhost:9082/quizzes/get-created-quizzes/' + email, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             if(this.mounted){
                 this.setState({createdQuizzes: res.data}, () => {this.getRecentQuizzes()})
             }

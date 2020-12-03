@@ -233,7 +233,8 @@ class CreateQuizForm extends React.Component{
       "importMultipleQuestionToggleTrue":false,
       "reviewQuizEditing": false,
       "editingIndex": 0,
-      "editingQuestion": null
+      "editingQuestion": null,
+      "token": window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
   }
         
@@ -273,7 +274,7 @@ class CreateQuizForm extends React.Component{
     onIncorrect_answerChange4(event){this.setState({incorrect_answer4:event.target.value});}
 
     postQuizToDB = () => {
-      axios.post(`http://pi.cs.oswego.edu:9084/quizzes/add-quiz`, {
+      axios.post(`http://localhost:9082/quizzes/add-quiz`, {
         "quizName":this.state.quiz_title,
         "creator":this.state.creator,
         "courseID":this.state.courseID,
@@ -281,7 +282,7 @@ class CreateQuizForm extends React.Component{
         "quizQuestions":this.state.questions,
         "rating": 0,
         "starred": false
-      })
+      }, { headers: {"Authorization" : `Bearer ${this.state.token}`}})
       .then(res => {
         this.setState ({
           "quiz_title":"",
@@ -337,7 +338,7 @@ class CreateQuizForm extends React.Component{
 
     getStarredQuizzes = () => {
       this.handleImportShow()
-      axios.get('http://pi.cs.oswego.edu:9084/quizzes/course-starred-quizzes/' + this.state.courseID).then(res => {
+      axios.get('http://localhost:9082/quizzes/course-starred-quizzes/' + this.state.courseID, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
         this.setState({starredQuizzes: res.data, gettingQuizzes: false})
       }).catch(err => {console.log(err)})
     }

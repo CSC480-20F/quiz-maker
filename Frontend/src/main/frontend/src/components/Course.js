@@ -64,7 +64,7 @@ class Course extends Component {
                 course: res.data[0]
             }, () => this.checkIfInstructor())
         })
-        axios.get('http://localhost:9084/quizzes/get-course/' + id, { headers: {"Authorization" : `Bearer ${token}`}}).then(res => {
+        axios.get('http://localhost:9082/quizzes/get-course/' + id, { headers: {"Authorization" : `Bearer ${token}`}}).then(res => {
             this.setState({
                 quizData: res.data,
             }, () => {this.getTopRatedQuizzes()})
