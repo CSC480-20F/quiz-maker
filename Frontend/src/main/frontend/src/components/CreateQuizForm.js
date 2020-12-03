@@ -5,8 +5,7 @@ import {Modal, Button, Card, Form, Col, Spinner, Row } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-// import TopNavbar from './TopNavbar';
-import { FiArrowLeftCircle,  FiArrowRightCircle, FiCheckCircle, FiPlusCircle  } from "react-icons/fi"; //https://react-icons.github.io/react-icons/icons?name=fi
+import { FiArrowLeftCircle,  FiArrowRightCircle } from "react-icons/fi"; //https://react-icons.github.io/react-icons/icons?name=fi
 
 
 
@@ -211,12 +210,9 @@ class CreateQuizForm extends React.Component{
     this.state = {
       "quiz_title":"",
       "creator":window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
-      // "isInstructor": this.props.professor,
-      // "courseID":this.props.courseID,
-      // "topics":this.props.topics,
-      "isInstructor": "npayag@oswego.edu",
-      "courseID":1234,
-      "topics":["Some", "Fucking", "Topics"],
+      "isInstructor": this.props.professor,
+      "courseID":this.props.courseID,
+      "topics":this.props.topics,
       "index":0,
       "question":"",
       "correct_answer":"",
@@ -230,120 +226,8 @@ class CreateQuizForm extends React.Component{
       "importShow": false,
       "chosenQuiz": [],
       "chosenQuestions": [],
-      "starredQuizzes": [{
-        "_id": {
-          "$oid": "5fa3247b2a71540c8786ae9e"
-        },
-        "quizName": "Just some basic math",
-        "creator": "jdoe@oswego.edu",
-        "courseID": "5fa3222f4302427409239bed",
-        "quizTopics": [
-          "Algebra",
-          "Percentages",
-          "Fractions"
-        ],
-        "quizQuestions": [
-          {
-            "question": "4 + ? = 20",
-            "answer": "16",
-            "incorrect_answers": [
-              "15",
-              "14",
-              "17",
-              "12"
-            ]
-          },
-          {
-            "question": "What is 9 ÷ 3? ",
-            "answer": "3",
-            "incorrect_answers": [
-              "3,5",
-              "1/2",
-              "4",
-              "2,5"
-            ]
-          },
-          {
-            "question": " Which percent equals 1/4? ",
-            "answer": "25%",
-            "incorrect_answers": [
-              "14%",
-              "41%",
-              "52%",
-              "None of the above"
-            ]
-          },
-          {
-            "question": "Convert 75 minutes to days.",
-            "answer": "0.052 days",
-            "incorrect_answers": [
-              "0.061 days",
-              "0.054 days",
-              "0.03 days",
-              "0.075 days"
-            ]
-          }
-        ],
-        "rating": 7,
-        "starred": true
-      },
-      {
-        "_id": {
-          "$oid": "5fa325d02a71540c8786aec7"
-        },
-        "quizName": "Fun multiplications!",
-        "creator": "sandy@oswego.edu",
-        "courseID": "5fa3222f4302427409239bed",
-        "quizTopics": [
-          "Multiplication"
-        ],
-        "quizQuestions": [
-          {
-            "question": "5x6?",
-            "answer": "30",
-            "incorrect_answers": [
-              "40",
-              "28",
-              "35",
-              "24"
-            ]
-          },
-          {
-            "question": "2 x 4.256",
-            "answer": "8.512",
-            "incorrect_answers": [
-              "4.235",
-              "8.1232",
-              "8.912",
-              "8.012"
-            ]
-          },
-          {
-            "question": "3x9?",
-            "answer": "27",
-            "incorrect_answers": [
-              "42",
-              "30",
-              "24",
-              "18"
-            ]
-          },
-          {
-            "question": "92 x 4320",
-            "answer": "397,440",
-            "incorrect_answers": [
-              "424,440",
-              "123,440",
-              "625,440",
-              "823,440"
-            ]
-          }
-        ],
-        "rating": 7,
-        "starred": true
-      }],
-      // "gettingQuizzes": true
-      "gettingQuizzes": false,
+      "starredQuizzes": [],
+      "gettingQuizzes": true,
       "reviewQuizzesSection": false,
       "importMultipleQuestionToggleFalse":false,
       "importMultipleQuestionToggleTrue":false,
@@ -419,7 +303,6 @@ class CreateQuizForm extends React.Component{
     }
 
     onReviewQuiz = (e) => {
-      console.log("Reviewing Quiz")
       e.preventDefault();
       if (this.state.quiz_title.length < 1) {
         NotificationManager.info('Please give your quiz a title! 😅', 'Title Needed', 4000);
@@ -454,9 +337,9 @@ class CreateQuizForm extends React.Component{
 
     getStarredQuizzes = () => {
       this.handleImportShow()
-      // axios.get('http://pi.cs.oswego.edu:9084/quizzes/course-starred-quizzes/' + this.state.courseID).then(res => {
-      //   this.setState({starredQuizzes: res.data, gettingQuizzes: false})
-      // }).catch(err => {console.log(err)})
+      axios.get('http://pi.cs.oswego.edu:9084/quizzes/course-starred-quizzes/' + this.state.courseID).then(res => {
+        this.setState({starredQuizzes: res.data, gettingQuizzes: false})
+      }).catch(err => {console.log(err)})
     }
 
     choseQuiz = (id) => {
@@ -511,7 +394,7 @@ class CreateQuizForm extends React.Component{
           incorrect_answers: [...this.state.incorrect_answers, this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3, this.state.incorrect_answer4]
         }, () => {
           var obj = {question: this.state.question, answer: this.state.correct_answer, incorrect_answers: this.state.incorrect_answers};
-          let temp = this.state.questions.slice(); //creates the clone of the state
+          let temp = this.state.questions.slice();
           temp[this.state.index] = obj;
           this.setState({
             questions: temp,
@@ -538,7 +421,7 @@ class CreateQuizForm extends React.Component{
         incorrect_answers: [...this.state.incorrect_answers, this.state.incorrect_answer1, this.state.incorrect_answer2, this.state.incorrect_answer3, this.state.incorrect_answer4]
       }, () => {
         var obj = {question: this.state.question, answer: this.state.correct_answer, incorrect_answers: this.state.incorrect_answers};
-        let temp = this.state.questions.slice(); //creates the clone of the state
+        let temp = this.state.questions.slice();
         temp[this.state.index] = obj;
         this.setState({
           questions: temp,
@@ -632,101 +515,23 @@ class CreateQuizForm extends React.Component{
 
       // FOR INSTRUCTOR - WHEN IMPORTING A QUESTION ---------------------------
       const body = this.state.chosenQuiz.length ? (
-        // this.state.chosenQuestions!== null ? (
-        //   <>
-        //   <Style>
-        //   <Card className="whole-question-card rounded-corner" style={{minWidth: "50%", cursor: "default"}}>
-        //   <div style={{fontSize:"20px"}} className="small-spacer" dangerouslySetInnerHTML={{__html: this.state.chosenQuestion.question}}></div>
-        //   <Form.Group>
-        //   <Form.Row>
-        //       <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>
-        //       <Col><Form.Control className="answer-field correct-answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.answer} style={{cursor: "default"}}/></Col>
-        //   </Form.Row>
-
-        //   <Form.Row>
-        //     <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label>
-        //     <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[0]} style={{cursor: "default"}}/></Col>
-        //   </Form.Row>
-
-        //   <Form.Row>
-        //     <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label>
-        //     <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[1]} style={{cursor: "default"}}/></Col>
-        //   </Form.Row>
-
-        //   <Form.Row>
-        //     <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label>
-        //     <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[2]} style={{cursor: "default"}}/></Col>
-        //   </Form.Row>
-
-        //   <Form.Row>
-        //     <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label>
-        //     <Col><Form.Control className="answer-field" size="lg" type="text" readOnly value={this.state.chosenQuestion.incorrect_answers[3]} style={{cursor: "default"}}/></Col>
-        //   </Form.Row>
-        //   </Form.Group>
-        //   </Card>
-        //   </Style>
-        //   </>
-        // ):(
           this.state.chosenQuiz[0].quizQuestions.map((question,i) => {
             return (
-              <Card key={i} onClick={() => this.choseQuestion(i)} style={this.state.chosenQuestions.includes(question) ? ({borderColor: "#8F0047", borderWidth: "3px"}):({borderColor: "#F5F3F3"})}>
-              
+              <Card key={i} onClick={() => this.choseQuestion(i)} style={this.state.chosenQuestions.includes(question) ? ({borderColor: "#8F0047", borderWidth: "3px"}):({borderColor: "#F5F3F3"})}>              
                 <Card.Body>
-
-                  
                   <div style={{fontFamily: "Roboto", color: "#8F0047", fontSize: "20px", cursor: "pointer", display:'flex', justifyContent: "space-between", flexWrap: "wrap"}}> Q{i+1} 
                   
-                  <FiPlusCircle
-                  title="Import this question"
-                  style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
-                  id="upvote"
-                  size = "18px"
-                  label = "Select this question to import"
-                  key = {i}
-                  onClick={() => this.choseQuestion(i)} style={this.state.chosenQuestions.includes(question) ? ({color: "#FE9C02"}):({color: "white"})}
+                  <FiPlusCircle title="Import this question" style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
+                    id="upvote" size = "18px" label = "Select this question to import" key = {i}
+                    onClick={() => this.choseQuestion(i)} style={this.state.chosenQuestions.includes(question) ? ({color: "#FE9C02"}):({color: "white"})}
                   />
                   
                   </div>
                   <div style={{fontFamily: "Roboto", cursor: "pointer"}}> {question.question} </div>
-
-                 
-
-                  {/* <FiPlusCircle
-                  title="Import this question"
-                  style={{display:"inline-block", margin:"2px", cursor:'pointer', float:'right'}}
-                  id="upvote"
-                  size = "18px"
-                  label = "Select this question to import"
-                  key = {i}
-                  onClick={() => this.choseQuestion(i)} style={this.state.chosenQuestions.includes(question) ? ({color: "#FE9C02"}):({color: "black"})}
-                  /> */}
-                  
-                    
-                  
-                  {/* <form>
-                    
-                      <input
-                      name = "asd"
-                      type = "checkbox"
-                      checked= {this.state.importMultipleQuestionToggleFalse}
-                      // onChange={this.state.importMultipleQuestionToggleTrue} 
-
-                      />
-                      <label>
-                      Select This Question(s)
-                    </label>
-                  </form> */}
-
-                  {/* <Form>
-                  <Form.Group controlId="formBasicCheckbox" onClick={() => this.choseQuestion(i)} style={this.state.chosenQuestions.includes(question) ? ({borderColor: "#8F0047", borderWidth: "3px"}):({borderColor: "#F5F3F3"})}>
-                  <Form.Check type="checkbox" label="Select this question to import" />
-                  </Form.Group>
-                  </Form> */}
                 </Card.Body> 
               </Card>
             )
           })
-        // )
       ):(
         this.state.starredQuizzes.length ? (
           this.state.starredQuizzes.map((quiz,i) => {
@@ -767,49 +572,38 @@ class CreateQuizForm extends React.Component{
         </h1>
         <div style={{fontSize:"20px", cursor: "default"}} className="small-spacer" dangerouslySetInnerHTML={{__html: question.question}}></div>
         <Form.Group>
-        <Form.Row>
+          <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> A </Form.Label>
             <Col>
-            <Form.Control className="answer-field-correct"
-
-            size="lg" type="text" readOnly value={question.answer}/>
+              <Form.Control className="answer-field-correct" size="lg" type="text" readOnly value={question.answer}/>
             </Col>
           </Form.Row>
-
 
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label>
             <Col>
-            <Form.Control className="review-answer-field"
-
-            size="lg" type="text" readOnly value={question.incorrect_answers[0]}/>
+              <Form.Control className="review-answer-field" size="lg" type="text" readOnly value={question.incorrect_answers[0]}/>
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label>
             <Col>
-            <Form.Control className="review-answer-field"
-
-            size="lg" type="text" readOnly value={question.incorrect_answers[1]}/>
+              <Form.Control className="review-answer-field" size="lg" type="text" readOnly value={question.incorrect_answers[1]}/>
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label>
             <Col>
-            <Form.Control className="review-answer-field"
-
-            size="lg" type="text" readOnly value={question.incorrect_answers[2]}/>
+              <Form.Control className="review-answer-field" size="lg" type="text" readOnly value={question.incorrect_answers[2]}/>
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label>
             <Col>
-            <Form.Control className="review-answer-field"
-
-            size="lg" type="text" readOnly value={question.incorrect_answers[3]}/>
+              <Form.Control className="review-answer-field" size="lg" type="text" readOnly value={question.incorrect_answers[3]}/>
             </Col>
           </Form.Row>
 
@@ -893,7 +687,6 @@ class CreateQuizForm extends React.Component{
       return (
         this.state.reviewQuizzesSection ? (
           <>
-          {/* <TopNavbar /> */}
           <Style>
           <div className="container-middle">
           <h1 className="header" style={{cursor: "default"}}> Review Quiz </h1>
@@ -913,7 +706,6 @@ class CreateQuizForm extends React.Component{
             </Modal.Footer>
           </Modal>
 
-          {/* {showReviewQuestions} */}
           {reviewOrEdit}
 
           </div>
@@ -922,122 +714,113 @@ class CreateQuizForm extends React.Component{
         ):(
           <>
         
-        <Style>
-        {/* <TopNavbar /> */}
-        <div className="container-middle">
-        <Form id="quiz-form" onSubmit={this.handleSubmit.bind(this)}>
-          {/* <Form.Row>
-          <Form.Control required id="form-input" className="header no-border" size="sm" type="text" placeholder="Type Quiz Title Here..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
-          </Form.Row>
+          <Style>
+          <div className="container-middle">
+          <Form id="quiz-form" onSubmit={this.handleSubmit.bind(this)}>
 
-          <div className="spacer"></div> */}
+            <div id="text" className="description topOfQuiz" style={{cursor: "default"}}> {this.state.quiz_title} is about: 
+              <span id="purple-text" className="topicsColor" style={{cursor: "default"}}> {this.state.topics.join(', ')}</span>.
+              <Button variant="light" className="publish-quiz-button rounded-corner" onClick={(e) => this.onReviewQuiz(e)}> Review Quiz </Button>
+              <Button variant="light" className="delete-quiz-button rounded-corner" onClick={() => this.handleShow()}> Delete Quiz </Button> 
+            </div>
 
-          <div id="text" className="description topOfQuiz" style={{cursor: "default"}}> {this.state.quiz_title} is about: 
-            <span id="purple-text" className="topicsColor" style={{cursor: "default"}}> {this.state.topics.join(', ')}</span>.
-            <Button variant="light" className="publish-quiz-button rounded-corner" onClick={(e) => this.onReviewQuiz(e)}> Review Quiz </Button>
-            <Button variant="light" className="delete-quiz-button rounded-corner" onClick={() => this.handleShow()}> Delete Quiz </Button> 
-          </div>
+            <div className="spacer"></div>
 
-          <div className="spacer"></div>
+            <Form.Row>
+            <Form.Control required id="form-input" className="this-header no-border" size="sm" type="text" placeholder="Type Quiz Title Here..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
+            </Form.Row>
 
-          <Form.Row>
-          <Form.Control required id="form-input" className="this-header no-border" size="sm" type="text" placeholder="Type Quiz Title Here..." value={this.state.quiz_title} onChange={this.onQuizTitleChange.bind(this)}/>
-          </Form.Row>
+            <div className="small-spacer"></div>
+            
+            <Modal show={this.state.show} onHide={this.handleClose} backdrop="static">
+              <Modal.Header closeButton> <Modal.Title> Delete Quiz </Modal.Title> </Modal.Header>
+              <Modal.Body>Are you sure you want to discard this quiz?</Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={this.handleClose}> Cancel </Button>
+                <Button variant="primary" onClick={this.onDeleteQuiz}> Yes </Button>
+              </Modal.Footer>
+            </Modal>
 
-          <div className="small-spacer"></div>
+            <Card className="quiz-question rounded-corner">
+
+            <div>
+            <Form.Group as={Row} controlId="formHorizontalEmail">
+            <Form.Label className="description center" column="lg" lg={3}> Question {this.state.index + 1}  </Form.Label>
+            <Col lg={0}>
+            {instructorButton}  
+            </Col>
+            </Form.Group>
+
+            <Form.Row>
+              <Form.Label style={{visibility: "hidden"}} column="lg" sm={0.5}> Q </Form.Label >
+              <Col>
+              <Form.Control required className="no-border" size="lg" type="text" placeholder="Click to write your question..." value={this.state.question} onChange={this.onQuestionChange.bind(this)}/>
+              </Col>
+            </Form.Row>
+            <br/>
+            </div>
           
-          <Modal show={this.state.show} onHide={this.handleClose} backdrop="static">
-            <Modal.Header closeButton> <Modal.Title> Delete Quiz </Modal.Title> </Modal.Header>
-            <Modal.Body>Are you sure you want to discard this quiz?</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.handleClose}> Cancel </Button>
-              <Button variant="primary" onClick={this.onDeleteQuiz}> Yes </Button>
-            </Modal.Footer>
-          </Modal>
+            <Form.Group>
 
-          <Card className="quiz-question rounded-corner">
+            <Form.Row>
+              <Form.Label id="correct-answer-field" className="label" column="lg" sm={0.5}> A </Form.Label >
+              <Col>
+              <Form.Control required className="answer-field correct-answer-field" size="lg" type="text" placeholder="Type your correct answer here..." value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
+              </Col>
+            </Form.Row>
+            <br/>
 
-          <div>
-          <Form.Group as={Row} controlId="formHorizontalEmail">
-          <Form.Label className="description center" column="lg" lg={3}> Question {this.state.index + 1}  </Form.Label>
-          {/* <div style={{float:'left'}}> {instructorButton} </div> */}
-          <Col lg={0}>
-          {instructorButton}  
-          </Col>
-          </Form.Group>
+            <Form.Row>
+              <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label >
+              <Col>
+              <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer1} onChange={this.onIncorrect_answerChange1.bind(this)}/>
+              </Col>
+            </Form.Row>
+            <br/>
 
-          <Form.Row>
-            <Form.Label style={{visibility: "hidden"}} column="lg" sm={0.5}> Q </Form.Label >
-            <Col>
-            <Form.Control required className="no-border" size="lg" type="text" placeholder="Click to write your question..." value={this.state.question} onChange={this.onQuestionChange.bind(this)}/>
-            </Col>
-          </Form.Row>
-          <br/>
+            <Form.Row>
+              <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label >
+              <Col>
+              <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer2} onChange={this.onIncorrect_answerChange2.bind(this)}/>
+              </Col>
+            </Form.Row>
+            <br/>
+
+            <Form.Row>
+              <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label >
+              <Col>
+              <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer3} onChange={this.onIncorrect_answerChange3.bind(this)}/>
+              </Col>
+            </Form.Row>
+            <br/>
+
+            <Form.Row>
+              <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label >
+              <Col>
+              <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer4} onChange={this.onIncorrect_answerChange4.bind(this)}/>
+              </Col>
+            </Form.Row>
+            <br/>
+
+            </Form.Group>
+            <div style={{textAlign: "center"}}> {changeIndexButtons} 
+            </div>
+            </Card>
+
+            <div className="small-spacer">  </div>
+            
+            <div className="small-spacer"> </div>
+            
+            <Modal show={this.state.importShow} onHide={this.handleImportClose} backdrop="static">
+              <Modal.Header closeButton> <Modal.Title> Import Quiz Question </Modal.Title> </Modal.Header>
+              <Modal.Body style={{fontFamily:'Roboto'}}>Click on the questions you want to import and click "Use Question(s)"{body}</Modal.Body>
+              <Modal.Footer> {footerButtons} </Modal.Footer>
+            </Modal>
+
+          </Form>
           </div>
-        
-          <Form.Group>
-
-          <Form.Row>
-            <Form.Label id="correct-answer-field" className="label" column="lg" sm={0.5}> A </Form.Label >
-            <Col>
-            <Form.Control required className="answer-field correct-answer-field" size="lg" type="text" placeholder="Type your correct answer here..." value={this.state.correct_answer} onChange={this.onCorrect_answerChange.bind(this)}/>
-            </Col>
-          </Form.Row>
-          <br/>
-
-          <Form.Row>
-            <Form.Label className="label" column="lg" sm={0.5}> B </Form.Label >
-            <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer1} onChange={this.onIncorrect_answerChange1.bind(this)}/>
-            </Col>
-          </Form.Row>
-          <br/>
-
-          <Form.Row>
-            <Form.Label className="label" column="lg" sm={0.5}> C </Form.Label >
-            <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer2} onChange={this.onIncorrect_answerChange2.bind(this)}/>
-            </Col>
-          </Form.Row>
-          <br/>
-
-          <Form.Row>
-            <Form.Label className="label" column="lg" sm={0.5}> D </Form.Label >
-            <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer3} onChange={this.onIncorrect_answerChange3.bind(this)}/>
-            </Col>
-          </Form.Row>
-          <br/>
-
-          <Form.Row>
-            <Form.Label className="label" column="lg" sm={0.5}> E </Form.Label >
-            <Col>
-            <Form.Control required className="answer-field" size="lg" type="text" placeholder="Incorrect answer here..." value={this.state.incorrect_answer4} onChange={this.onIncorrect_answerChange4.bind(this)}/>
-            </Col>
-          </Form.Row>
-          <br/>
-
-          </Form.Group>
-          <div style={{textAlign: "center"}}> {changeIndexButtons} 
-          </div>
-          {/* <Button id="dark-mode-button" type="submit" variant="light" className="add-question-button rounded-corner">Add This Question</Button>  */}
-          </Card>
-
-          <div className="small-spacer">  </div>
-          
-          <div className="small-spacer"> </div>
-          
-          <Modal show={this.state.importShow} onHide={this.handleImportClose} backdrop="static">
-            <Modal.Header closeButton> <Modal.Title> Import Quiz Question </Modal.Title> </Modal.Header>
-            {/* <div style={{fontFamily:'Roboto', justifyContent:'center', fontSize:'12px'}}>Click on the questions you want to import and click "Use Question(s)</div> */}
-            <Modal.Body style={{fontFamily:'Roboto'}}>Click on the questions you want to import and click "Use Question(s)"{body}</Modal.Body>
-            <Modal.Footer> {footerButtons} </Modal.Footer>
-          </Modal>
-
-        </Form>
-        </div>
-        </Style>
-        </>
+          </Style>
+          </>
         )
         )
     }

@@ -67,13 +67,10 @@ class CreateQuiz extends Component {
     isLoading:false,
     courses: [],
     courseIDs: [],
-    // chosenCourseId:null,
-    chosenCourseId:1234,
-    // chosenCourse:null,
-    chosenCourse: [{courseName: "Name of Course", _id: {$oid: 123123}}],
+    chosenCourseId:null,
+    chosenCourse:null,
     instructorCourses: [],
-    // topicOptions: [],
-    topicOptions: ["Topic1","Topic2"],
+    topicOptions: [],
     topics: [],
     createQuizSection: false,
     isInstructor: false
@@ -81,21 +78,21 @@ class CreateQuiz extends Component {
 
 
   componentDidMount() {
-    // this.mounted = true;
-    // if (this.props.match.params.course_id !== undefined) {
-    //   this.setState({
-    //     courseIDs: this.props.match.params.course_id,
-    //     chosenCourseId: this.props.match.params.course_id
-    //   }, () => {this.getChosenCourse()})
-    // } else {
-    //   const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-    //   axios.get('http://pi.cs.oswego.edu:9081/users/' + email).then(res => {
-    //     if(this.mounted){
-    //       this.setState({courseIDs: res.data}, () => {this.getCoursesFromDB()})
-    //     }
-    //   }).catch(err => {console.log(err); this.setState({isLoading: false})
-    //   })
-    //   }
+    this.mounted = true;
+    if (this.props.match.params.course_id !== undefined) {
+      this.setState({
+        courseIDs: this.props.match.params.course_id,
+        chosenCourseId: this.props.match.params.course_id
+      }, () => {this.getChosenCourse()})
+    } else {
+      const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
+      axios.get('http://pi.cs.oswego.edu:9081/users/' + email).then(res => {
+        if(this.mounted){
+          this.setState({courseIDs: res.data}, () => {this.getCoursesFromDB()})
+        }
+      }).catch(err => {console.log(err); this.setState({isLoading: false})
+      })
+    }
   }
 
   getChosenCourse = () => {
