@@ -1,5 +1,6 @@
 <server description="Liberty server">
     <featureManager>
+        <feature>mpJwt-1.1</feature>
         <feature>microProfile-3.2</feature>
         <feature>jaxrs-2.1</feature>
     </featureManager>
@@ -8,4 +9,11 @@
         httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
 
     <webApplication location="Frontend.war" contextRoot="${app.context.root}"/>
+
+    <cors domain="/courses"
+      allowedOrigins="*"
+      allowedMethods="POST, GET, DELETE, PUT"
+      allowedHeaders="*"
+      maxAge="3600" />
+
 </server>

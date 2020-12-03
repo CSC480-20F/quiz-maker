@@ -3,6 +3,8 @@ package dev.microprofile.CoursesServer;
 import com.mongodb.*;
 import org.bson.types.ObjectId;
 
+import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.RequestScoped;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
@@ -12,7 +14,8 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
+@RequestScoped
+@RolesAllowed({"oswego.edu"})
 @Path("/courses")
 public class QuizMakerCoursesDbInfo {
     // Creates login username and password
@@ -25,6 +28,7 @@ public class QuizMakerCoursesDbInfo {
 
     //Dumps whole db
     @Path("/all")
+    //@RolesAllowed({"oswego.edu"})
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response dbDump(){
