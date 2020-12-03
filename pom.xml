@@ -19,8 +19,6 @@
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>3.2.1</version>
             </plugin>
-
-
         </plugins>
     </build>
 

@@ -25,7 +25,7 @@ public class QuizMakerQuizzesDbInfo {
     //MongoClient mongoClient = new MongoClient(27018);
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("quizzesDB");
-    MongoDatabase  db = mongoClient.getDatabase("quizzesDB");
+    //MongoDatabase  db = mongoClient.getDatabase("quizzesDB");
 
     //Dumps whole db
     @Path("/all")
@@ -191,7 +191,7 @@ public class QuizMakerQuizzesDbInfo {
     @Path("/course-starred-quizzes/{courseID}")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateStar(@PathParam("courseID") String courseID){
+    public Response starredCourses(@PathParam("courseID") String courseID){
         DBCollection collection = database.getCollection("quizzes");
         BasicDBObject query = new BasicDBObject();
         ArrayList<DBObject> starredQuizzes = new ArrayList<>();
