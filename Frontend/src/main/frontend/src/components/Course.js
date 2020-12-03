@@ -48,11 +48,9 @@ const Styles = styled.div`
 class Course extends Component {
     state = {
         course: null,
-        // course: {"topics": ["Bullshit", "Hello"], "courseName": "Bullshit", "_id":{"$oid": 213123123}},
         quizData: [],
         topRatedQuizzes: [],
         isInstructor: false,
-        // isInstructor: true,
         manageTopics: false,
         manageStudents: false
     }
