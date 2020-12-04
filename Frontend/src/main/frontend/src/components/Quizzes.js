@@ -21,10 +21,10 @@ class Quizzes extends Component {
         token: window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
 
-    componentDidMount () {        
+    componentDidMount () {
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        axios.get('http://localhost:9082/quizzes/get-created-quizzes/' + email, {method: 'GET'}, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+        axios.get('http://localhost:9082/quizzes/get-created-quizzes/' + email, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             if (this.mounted) {
                 this.setState({
                     createdQuizzesData: res.data
@@ -105,7 +105,7 @@ class Quizzes extends Component {
         return (
             <div>
                 <div> <TopNavbar/> </div>
-                
+
                 <div className="container-middle">
                 <div className="header"> Quizzes </div>
                 <div style={{padding: '10px'}}> </div>
@@ -120,7 +120,7 @@ class Quizzes extends Component {
                         {view}
                         <div style={{padding: '10px'}}> </div>
                     </div>
-        
+
                 </div>
             </div>
         )
