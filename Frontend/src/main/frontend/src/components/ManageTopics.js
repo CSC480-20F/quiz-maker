@@ -62,12 +62,13 @@ class ManageTopics extends Component {
         topics: [],
         topic: "",
         sendingTopic: false,
-        loadingTopics: true
+        loadingTopics: true,
+        token: window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
 
     componentDidMount () {
       let id = this.props.courseID
-      axios.get("http://pi.cs.oswego.edu:9083/courses/get-courses/" + id).then(res => {
+      axios.get("http://localhost:9083/courses/get-courses/" + id, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
         this.setState({topics: res.data[0].topics, loadingTopics: false})
       })
     }
@@ -96,10 +97,10 @@ class ManageTopics extends Component {
     saveTopics = () => {
       if (this.state.topics.length > 0) {
         this.setState({sendingTopic: true})
-        axios.post(`http://pi.cs.oswego.edu:9083/courses/update-topics`, {
+        axios.post(`http://localhost:9083/courses/update-topics`, {
           "courseID": this.props.courseID,
           "topics":this.state.topics
-        }).then(res => {
+        }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
           NotificationManager.success('Topics successfully updated!', 'Topics Updated', 3000);
           this.setState({sendingTopic: false})
         }).catch(error =>{

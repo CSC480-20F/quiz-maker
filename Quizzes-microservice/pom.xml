@@ -17,13 +17,26 @@
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <liberty.var.default.http.port>9084</liberty.var.default.http.port>
-        <liberty.var.default.https.port>9447</liberty.var.default.https.port>
+        <liberty.var.default.http.port>9082</liberty.var.default.http.port>
+        <liberty.var.default.https.port>9445</liberty.var.default.https.port>
         <liberty.var.app.context.root>/</liberty.var.app.context.root>
         <app.name>${project.artifactId}</app.name>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>transportSecurity-1.0</artifactId>
+            <version>19.0.0.6</version>
+            <type>esa</type>
+          </dependency>
+
+        <dependency>
+            <groupId>io.openliberty.features</groupId>
+            <artifactId>mpJwt-1.1</artifactId>
+            <version>20.0.0.12</version>
+            <type>esa</type>
+        </dependency>
 
         <!-- Aggregate of MicroProfile APIs -->
         <dependency>

@@ -69,7 +69,8 @@ class RosterUpload extends React.Component {
         "professor": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
         "topics": [],
         "topic": "",
-        "courseID": ""
+        "courseID": "",
+        "token": window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
   }
 
@@ -113,11 +114,11 @@ class RosterUpload extends React.Component {
 
   postToUsers = () => {
     console.log("Posting to the User's DB");
-    axios.put(`http://pi.cs.oswego.edu:9081/users/add-course`, {
+    axios.put(`http://localhost:9081/users/add-course`, {
     "id": this.state.courseID,
     "names": this.state.names,
     "emails": this.state.emails
-    })
+    }, { headers: {"Authorization" : `Bearer ${this.state.token}`}})
     .then(res => {
       this.postTopics();
     }).catch(error =>{
@@ -128,10 +129,10 @@ class RosterUpload extends React.Component {
 
   postTopics = () => {
     console.log("Posting topics DB");
-    axios.put(`http://pi.cs.oswego.edu:9083/courses/add-topics`, {
+    axios.put(`http://localhost:9083/courses/add-topics`, {
     "courseID": this.state.courseID,
     "topics": this.state.topics
-    })
+    }, { headers: {"Authorization" : `Bearer ${this.state.token}`}})
     .then(res => {
       NotificationManager.success('Course successfully created! 🥳', 'Course Created', 4000);
       this.props.history.push('/');
@@ -161,7 +162,7 @@ class RosterUpload extends React.Component {
       return;
     }
 
-    axios.get('http://pi.cs.oswego.edu:9083/courses/create-course/' + sendString).then(res => {
+    axios.get('http://localhost:9083/courses/create-course/' + sendString, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
       this.setState({
         courseID: res.data
       })

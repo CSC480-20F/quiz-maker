@@ -1,5 +1,8 @@
 <server description="Liberty server">
     <featureManager>
+        <feature>jsp-2.3</feature>
+        <feature>mpJwt-1.1</feature>
+        <feature>transportSecurity-1.0</feature>
         <feature>microProfile-3.2</feature>
         <feature>jaxrs-2.1</feature>
     </featureManager>
@@ -9,11 +12,22 @@
 
     <webApplication location="QuizzesServer.war" contextRoot="${app.context.root}"/>
 
+    <keyStore id="defaultKeyStore" password="keyspass" />
+
+    <ssl id="sslSettings" trustDefaultCerts="true" keyStoreRef="defaultKeyStore" trustStoreRef="defaultKeyStore" />
+
+    <sslDefault sslRef="sslSettings" />
+
+    <logging traceSpecification="com.ibm.ws.security*=all:com.ibm.ws.webcontainer.security.*=all:io.openliberty.security.*=all"/>
+
+    <mpJwt id="mympjwt" issuer="accounts.google.com" groupNameAttribute="hd" audiences="ALL_AUDIENCES" userNameAttribute="email"
+               jwksUri="https://www.googleapis.com/oauth2/v3/certs"/>
+
     <!-- http://localhost:9080 -->
     <cors domain="/quizzes"
       allowedOrigins="*"
       allowedMethods="POST, GET, DELETE, PUT"
-      allowedHeaders="origin, content-type, accept, authorization, cache-control"
+      allowedHeaders="*"
       maxAge="3600" />
 
 </server>

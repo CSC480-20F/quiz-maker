@@ -81,12 +81,13 @@ class ManageStudents extends Component {
         inputEmail:"",
         addedNames: [],
         addedEmails: [],
-        removeStudents: []
+        removeStudents: [],
+        token: window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
 
     componentDidMount () {
         let id = this.props.courseID;
-        axios.get("http://pi.cs.oswego.edu:9083/courses/get-course-roster/" + id).then(res => {
+        axios.get("http://localhost:9083/courses/get-course-roster/" + id, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             this.setState({courseRoster: res.data, loadingRoster: false})
         }).catch(err => {console.log(err)})
     }
@@ -95,11 +96,11 @@ class ManageStudents extends Component {
     finishAddingStudents = () => {
         if (this.state.addedEmails.length > 0) {
             this.setState({updatingDB: true})
-            axios.put(`http://pi.cs.oswego.edu:9081/users/add-course`, {
+            axios.put(`http://localhost:9081/users/add-course`, {
                 "id": this.state.courseID,
                 "names":this.state.addedNames,
                 "emails": this.state.addedEmails
-            }).then(res => {
+            }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
                 console.log(res)
                 this.updateCourse()
             }).catch(error =>{
@@ -116,10 +117,10 @@ class ManageStudents extends Component {
     finishRemovingStudents = () => {
         if (this.state.removeStudents.length > 0) {
             this.setState({updatingDB: true})
-            axios.put(`http://pi.cs.oswego.edu:9081/users/remove-from-course`, {
+            axios.put(`http://localhost:9081/users/remove-from-course`, {
                 "id": this.state.courseID,
                 "emails": this.state.removeStudents
-            }).then(res => {
+            }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
                 console.log(res)
                 this.updateCourse()
             }).catch(error =>{
@@ -137,10 +138,10 @@ class ManageStudents extends Component {
         let copyArray = this.state.courseRoster;
         copyArray = copyArray.filter( ( el ) => !this.state.removeStudents.includes( el ) );
         this.setState({courseRoster: copyArray})
-        axios.put(`http://pi.cs.oswego.edu:9083/courses/update-course-roster`, {
+        axios.put(`http://localhost:9083/courses/update-course-roster`, {
             "courseID": this.state.courseID,
             "courseRoster": this.state.courseRoster
-        }).then(res => {
+        }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             console.log(res)
             NotificationManager.success("Course roster successfully updated!", 'Updated Roster', 3000);
             this.setState({updatingDB: false, addedNames: [], addedEmails: [], removeStudents: []})

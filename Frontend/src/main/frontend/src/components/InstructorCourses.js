@@ -17,12 +17,13 @@ class InstructorCourses extends Component {
     state = {
         myCourses: [],
         isLoading: true,
+        token: window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
 
     componentDidMount() {
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        axios.get('http://pi.cs.oswego.edu:9083/courses/get-instructor-courses/' + email).then(res => {
+        axios.get('http://localhost:9083/courses/get-instructor-courses/' + email, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             if(this.mounted){
                 if (this.props.limit === "null" || res.data.length < 3) {
                     this.setState({myCourses: res.data, isLoading: false})

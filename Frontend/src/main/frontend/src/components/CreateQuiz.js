@@ -73,12 +73,14 @@ class CreateQuiz extends Component {
     topicOptions: [],
     topics: [],
     createQuizSection: false,
-    isInstructor: false
+    isInstructor: false,
+    token: window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
   }
 
 
   componentDidMount() {
     this.mounted = true;
+    const token = this.state.token;
     if (this.props.match.params.course_id !== undefined) {
       this.setState({
         courseIDs: this.props.match.params.course_id,
@@ -86,17 +88,17 @@ class CreateQuiz extends Component {
       }, () => {this.getChosenCourse()})
     } else {
       const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-      axios.get('http://pi.cs.oswego.edu:9081/users/' + email).then(res => {
+      axios.get('http://localhost:9081/users/' + email, { headers: {"Authorization" : `Bearer ${token}`}}).then(res => {
         if(this.mounted){
           this.setState({courseIDs: res.data}, () => {this.getCoursesFromDB()})
         }
       }).catch(err => {console.log(err); this.setState({isLoading: false})
       })
-    }
+      }
   }
 
   getChosenCourse = () => {
-    axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + this.state.chosenCourseId).then(res => {
+    axios.get('http://localhost:9083/courses/get-courses/' + this.state.chosenCourseId, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
       if(this.mounted){
         this.setState({chosenCourse: res.data, isLoading: false, topicOptions: res.data[0].topics}, () => this.checkIfInstructor())
       }
@@ -118,7 +120,7 @@ class CreateQuiz extends Component {
   getCoursesFromDB = () => {
      if (this.state.courseIDs.length > 0) {
       const sendCourseIDs = this.state.courseIDs.toString().replace(/[[\]']+/g,"").split(" ").join("");
-      axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + sendCourseIDs).then(res => {
+      axios.get('http://localhost:9083/courses/get-courses/' + sendCourseIDs, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
           if(this.mounted){
               this.setState({courses: res.data}, () => {this.getInstructorCourses()})
           }
@@ -131,7 +133,7 @@ class CreateQuiz extends Component {
   getInstructorCourses = () => {
     const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
     if (this.context.isInstructor) {
-      axios.get('http://pi.cs.oswego.edu:9083/courses/get-instructor-courses/' + email).then(res => {
+      axios.get('http://localhost:9083/courses/get-instructor-courses/' + email, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
         if (res.data.length > 0) {
           for (var course in res.data) {
             if (this.mounted) {
