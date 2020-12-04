@@ -1,11 +1,5 @@
-/* @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext'); */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
-/* 💅 Stylesheet for this babay
-💅 Stylesheet for this babay
-💅 Stylesheet for this babay
-💅 Stylesheet for this babay
-💅 Stylesheet for this babay
-💅 Stylesheet for this babay */
+/* 💅 Stylesheet for this babay */
 
 .container-middle {
   display: flex;
@@ -37,8 +31,6 @@
 }
 
 .login-oswego-logo-2{
-  /* height: auto; 
-  width: auto;  */
   max-width:25%;
   align-self: center;
   padding-top: 10px;
@@ -165,7 +157,6 @@
   text-align: center;
   color: white;
   background-color:#595959;
-  /* background-color: black; */
 }
 
 .regular-link {
@@ -224,8 +215,6 @@
   font-size: 20px;
   color: #235937;
   background-color: #F2F2F2;
-  /* border: 2px solid #FE9C02; */
-  /* border-radius: 1ex; */
   font-weight: bolder;
   opacity: 0.5;
   margin-left: 20px;
@@ -237,7 +226,6 @@
   background-color: #F2F2F2;
   border: 2px solid  #235937;
   border-radius: 15px 15px 0px 0px;
-  /* border-radius: 1ex; */
 }
 
 .this-subtitle {

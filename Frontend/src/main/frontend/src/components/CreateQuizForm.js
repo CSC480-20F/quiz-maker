@@ -522,9 +522,11 @@ class CreateQuizForm extends React.Component{
                 <Card.Body>
                   <div style={{fontFamily: "Roboto", color: "#8F0047", fontSize: "20px", cursor: "pointer", display:'flex', justifyContent: "space-between", flexWrap: "wrap"}}> Q{i+1} 
                   
-                  <FiPlusCircle title="Import this question" style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
-                    id="upvote" size = "18px" label = "Select this question to import" key = {i}
-                    onClick={() => this.choseQuestion(i)} style={this.state.chosenQuestions.includes(question) ? ({color: "#FE9C02"}):({color: "white"})}
+                  <FiPlusCircle title="Import this question" id="upvote" size = "18px" label = "Select this question to import" key = {i}
+                    onClick={() => this.choseQuestion(i)} 
+                    style={this.state.chosenQuestions.includes(question) ? 
+                    ({color: "#FE9C02", display:"inline-block", margin:"2px", cursor:'pointer'}):
+                    ({color: "white", display:"inline-block", margin:"2px", cursor:'pointer'})}
                   />
                   
                   </div>

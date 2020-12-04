@@ -1,15 +1,10 @@
 import React, { useContext } from 'react';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-//import logo from '../pexels-anna-shvets-3683107.jpg';
 import styled from 'styled-components';
 import { NavLink, Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
-// import DarkModeToggle from './DarkModeToggle';
-// import DarkModeMain from './DarkModeMain';
-
 import quizmakerlogo from '../assets/Final_Dark_Background.png'
 import {UserContext} from '../context/UserContext';
-// import DarkModeApp from './DarkModeApp';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './theme';
 import { GlobalStyles } from './global';
@@ -90,7 +85,6 @@ const TopNavbar = () => {
         <>
           <GlobalStyles />
           <Toggle theme={theme} toggleTheme={toggleTheme} />
-          {/* <h1>It's a {theme === 'light' ? 'light theme' : 'dark theme'}!</h1> */}
         </>
       </ThemeProvider>
     );
@@ -106,37 +100,20 @@ const TopNavbar = () => {
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Nav className="mr-auto">
-      <NavLink title="Home" exact to="/" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}> Home </NavLink>
-      <NavLink title="View Courses" to="/Courses" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Courses</NavLink>
-      <NavLink title="View Quizzes" to="/Quizzes" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Quizzes</NavLink>
-      <NavLink title="Create a Quiz" to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Create</NavLink>
-      {view}
-      {/* <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none' }}>Course Creation</NavLink> */}
-
-      
-     
+        <NavLink title="Home" exact to="/" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}> Home </NavLink>
+        <NavLink title="View Courses" to="/Courses" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Courses</NavLink>
+        <NavLink title="View Quizzes" to="/Quizzes" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Quizzes</NavLink>
+        <NavLink title="Create a Quiz" to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Create</NavLink>
+        {view}
       </Nav>
       
       <div title="Switch Theme" id="edit-dark-mode-text" style={{fontSize:'9px', margin:'25px', color:'red  '}}>
       <DarkModeApp id="edit-dark-mode-text-2" /> 
-      {/* <DarkModeApp  id="edit-dark-mode-text"></DarkModeApp> */}
       </div>
       <img src={logo} alt="SUNY Oswego Logo" style={{width:98, height: 36, marginTop: -8}} />
       <NavDropdown className="justify-content-end" title={name} id="collasible-nav-dropdown">
-
-
-      {/* <NavDropdown.Item id="nav-drop-down-little-box-darkmode"> 
-      
-      <DarkModeApp style={{color:'black'}}> Switch Theme </DarkModeApp>
-      
-      </NavDropdown.Item> */}
-
-      <NavDropdown.Item id="nav-drop-down-little-box" as={Link} to="/About">About </NavDropdown.Item>
-      <NavDropdown.Item title="" id="nav-drop-down-little-box" onClick={authInstance.signOut} href="/">Sign Out </NavDropdown.Item>
-      
-      
-   
-      
+        <NavDropdown.Item id="nav-drop-down-little-box" as={Link} to="/About">About </NavDropdown.Item>
+        <NavDropdown.Item title="" id="nav-drop-down-little-box" onClick={authInstance.signOut} href="/">Sign Out </NavDropdown.Item>
       </NavDropdown>
 
       </Navbar>

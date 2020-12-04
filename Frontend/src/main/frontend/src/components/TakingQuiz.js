@@ -161,7 +161,7 @@ class TakeQuiz extends Component {
     this.decrement = this.decrement.bind(this)
   }
 
-  vote(type){ //type is either 1 for upvote or -1 for downvote;;;vote is a property of the state which describes the user's current vote: 0 = no vote; 1 = already upvoted; -1 already downvoted
+  vote(type){ //type is either 1 for upvote or -1 for downvote
     this.setState(state => ({
       vote: state.vote === type ? 0 : type
     }));

@@ -46,10 +46,6 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.createButtonText};
   }
 
-  #form-input {
-    ${'' /* background: ${({ theme }) => theme.body}; */}
-  }
-
   #text {
     color: ${({ theme }) => theme.text};
   }
@@ -78,7 +74,6 @@ export const GlobalStyles = createGlobalStyle`
   .nav-tabs .nav-link{
     color: ${({ theme }) => theme.subtitleColor};
     background-color: ${({ theme }) => theme.body};
-    ${'' /* border: 2px solid ${({ theme }) => theme.body}; */}
   }
 
   .nav-item.nav-link.active{
