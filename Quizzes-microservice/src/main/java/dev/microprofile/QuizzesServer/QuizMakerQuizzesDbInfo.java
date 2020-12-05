@@ -22,10 +22,8 @@ public class QuizMakerQuizzesDbInfo {
     MongoCredential frontendAuth = MongoCredential.createScramSha1Credential("frontend", "quizzesDB", "CsC480OswegoFrontendXD".toCharArray());    // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
     ServerAddress serverAddress = new ServerAddress("129.3.20.26", 27019);
     MongoClient mongoClient = new MongoClient(serverAddress, Collections.singletonList(frontendAuth));
-    //MongoClient mongoClient = new MongoClient(27018);
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("quizzesDB");
-    //MongoDatabase  db = mongoClient.getDatabase("quizzesDB");
 
     //Dumps whole db
     @Path("/all")
@@ -135,7 +133,28 @@ public class QuizMakerQuizzesDbInfo {
         return Response.ok(quiz.toString(), MediaType.APPLICATION_JSON).build();
     }
 
-    //adds a quiz to db
+    @Path("/course-starred-quizzes/{courseID}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response starredCourses(@PathParam("courseID") String courseID){
+        DBCollection collection = database.getCollection("quizzes");
+        BasicDBObject query = new BasicDBObject();
+        ArrayList<DBObject> starredQuizzes = new ArrayList<>();
+        query.put("courseID", courseID);
+        DBCursor foundCourse = collection.find(query);
+        while (foundCourse.hasNext()){
+            DBObject fC = foundCourse.next();
+            if(fC.get("starred").equals(true)){
+                starredQuizzes.add(fC);
+            }
+        }
+
+
+        //System.out.println(query.toString());
+        return Response.ok(starredQuizzes.toString(), MediaType.APPLICATION_JSON).build();
+    }
+
+    //POST adds a quiz to db
     @Path("/add-quiz")
     @POST
     @Consumes("application/json")
@@ -146,7 +165,6 @@ public class QuizMakerQuizzesDbInfo {
         return Response.ok().build();
     }
 
-    //needs testing
     //PUT gets quizID and rating int. Updates rating on quiz
     @Path("/update-rating")
     @PUT
@@ -186,27 +204,6 @@ public class QuizMakerQuizzesDbInfo {
         System.out.println(query.toString());
         collection.findAndModify(foundQuiz, query);
         return Response.ok().build();
-    }
-
-    @Path("/course-starred-quizzes/{courseID}")
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response starredCourses(@PathParam("courseID") String courseID){
-        DBCollection collection = database.getCollection("quizzes");
-        BasicDBObject query = new BasicDBObject();
-        ArrayList<DBObject> starredQuizzes = new ArrayList<>();
-        query.put("courseID", courseID);
-        DBCursor foundCourse = collection.find(query);
-        while (foundCourse.hasNext()){
-            DBObject fC = foundCourse.next();
-            if(fC.get("starred").equals(true)){
-                starredQuizzes.add(fC);
-            }
-        }
-
-
-        //System.out.println(query.toString());
-        return Response.ok(starredQuizzes.toString(), MediaType.APPLICATION_JSON).build();
     }
 
     @Path("/populate-database-for-testing")

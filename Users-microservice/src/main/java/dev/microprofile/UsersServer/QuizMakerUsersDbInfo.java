@@ -64,7 +64,6 @@ public class QuizMakerUsersDbInfo {
         return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
 
-    //needs testing
     //GET passes in the user email gets all taken quizzes
     @Path("/get-quizzes/{email}")
     @GET
@@ -79,6 +78,18 @@ public class QuizMakerUsersDbInfo {
         DBObject currentUser = collection.findOne(query);
         Object o = currentUser.get("quizTaken");
 
+        return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
+    }
+
+    @Path("/is-instructor/{email}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response instructorCheck(@PathParam("email") String email){
+        DBCollection collection = database.getCollection("users");
+        BasicDBObject query = new BasicDBObject();
+        query.put("email", email);
+        DBObject currentUser = collection.findOne(query);
+        Object o = currentUser.get("isInstructor");
         return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -120,7 +131,6 @@ public class QuizMakerUsersDbInfo {
         return Response.ok().build();
     }
 
-    //needs testing
     //PUT gets email and quizID then updates quizzes taken arraylist url /quizzes-taken
     @Path("/quizzes-taken")
     @PUT
@@ -129,7 +139,6 @@ public class QuizMakerUsersDbInfo {
         DBCollection collection = database.getCollection("users");
         String quizId = quizTaken.getString("id");
         String email = quizTaken.getString("email");
-        System.out.println(email);
         BasicDBObject query = new BasicDBObject();
         query.put("email", email);
         DBObject user = collection.findOne(query);
@@ -144,18 +153,6 @@ public class QuizMakerUsersDbInfo {
           collection.findAndModify(foundQuiz,update);
         }
         return Response.ok().build();
-    }
-
-    @Path("/is-instructor/{email}")
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response instructorCheck(@PathParam("email") String email){
-        DBCollection collection = database.getCollection("users");
-        BasicDBObject query = new BasicDBObject();
-        query.put("email", email);
-        DBObject currentUser = collection.findOne(query);
-        Object o = currentUser.get("isInstructor");
-        return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
 
     @Path("/remove-from-course")
