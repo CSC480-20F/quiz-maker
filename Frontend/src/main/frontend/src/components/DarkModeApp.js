@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './theme';
@@ -21,7 +20,6 @@ function DarkModeApp() {
         <>
           <GlobalStyles />
           <Toggle theme={theme} toggleTheme={toggleTheme} />
-          {/* <h1>It's a {theme === 'light' ? 'light theme' : 'dark theme'}!</h1> */}
         </>
       </ThemeProvider>
     );

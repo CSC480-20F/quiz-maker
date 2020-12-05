@@ -1,10 +1,8 @@
-// Toggle.js
 import React from 'react'
 import { func, string } from 'prop-types';
 import { HiMoon } from "react-icons/hi"; //https://react-icons.github.io/react-icons/icons?name=hi
 
 const ToggleDark = ({ theme, toggleTheme }) => {
-  // const isLight = theme === 'light';
   return (
 
     <HiMoon 

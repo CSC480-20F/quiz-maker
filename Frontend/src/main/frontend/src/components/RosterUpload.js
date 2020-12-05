@@ -213,7 +213,6 @@ class RosterUpload extends React.Component {
         
         <div className="spacer"></div>
 
-        {/* <ToggleContainer> */}
         <Card className="main-card rounded-corner">
         <CSVReader
           required
@@ -245,7 +244,7 @@ class RosterUpload extends React.Component {
         <div className="small-spacer"></div>
         <Button type="submit" variant="light" className="submit-button rounded-corner"> Create Course </Button>
         </Card>
-        {/* </ToggleContainer> */}
+
         </Form>
         </div>
       </Style>
