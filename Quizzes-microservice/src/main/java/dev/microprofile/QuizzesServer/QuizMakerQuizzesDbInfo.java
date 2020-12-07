@@ -58,20 +58,17 @@ public class QuizMakerQuizzesDbInfo {
         BasicDBObject query = new BasicDBObject();
 
         query.put("creator", email);
-
         DBCursor currentQuiz = collection.find(query);
         ArrayList<DBObject> quizList = new ArrayList<>();
 
         while (currentQuiz.hasNext()) {
           DBObject quiz = currentQuiz.next();
           BasicDBList questions = (BasicDBList) quiz.get("quizQuestions");
-          //System.out.println(questions.toString());
           int questSize = questions.size();
           quiz.removeField("quizQuestions");
           quiz.put("quiz-length", questSize);
           quizList.add(quiz);
         }
-
         return Response.ok(quizList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -96,7 +93,6 @@ public class QuizMakerQuizzesDbInfo {
           cq.put("quiz-length", questSize);
           quizList.add(cq);
         }
-
         return Response.ok(quizList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -148,9 +144,6 @@ public class QuizMakerQuizzesDbInfo {
                 starredQuizzes.add(fC);
             }
         }
-
-
-        //System.out.println(query.toString());
         return Response.ok(starredQuizzes.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -181,7 +174,6 @@ public class QuizMakerQuizzesDbInfo {
         BasicDBObject foundQuiz = new BasicDBObject();
         rate += (int)quiz.get("rating");
         quiz.put("rating", rate);
-        //System.out.println(update.toString());
         foundQuiz.put("_id", new ObjectId(quizId));
         collection.findAndModify(foundQuiz, quiz);
         return Response.ok().build();
@@ -206,23 +198,12 @@ public class QuizMakerQuizzesDbInfo {
         return Response.ok().build();
     }
 
-    @Path("/populate-database-for-testing")
-    @POST
+    @Path("/delete")
+    @delete
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response populateDB(JsonArray mockData){
-        DBCollection collection = database.getCollection("quizzes");
-        int badQuizzes = 1;
-        BulkWriteOperation bulk = collection.initializeUnorderedBulkOperation();
-
-        for (JsonValue mockQuiz: mockData) {
-            if(badQuizzes > 2) {
-                DBObject o = BasicDBObject.parse(mockQuiz.toString());
-                bulk.insert(o);
-            }
-            badQuizzes++;
-        }
-        bulk.execute();
-
-        return Response.ok().build();
+    public Response deleteQuiz(JsonOject quizID){
+      DBCollection collection = database.getCollection("quizzes");
+      DBObject query = collection.findOne(new ObjectId(quizID.getString("id")));
+      BasicDBObject foundQuiz = new BasicDBObject();
     }
 }
