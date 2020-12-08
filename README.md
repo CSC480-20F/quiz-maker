@@ -43,7 +43,7 @@ Installing Quiz Maker requires cloning this repository.
 1. From your browser, copy the cloning link
 2. From your terminal, go to the directory you want Quiz Maker to be installed in.
 3. After, enter the following command: `git clone [paste the link that you copied here]`
-4. Enter your user credentials if you are prompted to. If you weren&#39;t prompted to enter user credentials, skip to step 5.
+4. Enter your user credentials if prompted to. If you weren&#39;t prompted to enter user credentials, skip to step 5.
 5. Press Enter.
 
 
