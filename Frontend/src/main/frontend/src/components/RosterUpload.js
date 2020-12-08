@@ -136,7 +136,7 @@ class RosterUpload extends React.Component {
 
   postToUsers = () => {
     console.log("Posting to the User's DB");
-    axios.put(`http://localhost:9081/users/add-course`, {
+    axios.put(`http://pi.cs.oswego.edu:9081/users/add-course`, {
     "id": this.state.courseID,
     "names": this.state.names,
     "emails": this.state.emails
@@ -151,7 +151,7 @@ class RosterUpload extends React.Component {
 
   postTopics = () => {
     console.log("Posting topics DB");
-    axios.put(`http://localhost:9083/courses/add-topics`, {
+    axios.put(`http://pi.cs.oswego.edu:9083/courses/add-topics`, {
     "courseID": this.state.courseID,
     "topics": this.state.topics
     }, { headers: {"Authorization" : `Bearer ${this.state.token}`}})
@@ -184,7 +184,7 @@ class RosterUpload extends React.Component {
       return;
     }
 
-    axios.get('http://localhost:9083/courses/create-course/' + sendString, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+    axios.get('http://pi.cs.oswego.edu:9083/courses/create-course/' + sendString, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
       this.setState({
         courseID: res.data
       })

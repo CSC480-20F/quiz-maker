@@ -235,7 +235,7 @@ class TakeQuiz extends Component {
   componentDidMount () {
     this.mounted = true;
     let id = this.props.match.params.quiz_id;
-    axios.get('http://localhost:9082/quizzes/get-quiz/' + id, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+    axios.get('http://pi.cs.oswego.edu:9082/quizzes/get-quiz/' + id, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
       if(this.mounted){
         this.setState({
           quizTitle: res.data.quizName,
@@ -290,7 +290,7 @@ class TakeQuiz extends Component {
         })
     } else {
       this.setState({showScore: true, selected: false, selectedID:""})
-      axios.put(`http://localhost:9081/users/quizzes-taken`, {
+      axios.put(`http://pi.cs.oswego.edu:9081/users/quizzes-taken`, {
         "id": this.props.match.params.quiz_id,
         "email": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
       }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
@@ -302,7 +302,7 @@ class TakeQuiz extends Component {
   }
 
   sendRatingToDB = () => {
-    axios.put(`http://localhost:9082/quizzes/update-rating`, {
+    axios.put(`http://pi.cs.oswego.edu:9082/quizzes/update-rating`, {
         "id": this.props.match.params.quiz_id,
         "rating": this.state.totalRating
       }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
@@ -312,7 +312,7 @@ class TakeQuiz extends Component {
 
   checkIfInstructor = () => {
     const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
-    axios.get('http://localhost:9083/courses/get-courses/' + this.state.courseID, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+    axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + this.state.courseID, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
       this.setState({teacher:res.data[0].teacher})
       if (email === res.data[0].teacher) {
         this.setState({isInstructor: true})
@@ -335,29 +335,29 @@ class TakeQuiz extends Component {
   }
 
   starQuiz = () => {
-    axios.put(`http://localhost:9082/quizzes/update-star`, {
+    axios.put(`http://pi.cs.oswego.edu:9082/quizzes/update-star`, {
         "id" : this.props.match.params.quiz_id
       }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
         NotificationManager.success('Quiz favorite status changed! 🥳', 'Favorite Changed', 4000);
         document.getElementById("star-button").style.visibility="hidden";
       }).catch(error =>{
-        NotificationManager.success('Problem starring the Quiz 😞', 'Error', 4000);
+        NotificationManager.error('Problem starring the Quiz 😞', 'Error', 4000);
         console.log(error);
       })
   }
 
   deleteThisQuiz = () => {
     // Get course roster
-    axios.get('http://localhost:9083/courses/get-course-roster/' + this.state.courseID, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+    axios.get('http://pi.cs.oswego.edu:9083/courses/get-course-roster/' + this.state.courseID, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
       this.setState({courseRoster:res.data}, () => {
         const sendingRoster = [...this.state.courseRoster, this.state.teacher]
         // Delete the quiz from the usersDB (list of quizzes taken)
-        axios.put(`http://localhost:9081/users/delete-taken-quizzes`, {
+        axios.put(`http://pi.cs.oswego.edu:9081/users/delete-taken-quizzes`, {
           "id" : this.props.match.params.quiz_id,
           "emails": sendingRoster
         }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
           // Now, delete the quiz from the quizzesDB
-          axios.delete(`http://localhost:9082/quizzes/delete-quiz`, {
+          axios.delete(`http://pi.cs.oswego.edu:9082/quizzes/delete-quiz`, {
             "id" : this.props.match.params.quiz_id
           }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             // Fully deleted quiz
@@ -365,16 +365,16 @@ class TakeQuiz extends Component {
             this.props.history.push('/Courses/' + this.state.courseID);
           }).catch(error => {
             // Couldn't delete quiz from the quizDB
-            NotificationManager.success('Problem deleting the Quiz 😞', 'Error', 4000);
+            NotificationManager.error('Problem deleting the Quiz 😞', 'Error', 4000);
             console.log(error);
           })
         }).catch(error =>{
           // Couldn't delete the quiz from the usersDB
-          NotificationManager.success('Problem deleting the Quiz 😞', 'Error', 4000);
+          NotificationManager.error('Problem deleting the Quiz 😞', 'Error', 4000);
           console.log(error);
         })
       })
-    }).catch(err => {NotificationManager.success('Problem deleting the Quiz 😞', 'Error', 4000);console.log(err);}) 
+    }).catch(err => {NotificationManager.error('Problem deleting the Quiz 😞', 'Error', 4000);console.log(err);}) 
   }
 
   doNothing () {}

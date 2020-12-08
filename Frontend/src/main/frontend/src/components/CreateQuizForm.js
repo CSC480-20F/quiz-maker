@@ -296,7 +296,7 @@ class CreateQuizForm extends React.Component{
     onIncorrect_answerChange4(event){this.setState({incorrect_answer4:event.target.value});}
 
     postQuizToDB = () => {
-      axios.post(`http://localhost:9082/quizzes/add-quiz`, {
+      axios.post(`http://pi.cs.oswego.edu:9082/quizzes/add-quiz`, {
         "quizName":this.state.quiz_title,
         "creator":this.state.creator,
         "courseID":this.state.courseID,
@@ -360,7 +360,7 @@ class CreateQuizForm extends React.Component{
 
     getStarredQuizzes = () => {
       this.handleImportShow()
-      axios.get('http://localhost:9082/quizzes/course-starred-quizzes/' + this.state.courseID, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+      axios.get('http://pi.cs.oswego.edu:9082/quizzes/course-starred-quizzes/' + this.state.courseID, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
         this.setState({starredQuizzes: res.data, gettingQuizzes: false})
       }).catch(err => {console.log(err)})
     }

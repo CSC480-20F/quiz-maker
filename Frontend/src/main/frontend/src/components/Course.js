@@ -81,12 +81,12 @@ class Course extends Component {
         let id = this.props.match.params.course_id;
         const token = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 
-        axios.get("http://localhost:9083/courses/get-courses/" + id, { headers: {"Authorization" : `Bearer ${token}`}}).then(res => {
+        axios.get("http://pi.cs.oswego.edu:9083/courses/get-courses/" + id, { headers: {"Authorization" : `Bearer ${token}`}}).then(res => {
             this.setState({
                 course: res.data[0]
             }, () => this.checkIfInstructor())
         })
-        axios.get('http://localhost:9082/quizzes/get-course/' + id, { headers: {"Authorization" : `Bearer ${token}`}}).then(res => {
+        axios.get('http://pi.cs.oswego.edu:9082/quizzes/get-course/' + id, { headers: {"Authorization" : `Bearer ${token}`}}).then(res => {
             this.setState({
                 quizData: res.data,
             }, () => {this.getTopRatedQuizzes()})

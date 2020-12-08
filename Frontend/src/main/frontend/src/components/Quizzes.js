@@ -46,7 +46,7 @@ class Quizzes extends Component {
     componentDidMount () {
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        axios.get('http://localhost:9082/quizzes/get-created-quizzes/' + email, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+        axios.get('http://pi.cs.oswego.edu:9082/quizzes/get-created-quizzes/' + email, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             if (this.mounted) {
                 this.setState({
                     createdQuizzesData: res.data
@@ -57,7 +57,7 @@ class Quizzes extends Component {
                 })
             }
         })
-        axios.get('http://localhost:9081/users/get-quizzes/' + email, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+        axios.get('http://pi.cs.oswego.edu:9081/users/get-quizzes/' + email, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             if(this.mounted){
                 this.setState({takenQuizzes: res.data}, () => {
                     if (this.state.takenQuizzes.length > 0) {
@@ -82,7 +82,7 @@ class Quizzes extends Component {
 
     getTakenQuizzes = () => {
         const ids = this.state.takenQuizzes.replace(/[[\]']+/g,'').split(" ").join("");
-        axios.get('http://localhost:9082/quizzes/get-quizzes/' + ids, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+        axios.get('http://pi.cs.oswego.edu:9082/quizzes/get-quizzes/' + ids, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             if(this.mounted){
                 this.setState({takenQuizzesData: res.data, isLoading: false})
             }
