@@ -109,6 +109,16 @@ class InstructorQuizTable extends Component {
           accessor:customStarredAccessor
         }
     ]
+
+    function filterCaseInsensitive(filter, row) {
+      const id = filter.pivotId || filter.id;
+      return (
+          row[id] !== undefined ?
+              String(row[id].toLowerCase()).startsWith(filter.value.toLowerCase())
+          :
+              true
+      );
+    }
     
 
       return (
@@ -125,6 +135,7 @@ class InstructorQuizTable extends Component {
                     }}
                     defaultPageSize = {10}
                     filterable
+                    defaultFilterMethod={(filter, row) => filterCaseInsensitive(filter, row) }
                     pageSizeOptions = {[5,10,20,25]}
                 />
             </div>
