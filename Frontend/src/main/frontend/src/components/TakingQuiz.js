@@ -506,14 +506,14 @@ class TakeQuiz extends Component {
         <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}} style={{margin: '10px'}}>Back to Course</Button>
         <Button variant="light" type="button" className="delete-quiz-button" onClick={() => { this.deleteThisQuiz()}} style={{margin: '10px'}}>Delete this Quiz</Button>
         </div>
-        <div styles={{color:'#B91919', fontSize: '12px'}}> "Favoriting a Quiz  will allow you to import its questions when creating your own Quiz"</div> </>
+        <div style={{color:'#B91919', fontSize: '12px'}}> "Favoriting a Quiz  will allow you to import its questions when creating your own Quiz"</div> </>
       ):( <>
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
         <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}} style={{margin: '10px'}}>Favorite Quiz</Button>
         <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}} style={{margin: '10px'}}>Back to Course</Button>
         <Button variant="light" type="button" className="delete-quiz-button" onClick={() => { this.deleteThisQuiz()}} style={{margin: '10px'}}>Delete this Quiz</Button>
         </div> 
-        <div styles={{color:'#B91919', fontSize: '12px'}}> <b> "Favoriting a Quiz will allow you to import its questions when creating your own Quiz" </b> </div> </>
+        <div style={{color:'#B91919', fontSize: '12px'}}> <b> "Favoriting a Quiz will allow you to import its questions when creating your own Quiz" </b> </div> </>
       )
     ):(
       <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
