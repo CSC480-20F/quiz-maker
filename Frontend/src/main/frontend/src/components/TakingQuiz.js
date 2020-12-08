@@ -358,8 +358,9 @@ class TakeQuiz extends Component {
         }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
           // Now, delete the quiz from the quizzesDB
           axios.delete(`http://pi.cs.oswego.edu:9082/quizzes/delete-quiz`, {
-            "id" : this.props.match.params.quiz_id
-          }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+            headers: {"Authorization" : `Bearer ${this.state.token}`},
+            data: {"id" : this.props.match.params.quiz_id}
+          }).then(res => {
             // Fully deleted quiz
             NotificationManager.success('Quiz deleted! 🥳', 'Success', 4000);
             this.props.history.push('/Courses/' + this.state.courseID);
@@ -494,12 +495,12 @@ class TakeQuiz extends Component {
         <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}}>Un-favorite Quiz</Button>
         <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
         <Button variant="light" type="button" className="back-course-button" onClick={() => { this.deleteThisQuiz()}}>Delete this Quiz</Button>
-        <div> "Favoriting a Quiz  will allow you to import its questions when creating your own Quiz"</div> </>
+        <p styles={{color:'red'}}> "Favoriting a Quiz  will allow you to import its questions when creating your own Quiz"</p> </>
       ):( <>
         <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}}>Favorite Quiz</Button>
         <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
         <Button variant="light" type="button" className="back-course-button" onClick={() => { this.deleteThisQuiz()}}>Delete this Quiz</Button> 
-        <div styles={{color:'red'}}> <b> "Favoriting a Quiz will allow you to import its questions when creating your own Quiz" </b> </div> </>
+        <p styles={{color:'red'}}> <b> "Favoriting a Quiz will allow you to import its questions when creating your own Quiz" </b> </p> </>
       )
     ):(
       <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>

@@ -86,7 +86,7 @@ class CreateQuiz extends Component {
   static contextType = UserContext
 
   state = {
-    isLoading:false,
+    isLoading:true,
     courses: [],
     courseIDs: [],
     chosenCourseId:null,
