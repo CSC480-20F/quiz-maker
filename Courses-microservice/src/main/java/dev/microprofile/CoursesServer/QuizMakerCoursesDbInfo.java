@@ -50,7 +50,6 @@ public class QuizMakerCoursesDbInfo {
 
     //Dumps whole db
     @Path("/all")
-    //@RolesAllowed({"oswego.edu"})
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response dbDump(){
@@ -102,7 +101,6 @@ public class QuizMakerCoursesDbInfo {
             currentCourse.removeField("courseRoster");
             courses.add(currentCourse);
         }
-        //courseOut = courseOut.concat("]");
         return Response.ok(courses.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -126,7 +124,6 @@ public class QuizMakerCoursesDbInfo {
         return Response.ok(courseList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
-    //needs testing
     //adds topics to course
     @Path("/add-topics")
     @PUT
