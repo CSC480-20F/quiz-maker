@@ -1,3 +1,25 @@
+// MIT License
+
+// Copyright (c) 2020 SUNY Oswego
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 import React, { Component } from 'react';
 import {Card, Form, Col, Button, Spinner, CardGroup, CardDeck} from 'react-bootstrap';
 import styled from 'styled-components';
@@ -81,12 +103,13 @@ class ManageStudents extends Component {
         inputEmail:"",
         addedNames: [],
         addedEmails: [],
-        removeStudents: []
+        removeStudents: [],
+        token: window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
 
     componentDidMount () {
         let id = this.props.courseID;
-        axios.get("http://pi.cs.oswego.edu:9083/courses/get-course-roster/" + id).then(res => {
+        axios.get("http://localhost:9083/courses/get-course-roster/" + id, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             this.setState({courseRoster: res.data, loadingRoster: false})
         }).catch(err => {console.log(err)})
     }
@@ -95,11 +118,11 @@ class ManageStudents extends Component {
     finishAddingStudents = () => {
         if (this.state.addedEmails.length > 0) {
             this.setState({updatingDB: true})
-            axios.put(`http://pi.cs.oswego.edu:9081/users/add-course`, {
+            axios.put(`http://localhost:9081/users/add-course`, {
                 "id": this.state.courseID,
                 "names":this.state.addedNames,
                 "emails": this.state.addedEmails
-            }).then(res => {
+            }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
                 console.log(res)
                 this.updateCourse()
             }).catch(error =>{
@@ -116,10 +139,10 @@ class ManageStudents extends Component {
     finishRemovingStudents = () => {
         if (this.state.removeStudents.length > 0) {
             this.setState({updatingDB: true})
-            axios.put(`http://pi.cs.oswego.edu:9081/users/remove-from-course`, {
+            axios.put(`http://localhost:9081/users/remove-from-course`, {
                 "id": this.state.courseID,
                 "emails": this.state.removeStudents
-            }).then(res => {
+            }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
                 console.log(res)
                 this.updateCourse()
             }).catch(error =>{
@@ -137,10 +160,10 @@ class ManageStudents extends Component {
         let copyArray = this.state.courseRoster;
         copyArray = copyArray.filter( ( el ) => !this.state.removeStudents.includes( el ) );
         this.setState({courseRoster: copyArray})
-        axios.put(`http://pi.cs.oswego.edu:9083/courses/update-course-roster`, {
+        axios.put(`http://localhost:9083/courses/update-course-roster`, {
             "courseID": this.state.courseID,
             "courseRoster": this.state.courseRoster
-        }).then(res => {
+        }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             console.log(res)
             NotificationManager.success("Course roster successfully updated!", 'Updated Roster', 3000);
             this.setState({updatingDB: false, addedNames: [], addedEmails: [], removeStudents: []})
@@ -180,13 +203,13 @@ class ManageStudents extends Component {
 
         const students = this.state.courseRoster.map((student,i) => {
             return (
-                <Card key={i} className="student-card" border="secondary"> {student} </Card>
+                <Card key={i} className="student-card" border="secondary" style={{cursor: "default"}}> {student} </Card>
             )
         })
 
         const removeStudents = this.state.courseRoster.map((student,i) => {
             return (
-                <Card key={i} onClick={e => this.toggleStudent(student)} className={this.state.removeStudents.includes(student) ? ("removed student-card"):("student-card")} border="secondary"> {student} </Card>
+                <Card key={i} onClick={e => this.toggleStudent(student)} className={this.state.removeStudents.includes(student) ? ("removed student-card"):("student-card")} border="secondary" style={{cursor: "pointer"}}> {student} </Card>
             )
         })
 

@@ -1,8 +1,29 @@
+// MIT License
+
+// Copyright (c) 2020 SUNY Oswego
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 import React, { Component } from 'react'
 import { Button, Tabs, Tab, Card } from "react-bootstrap";
 import TopQuizzes from './QuizzesDeck';
 import TopNavbar from './TopNavbar';
-import styled from 'styled-components';
 import QuizTable from './QuizTable';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -18,16 +39,17 @@ class Quizzes extends Component {
         topCreatedQuizzes: [],
         takenQuizzesData: [],
         takenQuizzes: [],
-        isLoading: true
+        isLoading: true,
+        token: window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
 
-    componentDidMount () {        
+    componentDidMount () {
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        fetch('http://pi.cs.oswego.edu:9084/quizzes/get-created-quizzes/' + email, {method: 'GET',}).then(response => response.json()).then(quizzes => {
+        axios.get('http://localhost:9082/quizzes/get-created-quizzes/' + email, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             if (this.mounted) {
                 this.setState({
-                    createdQuizzesData: quizzes
+                    createdQuizzesData: res.data
                 }, () => {
                     if (this.state.createdQuizzesData.length > 0) {
                         this.getTopRatedQuizzes()
@@ -35,7 +57,7 @@ class Quizzes extends Component {
                 })
             }
         })
-        axios.get('http://pi.cs.oswego.edu:9081/users/get-quizzes/' + email).then(res => {
+        axios.get('http://localhost:9081/users/get-quizzes/' + email, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             if(this.mounted){
                 this.setState({takenQuizzes: res.data}, () => {
                     if (this.state.takenQuizzes.length > 0) {
@@ -60,7 +82,7 @@ class Quizzes extends Component {
 
     getTakenQuizzes = () => {
         const ids = this.state.takenQuizzes.replace(/[[\]']+/g,'').split(" ").join("");
-        axios.get('http://pi.cs.oswego.edu:9084/quizzes/get-quizzes/' + ids).then(res => {
+        axios.get('http://localhost:9082/quizzes/get-quizzes/' + ids, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             if(this.mounted){
                 this.setState({takenQuizzesData: res.data, isLoading: false})
             }
@@ -74,7 +96,7 @@ class Quizzes extends Component {
 
         const teacher = this.context.isInstructor;
 
-        const view = teacher ? (
+        const view = teacher === true ? (
             <Tabs defaultActiveKey="MyQuizzes" id="uncontrolled-tab-example">
             <Tab eventKey="MyQuizzes" title="My Created Quizzes">
                 <Card className='rounded-corner'>
@@ -105,7 +127,7 @@ class Quizzes extends Component {
         return (
             <div>
                 <div> <TopNavbar/> </div>
-                
+
                 <div className="container-middle">
                 <div className="header"> Quizzes </div>
                 <div style={{padding: '10px'}}> </div>
@@ -120,7 +142,7 @@ class Quizzes extends Component {
                         {view}
                         <div style={{padding: '10px'}}> </div>
                     </div>
-        
+
                 </div>
             </div>
         )

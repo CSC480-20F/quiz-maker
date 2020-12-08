@@ -1,3 +1,25 @@
+// MIT License
+
+// Copyright (c) 2020 SUNY Oswego
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 import React from 'react';
 import './App.css';
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
@@ -10,10 +32,10 @@ import Courses from './components/Courses';
 import Quizzes from './components/Quizzes';
 import TakeQuiz from './components/TakingQuiz';
 import RosterUpload from './components/RosterUpload';
-import CreateQuizForm from './components/CreateQuizForm'
 import UserProvider from './context/UserContext';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import {NotificationContainer} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import About from './components/About';
 
 
 class ProtectedRoute extends React.Component {
@@ -101,7 +123,7 @@ class App extends React.Component {
                   <ProtectedRoute exact path="/Quizzes" condition={this.state.isSignedIn} component={Quizzes}/>
                   <ProtectedRoute path="/Quizzes/:quiz_id" condition={this.state.isSignedIn} component={TakeQuiz}/>
                   <ProtectedRoute path="/RosterUpload" condition={this.state.isSignedIn} component={RosterUpload}/>
-                  {/* <ProtectedRoute path="/CreateQuizForm" condition={this.state.isSignedIn} component={CreateQuizForm}/> */}
+                  <Route path="/About" component={About}/>
               </Switch>
           </BrowserRouter>
         </UserProvider>

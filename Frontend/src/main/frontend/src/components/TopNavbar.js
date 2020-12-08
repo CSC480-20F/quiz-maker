@@ -1,15 +1,37 @@
+// MIT License
+
+// Copyright (c) 2020 SUNY Oswego
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 import React, { useContext } from 'react';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-//import logo from '../pexels-anna-shvets-3683107.jpg';
 import styled from 'styled-components';
 import { NavLink, Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
-// import DarkModeToggle from './DarkModeToggle';
-// import DarkModeMain from './DarkModeMain';
-
 import quizmakerlogo from '../assets/Final_Dark_Background.png'
 import {UserContext} from '../context/UserContext';
-import DarkModeApp from './DarkModeApp';
+import { ThemeProvider } from 'styled-components';
+import { lightTheme, darkTheme } from './theme';
+import { GlobalStyles } from './global';
+import { useDarkMode } from './useDarkMode';
+import Toggle from './Toggle';
 
 const Styles = styled.div`
   .navbar { 
@@ -44,15 +66,13 @@ const Styles = styled.div`
   #nav-drop-down-little-box{
   background-color:white;
   color:#235937;
-}
-  ${'' /* #toggle-dark-mode
-  {
-    background-color:white;
-    color:#235937;
-    
-  } */}
+  }
 
-  #edit-dark-mode-text {
+  #nav-drop-down-little-box-darkmode{
+  color:#235937;
+  }
+
+  #edit-dark-mode-text-2{
     margin:100px;
   }
   
@@ -67,42 +87,55 @@ const TopNavbar = () => {
   const name = profile.getName()
   const teacher = useContext(UserContext).isInstructor
 
-  const view = teacher ? (
+  const view = teacher === true ? (
     <> <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Course Creation</NavLink> </>
   ):(
     <> </>
   )
 
+  function DarkModeApp() {
+
+    const [theme, toggleTheme, componentMounted] = useDarkMode();
+    const themeMode = theme === 'light' ? lightTheme : darkTheme;
+
+    if (!componentMounted) {
+        return <div />
+      };
+
+    return (
+      <ThemeProvider theme={themeMode}>
+        <>
+          <GlobalStyles />
+          <Toggle theme={theme} toggleTheme={toggleTheme} />
+        </>
+      </ThemeProvider>
+    );
+  }
+
   return (
       <>
       <Styles>
       <Navbar id="topnavbar" className = "nav-bar-style"  variant="dark" >
-      <Navbar.Brand as={Link} to="/">
+      <Navbar.Brand title="Home" as={Link} to="/">
+      
       <img className="login-quizmaker-logo" alt="QuizMaker Logo" src={quizmakerlogo} style={{maxWidth:'65%', paddingBottom:'20px', paddingLeft:'50px', paddingTop:'10px'}}/>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Nav className="mr-auto">
-      <NavLink exact to="/" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}> Home </NavLink>
-      <NavLink to="/Courses" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Courses</NavLink>
-      <NavLink to="/Quizzes" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Quizzes</NavLink>
-      <NavLink to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Create</NavLink>
-      {view}
-      {/* <NavLink to="/RosterUpload" activeClassName="active" style={{ textDecoration: 'none' }}>Course Creation</NavLink> */}
-
-      
-     
+        <NavLink title="Home" exact to="/" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}> Home </NavLink>
+        <NavLink title="View Courses" to="/Courses" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Courses</NavLink>
+        <NavLink title="View Quizzes" to="/Quizzes" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Quizzes</NavLink>
+        <NavLink title="Create a Quiz" to="/CreateQuiz" activeClassName="active" style={{ textDecoration: 'none', paddingTop:'20px' }}>Create</NavLink>
+        {view}
       </Nav>
       
-      <div style={{fontSize:'9px', margin:'25px', color:'red  '}}>
-      <DarkModeApp id="edit-dark-mode-text"/> 
-      {/* <DarkModeApp  id="edit-dark-mode-text"></DarkModeApp> */}
+      <div title="Switch Theme" id="edit-dark-mode-text" style={{fontSize:'9px', margin:'25px', color:'red  '}}>
+      <DarkModeApp id="edit-dark-mode-text-2" /> 
       </div>
       <img src={logo} alt="SUNY Oswego Logo" style={{width:98, height: 36, marginTop: -8}} />
       <NavDropdown className="justify-content-end" title={name} id="collasible-nav-dropdown">
-      <NavDropdown.Item id="nav-drop-down-little-box" onClick={authInstance.signOut} href="/">Sign Out
-      {/* <NavDropdown.Item id="toggle-dark-mode" onClick={"function here"} href="/"> Toggle Dark Mode */}
-      {/* </NavDropdown.Item> */}
-      </NavDropdown.Item>
+        <NavDropdown.Item id="nav-drop-down-little-box" as={Link} to="/About">About </NavDropdown.Item>
+        <NavDropdown.Item title="" id="nav-drop-down-little-box" onClick={authInstance.signOut} href="/">Sign Out </NavDropdown.Item>
       </NavDropdown>
 
       </Navbar>

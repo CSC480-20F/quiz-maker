@@ -1,3 +1,25 @@
+// MIT License
+
+// Copyright (c) 2020 SUNY Oswego
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 import React from 'react';
 import axios from 'axios';
 import TopNavbar from './TopNavbar';
@@ -6,6 +28,7 @@ import { CSVReader } from 'react-papaparse';
 import styled from 'styled-components';
 import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import {UserContext} from '../context/UserContext';
   
 const buttonRef = React.createRef()
 
@@ -56,6 +79,8 @@ const Style = styled.div`
 `;
 
 class RosterUpload extends React.Component {
+  static contextType = UserContext
+
   constructor(props) {
     super(props);
     this.state = {
@@ -66,7 +91,8 @@ class RosterUpload extends React.Component {
         "professor": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
         "topics": [],
         "topic": "",
-        "courseID": ""
+        "courseID": "",
+        "token": window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
   }
 
@@ -110,11 +136,11 @@ class RosterUpload extends React.Component {
 
   postToUsers = () => {
     console.log("Posting to the User's DB");
-    axios.put(`http://pi.cs.oswego.edu:9081/users/add-course`, {
+    axios.put(`http://localhost:9081/users/add-course`, {
     "id": this.state.courseID,
     "names": this.state.names,
     "emails": this.state.emails
-    })
+    }, { headers: {"Authorization" : `Bearer ${this.state.token}`}})
     .then(res => {
       this.postTopics();
     }).catch(error =>{
@@ -125,10 +151,10 @@ class RosterUpload extends React.Component {
 
   postTopics = () => {
     console.log("Posting topics DB");
-    axios.put(`http://pi.cs.oswego.edu:9083/courses/add-topics`, {
+    axios.put(`http://localhost:9083/courses/add-topics`, {
     "courseID": this.state.courseID,
     "topics": this.state.topics
-    })
+    }, { headers: {"Authorization" : `Bearer ${this.state.token}`}})
     .then(res => {
       NotificationManager.success('Course successfully created! 🥳', 'Course Created', 4000);
       this.props.history.push('/');
@@ -158,7 +184,7 @@ class RosterUpload extends React.Component {
       return;
     }
 
-    axios.get('http://pi.cs.oswego.edu:9083/courses/create-course/' + sendString).then(res => {
+    axios.get('http://localhost:9083/courses/create-course/' + sendString, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
       this.setState({
         courseID: res.data
       })
@@ -185,6 +211,7 @@ class RosterUpload extends React.Component {
   }
 
   render() {
+    const teacher = this.context.isInstructor;
 
     const topics = this.state.topics.length ? (
       this.state.topics.map((topic,i) => {
@@ -195,11 +222,9 @@ class RosterUpload extends React.Component {
     ): (
       <span> No topics added yet </span>
     )
-    
-    return (
-      <>
-        <Style>
-        <TopNavbar/>
+
+    const view = teacher === true ? (
+      <Style>
         <div className="container">
         <div className="small-spacer"></div>
 
@@ -210,7 +235,6 @@ class RosterUpload extends React.Component {
         
         <div className="spacer"></div>
 
-        {/* <ToggleContainer> */}
         <Card className="main-card rounded-corner">
         <CSVReader
           required
@@ -242,10 +266,21 @@ class RosterUpload extends React.Component {
         <div className="small-spacer"></div>
         <Button type="submit" variant="light" className="submit-button rounded-corner"> Create Course </Button>
         </Card>
-        {/* </ToggleContainer> */}
+
         </Form>
         </div>
-        </Style>
+      </Style>
+    ):(
+      <div className="container">
+        <span role="img" aria-label="Restricted Access" className="header"> You do not have access to this page ❌ </span> 
+      </div>
+
+    )
+    
+    return (
+      <>
+        <TopNavbar/>
+        {view}
       </>
     )
   }

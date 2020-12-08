@@ -1,3 +1,25 @@
+// MIT License
+
+// Copyright (c) 2020 SUNY Oswego
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 import React, { Component } from 'react'
 import { Button } from "react-bootstrap";
 import { Link } from 'react-router-dom';
@@ -17,7 +39,8 @@ class Dashboard extends Component {
     state = {
         quizzesDeckData: [],
         createdQuizzes: [],
-        isLoading: true
+        isLoading: true,
+        token: window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
 
 
@@ -25,7 +48,7 @@ class Dashboard extends Component {
     componentDidMount() {
         this.mounted = true;
         const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail();
-        axios.get('http://pi.cs.oswego.edu:9084/quizzes/get-created-quizzes/' + email).then(res => {
+        axios.get('http://localhost:9082/quizzes/get-created-quizzes/' + email, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
             if(this.mounted){
                 this.setState({createdQuizzes: res.data}, () => {this.getRecentQuizzes()})
             }
@@ -52,7 +75,7 @@ class Dashboard extends Component {
 
         const teacher = this.context.isInstructor;
 
-        const view = teacher ? (
+        const view = teacher === true ? (
             <InstructorCourses limit="3"/>
         ):(
             <MyCourses limit="3"/>
@@ -63,10 +86,9 @@ class Dashboard extends Component {
                 <div> <TopNavbar/> </div>
                 
                 <div className="container-middle">
-                <div className="header"> Fall 2020 </div>
-    
+                <div className="header"> Fall 2020 </div>    
                 <div style={{padding: '10px'}}> </div>
-                <Button variant="light" id="dark-mode-button" className='create-quiz' as={Link} to="/CreateQuiz">Create a Quiz</Button>
+                <Button title="Create a Quiz" variant="light" id="dark-mode-button" className='create-quiz' as={Link} to="/CreateQuiz">Create a Quiz</Button>
                     <div className='container'>
                         <h1 className='subtitle'> My Courses </h1>
                         {view}

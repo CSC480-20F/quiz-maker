@@ -1,8 +1,32 @@
+// MIT License
+
+// Copyright (c) 2020 SUNY Oswego
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 package dev.microprofile.CoursesServer;
 
 import com.mongodb.*;
 import org.bson.types.ObjectId;
 
+import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.RequestScoped;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
@@ -12,7 +36,8 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
+@RequestScoped
+@RolesAllowed({"oswego.edu"})
 @Path("/courses")
 public class QuizMakerCoursesDbInfo {
     // Creates login username and password
@@ -79,7 +104,6 @@ public class QuizMakerCoursesDbInfo {
             currentCourse.removeField("courseRoster");
             courses.add(currentCourse);
         }
-        //courseOut = courseOut.concat("]");
         database.getMongoClient().close();
         return Response.ok(courses.toString(), MediaType.APPLICATION_JSON).build();
     }
@@ -105,7 +129,6 @@ public class QuizMakerCoursesDbInfo {
         return Response.ok(courseList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
-    //needs testing
     //adds topics to course
     @Path("/add-topics")
     @PUT

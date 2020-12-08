@@ -1,3 +1,25 @@
+// MIT License
+
+// Copyright (c) 2020 SUNY Oswego
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 import React, { Component } from 'react';
 import {Card, Form, Col, Button, Spinner, Row} from 'react-bootstrap';
 import styled from 'styled-components';
@@ -62,12 +84,13 @@ class ManageTopics extends Component {
         topics: [],
         topic: "",
         sendingTopic: false,
-        loadingTopics: true
+        loadingTopics: true,
+        token: window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
 
     componentDidMount () {
       let id = this.props.courseID
-      axios.get("http://pi.cs.oswego.edu:9083/courses/get-courses/" + id).then(res => {
+      axios.get("http://localhost:9083/courses/get-courses/" + id, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
         this.setState({topics: res.data[0].topics, loadingTopics: false})
       })
     }
@@ -96,10 +119,10 @@ class ManageTopics extends Component {
     saveTopics = () => {
       if (this.state.topics.length > 0) {
         this.setState({sendingTopic: true})
-        axios.post(`http://pi.cs.oswego.edu:9083/courses/update-topics`, {
+        axios.post(`http://localhost:9083/courses/update-topics`, {
           "courseID": this.props.courseID,
           "topics":this.state.topics
-        }).then(res => {
+        }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
           NotificationManager.success('Topics successfully updated!', 'Topics Updated', 3000);
           this.setState({sendingTopic: false})
         }).catch(error =>{
@@ -117,7 +140,7 @@ class ManageTopics extends Component {
             this.state.topics.map((topic,i) => {
                 return (
                   <Row className="justify-content-md-center" style={{alignItems: "baseline"}} key={i}>
-                    <Col xs lg="2" className="purpleColor">{topic}</Col>
+                    <Col xs lg="2" className="purpleColor" style={{cursor: "default"}}>{topic}</Col>
                     <Col xs lg="1"><Button variant="light" id="dark-mode-button" onClick={() => this.removeTopic(topic)} className="rounded-corner remove"> X </Button></Col>
                   </Row>
                 )

@@ -1,11 +1,32 @@
+// MIT License
+
+// Copyright (c) 2020 SUNY Oswego
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 package dev.microprofile.QuizzesServer;
 
 import com.mongodb.*;
-import com.mongodb.client.MongoDatabase;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 
+import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.RequestScoped;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
@@ -15,22 +36,16 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
-import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
-
-
+@RequestScoped
+@RolesAllowed({"oswego.edu"})
 @Path("/quizzes")
 public class QuizMakerQuizzesDbInfo {
     // Creates login username and password
     MongoCredential frontendAuth = MongoCredential.createScramSha1Credential("frontend", "quizzesDB", "CsC480OswegoFrontendXD".toCharArray());    // Creates the db-server address which  is locally hosted currently (Unable to access with outside machine (working))
     ServerAddress serverAddress = new ServerAddress("129.3.20.26", 27019);
-    CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
-        fromProviders(PojoCodecProvider.builder().register(QuizMakerQuiz.class).automatic(true).build()));
     MongoClient mongoClient = new MongoClient(serverAddress, Collections.singletonList(frontendAuth));
-    //MongoClient mongoClient = new MongoClient(27018);
     //Connects to the specific db we want;
     DB database = mongoClient.getDB("quizzesDB");
-    MongoDatabase  db = mongoClient.getDatabase("quizzesDB");
 
     //Dumps whole db
     @Path("/all")
@@ -66,14 +81,12 @@ public class QuizMakerQuizzesDbInfo {
         BasicDBObject query = new BasicDBObject();
 
         query.put("creator", email);
-
         DBCursor currentQuiz = collection.find(query);
         ArrayList<DBObject> quizList = new ArrayList<>();
 
         while (currentQuiz.hasNext()) {
           DBObject quiz = currentQuiz.next();
           BasicDBList questions = (BasicDBList) quiz.get("quizQuestions");
-          //System.out.println(questions.toString());
           int questSize = questions.size();
           quiz.removeField("quizQuestions");
           quiz.put("quiz-length", questSize);
@@ -143,7 +156,26 @@ public class QuizMakerQuizzesDbInfo {
         return Response.ok(quiz.toString(), MediaType.APPLICATION_JSON).build();
     }
 
-    //adds a quiz to db
+    @Path("/course-starred-quizzes/{courseID}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response starredCourses(@PathParam("courseID") String courseID){
+        DBCollection collection = database.getCollection("quizzes");
+        BasicDBObject query = new BasicDBObject();
+        ArrayList<DBObject> starredQuizzes = new ArrayList<>();
+        query.put("courseID", courseID);
+        DBCursor foundCourse = collection.find(query);
+        while (foundCourse.hasNext()){
+            DBObject fC = foundCourse.next();
+            if(fC.get("starred").equals(true)){
+                starredQuizzes.add(fC);
+            }
+        }
+        mongoClient.close();
+        return Response.ok(starredQuizzes.toString(), MediaType.APPLICATION_JSON).build();
+    }
+
+    //POST adds a quiz to db
     @Path("/add-quiz")
     @POST
     @Consumes("application/json")
@@ -155,7 +187,6 @@ public class QuizMakerQuizzesDbInfo {
         return Response.ok().build();
     }
 
-    //needs testing
     //PUT gets quizID and rating int. Updates rating on quiz
     @Path("/update-rating")
     @PUT
@@ -172,7 +203,6 @@ public class QuizMakerQuizzesDbInfo {
         BasicDBObject foundQuiz = new BasicDBObject();
         rate += (int)quiz.get("rating");
         quiz.put("rating", rate);
-        //System.out.println(update.toString());
         foundQuiz.put("_id", new ObjectId(quizId));
         collection.findAndModify(foundQuiz, quiz);
         mongoClient.close();
@@ -198,44 +228,12 @@ public class QuizMakerQuizzesDbInfo {
         mongoClient.close();
         return Response.ok().build();
     }
-
-    @Path("/course-starred-quizzes/{courseID}")
-    @GET
+    @Path("/delete")
+    @delete
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateStar(@PathParam("courseID") String courseID){
-        DBCollection collection = database.getCollection("quizzes");
-        BasicDBObject query = new BasicDBObject();
-        ArrayList<DBObject> starredQuizzes = new ArrayList<>();
-        query.put("courseID", courseID);
-        DBCursor foundCourse = collection.find(query);
-        while (foundCourse.hasNext()){
-            DBObject fC = foundCourse.next();
-            if(fC.get("starred").equals(true)){
-                starredQuizzes.add(fC);
-            }
-        }
-        //System.out.println(query.toString());
-        mongoClient.close();
-        return Response.ok(starredQuizzes.toString(), MediaType.APPLICATION_JSON).build();
-    }
-
-    @Path("/populate-database-for-testing")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response populateDB(JsonArray mockData){
-        DBCollection collection = database.getCollection("quizzes");
-        int badQuizzes = 1;
-        BulkWriteOperation bulk = collection.initializeUnorderedBulkOperation();
-
-        for (JsonValue mockQuiz: mockData) {
-            if(badQuizzes > 2) {
-                DBObject o = BasicDBObject.parse(mockQuiz.toString());
-                bulk.insert(o);
-            }
-            badQuizzes++;
-        }
-        bulk.execute();
-        mongoClient.close();
-        return Response.ok().build();
+    public Response deleteQuiz(JsonOject quizID){
+      DBCollection collection = database.getCollection("quizzes");
+      DBObject query = collection.findOne(new ObjectId(quizID.getString("id")));
+      BasicDBObject foundQuiz = new BasicDBObject();
     }
 }

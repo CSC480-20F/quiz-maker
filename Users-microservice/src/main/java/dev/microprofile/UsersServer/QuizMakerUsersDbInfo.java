@@ -1,7 +1,31 @@
+// MIT License
+
+// Copyright (c) 2020 SUNY Oswego
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 package dev.microprofile.UsersServer;
 
 import com.mongodb.*;
 
+import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.RequestScoped;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
@@ -9,7 +33,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
 
-
+@RequestScoped
+@RolesAllowed({"oswego.edu"})
 @Path("/users")
 public class QuizMakerUsersDbInfo {
     // Creates login username and password
@@ -62,7 +87,6 @@ public class QuizMakerUsersDbInfo {
         return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
 
-    //needs testing
     //GET passes in the user email gets all taken quizzes
     @Path("/get-quizzes/{email}")
     @GET
@@ -76,6 +100,19 @@ public class QuizMakerUsersDbInfo {
 
         DBObject currentUser = collection.findOne(query);
         Object o = currentUser.get("quizTaken");
+        mongoClient.close();
+        return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
+    }
+
+    @Path("/is-instructor/{email}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response instructorCheck(@PathParam("email") String email){
+        DBCollection collection = database.getCollection("users");
+        BasicDBObject query = new BasicDBObject();
+        query.put("email", email);
+        DBObject currentUser = collection.findOne(query);
+        Object o = currentUser.get("isInstructor");
         mongoClient.close();
         return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
@@ -118,7 +155,6 @@ public class QuizMakerUsersDbInfo {
         return Response.ok().build();
     }
 
-    //needs testing
     //PUT gets email and quizID then updates quizzes taken arraylist url /quizzes-taken
     @Path("/quizzes-taken")
     @PUT
@@ -127,7 +163,6 @@ public class QuizMakerUsersDbInfo {
         DBCollection collection = database.getCollection("users");
         String quizId = quizTaken.getString("id");
         String email = quizTaken.getString("email");
-        System.out.println(email);
         BasicDBObject query = new BasicDBObject();
         query.put("email", email);
         DBObject user = collection.findOne(query);
@@ -144,20 +179,7 @@ public class QuizMakerUsersDbInfo {
         mongoClient.close();
         return Response.ok().build();
     }
-
-    @Path("/is-instructor/{email}")
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response instructorCheck(@PathParam("email") String email){
-        DBCollection collection = database.getCollection("users");
-        BasicDBObject query = new BasicDBObject();
-        query.put("email", email);
-        DBObject currentUser = collection.findOne(query);
-        Object o = currentUser.get("isInstructor");
-        mongoClient.close();
-        return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
-    }
-
+  
     @Path("/remove-from-course")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)

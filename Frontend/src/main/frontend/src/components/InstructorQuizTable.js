@@ -1,9 +1,48 @@
+// MIT License
+
+// Copyright (c) 2020 SUNY Oswego
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 import React, { Component } from 'react';
 import ReactTable from 'react-table-6';
 import 'react-table-6/react-table.css';
 import { withRouter } from 'react-router-dom';
 
 class InstructorQuizTable extends Component {
+
+  addFilterPlaceholder = () => {
+    const filters = document.querySelectorAll("div.rt-th > input");
+    let index = 0;
+    const placeHolders = ["Quiz Name...", "Author's email...", "Topic(s)...", "Number of questions...", "Date created...","Quiz Rating...", "Quiz starred?..."]
+    for (let filter of filters) {
+      filter.placeholder = placeHolders[index];
+      index++;
+      if (index >= placeHolders.length) {
+        index = 0;
+      }
+    }
+  }
+
+  componentDidMount() {
+    this.addFilterPlaceholder();
+  }
 
     render() {
       const getTopics = (topics) => {
@@ -17,9 +56,17 @@ class InstructorQuizTable extends Component {
         return ((new Date(parseInt(mongoID.substring(0, 8), 16) * 1000)).toDateString())
       }
 
+      const getStarred = (star) => {
+        if (star) {
+          return "Yes"
+        } else {
+          return "No"
+        }
+      }
+
       const customTopicAccesor = row => getTopics(row.quizTopics)
       const customDateAccesor = row => getDate(row._id.$oid)
-      const customStarredAccessor = row => (row.starred.toString())
+      const customStarredAccessor = row => (getStarred(row.starred))
 
       const data = this.props.data;
 

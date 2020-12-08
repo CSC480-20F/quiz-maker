@@ -1,3 +1,25 @@
+// MIT License
+
+// Copyright (c) 2020 SUNY Oswego
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import TopNavbar from './TopNavbar';
@@ -8,6 +30,7 @@ import 'react-notifications/lib/notifications.css';
 import {Card, ProgressBar, Form, Col, Button, Modal, } from 'react-bootstrap';
 import { FcCheckmark, FcCancel } from "react-icons/fc"; //https://react-icons.github.io/react-icons/icons?name=fc
 import { AiOutlineLike, AiOutlineDislike, AiTwotoneFlag } from "react-icons/ai"; //https://react-icons.github.io/react-icons/icons?name=ai
+import { FiArrowRightCircle  } from "react-icons/fi"; //https://react-icons.github.io/react-icons/icons?name=fi
 
 const Styles = styled.div`
   .topics {
@@ -73,8 +96,10 @@ const Styles = styled.div`
 
   .next-question-button{
     float: right;
-    background-color: #8F0047;
-    color: white;
+    background-color: white;
+    color: #8F0047;
+    height:40px;
+    width:40px;
   }
 
   .back-course-button {
@@ -115,7 +140,13 @@ const Styles = styled.div`
     color:red;
   }
 
+  .active-none{
+    color:#8F0047;
+  }
+
 `;
+
+
 
 class TakeQuiz extends Component {
   constructor(props){
@@ -144,14 +175,15 @@ class TakeQuiz extends Component {
       "scoreLoading": true,
       "isInstructor": false,
       "student": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail(),
-      "teacher":""
+      "teacher":"",
+      "token": window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token
     }
 
     this.increment = this.increment.bind(this)
     this.decrement = this.decrement.bind(this)
   }
 
-  vote(type){ //type is either 1 for upvote or -1 for downvote;;;vote is a property of the state which describes the user's current vote: 0 = no vote; 1 = already upvoted; -1 already downvoted
+  vote(type){ //type is either 1 for upvote or -1 for downvote
     this.setState(state => ({
       vote: state.vote === type ? 0 : type
     }));
@@ -202,7 +234,7 @@ class TakeQuiz extends Component {
   componentDidMount () {
     this.mounted = true;
     let id = this.props.match.params.quiz_id;
-    axios.get('http://pi.cs.oswego.edu:9084/quizzes/get-quiz/' + id).then(res => {
+    axios.get('http://localhost:9082/quizzes/get-quiz/' + id, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
       if(this.mounted){
         this.setState({
           quizTitle: res.data.quizName,
@@ -257,10 +289,10 @@ class TakeQuiz extends Component {
         })
     } else {
       this.setState({showScore: true, selected: false, selectedID:""})
-      axios.put(`http://pi.cs.oswego.edu:9081/users/quizzes-taken`, {
+      axios.put(`http://localhost:9081/users/quizzes-taken`, {
         "id": this.props.match.params.quiz_id,
         "email": window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
-      }).then(res => {
+      }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
         this.sendRatingToDB();
       }).catch(error =>{
         console.log(error);
@@ -269,17 +301,17 @@ class TakeQuiz extends Component {
   }
 
   sendRatingToDB = () => {
-    axios.put(`http://pi.cs.oswego.edu:9084/quizzes/update-rating`, {
+    axios.put(`http://localhost:9082/quizzes/update-rating`, {
         "id": this.props.match.params.quiz_id,
         "rating": this.state.totalRating
-      }).then(res => {
+      }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
         this.setState({scoreLoading: false})
       }).catch(error =>{console.log(error); this.setState({scoreLoading: false})})
   }
 
   checkIfInstructor = () => {
     const email = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
-    axios.get('http://pi.cs.oswego.edu:9083/courses/get-courses/' + this.state.courseID).then(res => {
+    axios.get('http://localhost:9083/courses/get-courses/' + this.state.courseID, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
       this.setState({teacher:res.data[0].teacher})
       if (email === res.data[0].teacher) {
         this.setState({isInstructor: true})
@@ -302,9 +334,9 @@ class TakeQuiz extends Component {
   }
 
   starQuiz = () => {
-    axios.put(`http://pi.cs.oswego.edu:9084/quizzes/update-star`, {
+    axios.put(`http://localhost:9082/quizzes/update-star`, {
         "id" : this.props.match.params.quiz_id
-      }).then(res => {
+      }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
         NotificationManager.success('Quiz favorite status changed! 🥳', 'Favorite Changed', 4000);
         document.getElementById("star-button").style.visibility="hidden";
       }).catch(error =>{
@@ -410,7 +442,7 @@ class TakeQuiz extends Component {
     })
 
     const nextQuestionButton = this.state.selected ? (
-      <Button variant="light" type="button" className="next-question-button" onClick={() => { this.goToNextQuestion()}}>Next Question</Button>
+      <FiArrowRightCircle variant="light" type="button" className="next-question-button" onClick={() => { this.goToNextQuestion()}}>Next Question</FiArrowRightCircle>
       ):(
         <h1 style={{visibility: "hidden"}}> hehe </h1>
       )
@@ -428,10 +460,12 @@ class TakeQuiz extends Component {
     const endButtons = this.state.isInstructor ? (
       this.state.isStarred ? ( <>
         <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}}>Un-favorite Quiz</Button>
-        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button> </>
+        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
+        <div> "Favoriting a Quiz  will allow you to import its questions when creating your own Quiz"</div> </>
       ):( <>
         <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}}>Favorite Quiz</Button>
-        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button> </>
+        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button> 
+        <div styles={{color:'red'}}> <b> "Favoriting a Quiz will allow you to import its questions when creating your own Quiz" </b> </div> </>
       )
     ):(
       <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
@@ -472,21 +506,23 @@ class TakeQuiz extends Component {
             <h1 className="this-subtitle">Question {currentQuestion + 1}
 
             <AiOutlineLike 
+              title="Like this question"
               style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
               id="upvote"
-              className={this.state.vote === 1 ? "active-upvote" : undefined}
+              className={this.state.vote === 1 ? "active-upvote" : "active-none"}
               onClick={() => this.vote(1)}>
               Upvote
             </AiOutlineLike>
-            <AiOutlineDislike 
+            <AiOutlineDislike
+              title="Dislike this question" 
               style={{display:"inline-block", margin:"2px", cursor:'pointer'}}
               id="downvote"
-              className={this.state.vote === -1 ? "active-downvote" : undefined}
+              className={this.state.vote === -1 ? "active-downvote" : "active-none"}
               onClick={() => this.vote(-1)}>
               Downvote
             </AiOutlineDislike>
 
-            <AiTwotoneFlag onClick={this.handleShow} style={{cursor:'pointer', display:"inline-block", margin:"2px", float: "right"}}  > </AiTwotoneFlag>
+            <AiTwotoneFlag title="Report this question" onClick={this.handleShow} style={{cursor:'pointer', display:"inline-block", margin:"2px", float: "right"}}  > </AiTwotoneFlag>
             <Modal show={this.state.show} onHide={this.handleClose} backdrop="static">
 
             <Form id="report-form" onSubmit={this.onReportSubmit.bind(this)}>
