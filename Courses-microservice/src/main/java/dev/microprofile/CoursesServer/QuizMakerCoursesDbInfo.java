@@ -84,7 +84,6 @@ public class QuizMakerCoursesDbInfo {
         collection.save(courseIn);
         ObjectId id = (ObjectId)courseIn.get("_id");
         mongoClient.close();
-        database.getMongoClient().close();
         return Response.ok(id.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -104,7 +103,7 @@ public class QuizMakerCoursesDbInfo {
             currentCourse.removeField("courseRoster");
             courses.add(currentCourse);
         }
-        database.getMongoClient().close();
+        mongoClient.close();
         return Response.ok(courses.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -125,7 +124,7 @@ public class QuizMakerCoursesDbInfo {
             adding.removeField("courseRoster");
             courseList.add(adding);
         }
-        database.getMongoClient().close();
+        mongoClient.close();
         return Response.ok(courseList.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -152,7 +151,7 @@ public class QuizMakerCoursesDbInfo {
         course.put("topics", topicsList);
         foundCourse.put("_id", new ObjectId(courseId));
         collection.findAndModify(foundCourse, course);
-        database.getMongoClient().close();
+        mongoClient.close();
         return Response.ok().build();
     }
 
@@ -175,7 +174,7 @@ public class QuizMakerCoursesDbInfo {
         BasicDBObject currentCourse = new BasicDBObject();
         currentCourse.put("_id", new ObjectId(id));
         collection.findAndModify(currentCourse, foundCourse);
-        database.getMongoClient().close();
+        mongoClient.close();
         return Response.ok().build();
     }
 
@@ -188,7 +187,7 @@ public class QuizMakerCoursesDbInfo {
         currentCourse.put("_id", new ObjectId(courseId));
         DBObject currentRoster = collection.findOne(currentCourse);
         BasicDBList foundRoster = (BasicDBList)currentRoster.get("courseRoster");
-        database.getMongoClient().close();
+        mongoClient.close();
         return Response.ok(foundRoster, MediaType.APPLICATION_JSON).build();
     }
 
@@ -211,7 +210,7 @@ public class QuizMakerCoursesDbInfo {
         BasicDBObject looker = new BasicDBObject();
         looker.put("_id", id);
         collection.findAndModify(looker,currentCourse);
-        database.getMongoClient().close();
+        mongoClient.close();
         return Response.ok().build();
     }
 
