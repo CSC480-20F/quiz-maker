@@ -7,8 +7,7 @@ cd ../Courses-microservice
 nohup mvn liberty:run &
 cd ../Quizzes-microservice
 nohup mvn liberty:run & 
-cd
-cd ~/mongo
+cd ../mongo
 nohup mongod --bind_ip_all -f mongod.conf & 
 nohup mongod --bind_ip_all -f coursesMongod.conf & 
 nohup mongod --bind_ip_all -f quizesMongod.conf & 
