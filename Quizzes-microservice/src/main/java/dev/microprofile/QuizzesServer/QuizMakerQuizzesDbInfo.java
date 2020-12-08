@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @RequestScoped
-//@RolesAllowed({"oswego.edu"})
+@RolesAllowed({"oswego.edu"})
 @Path("/quizzes")
 public class QuizMakerQuizzesDbInfo {
     // Creates login username and password

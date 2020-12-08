@@ -33,7 +33,7 @@ import javax.ws.rs.core.Response;
 import java.util.Collections;
 
 @RequestScoped
-//@RolesAllowed({"oswego.edu"})
+@RolesAllowed({"oswego.edu"})
 @Path("/users")
 public class QuizMakerUsersDbInfo {
     // Creates login username and password
