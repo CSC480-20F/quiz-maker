@@ -202,4 +202,30 @@ public class QuizMakerUsersDbInfo {
         mongoClient.close();
         return Response.ok().build();
     }
+
+    @Path("/delete-taken-quizzes")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteTakenQuizzes(JsonObject quizTaken){
+        System.out.println(quizTaken.toString());
+        DBCollection collection = database.getCollection("users");
+        String quizId = quizTaken.getString("id");
+        JsonArray emails = quizTaken.getJsonArray("emails");
+        for(JsonValue j: emails) {
+            BasicDBObject query = new BasicDBObject();
+            query.put("email", j);
+            DBObject user = collection.findOne(query);
+            BasicDBList quizList = (BasicDBList) user.get("quizTaken");
+
+            if (quizList.contains(quizId)) {
+                quizList.remove(quizId);
+                BasicDBObject foundQuiz = new BasicDBObject();
+                DBObject update = user;
+                update.put("quizTaken", quizList);
+                foundQuiz.put("email", j);
+                collection.findAndModify(foundQuiz, update);
+            }
+        }
+        return Response.ok().build();
+    }
 }

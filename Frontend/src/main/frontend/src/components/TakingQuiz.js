@@ -156,6 +156,7 @@ class TakeQuiz extends Component {
       "questions": [],
       "courseID": "",
       "quizTitle": "",
+      "courseRoster": [],
       "currentQuestion": 0,
       "score": 0,
       "topics": [""],
@@ -345,6 +346,37 @@ class TakeQuiz extends Component {
       })
   }
 
+  deleteThisQuiz = () => {
+    // Get course roster
+    axios.get('http://localhost:9083/courses/get-course-roster/' + this.state.courseID, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+      this.setState({courseRoster:res.data}, () => {
+        const sendingRoster = [...this.state.courseRoster, this.state.teacher]
+        // Delete the quiz from the usersDB (list of quizzes taken)
+        axios.put(`http://localhost:9081/users/delete-taken-quizzes`, {
+          "id" : this.props.match.params.quiz_id,
+          "emails": sendingRoster
+        }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+          // Now, delete the quiz from the quizzesDB
+          axios.delete(`http://localhost:9082/quizzes/delete-quiz`, {
+            "id" : this.props.match.params.quiz_id
+          }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
+            // Fully deleted quiz
+            NotificationManager.success('Quiz deleted! 🥳', 'Success', 4000);
+            this.props.history.push('/Courses/' + this.state.courseID);
+          }).catch(error => {
+            // Couldn't delete quiz from the quizDB
+            NotificationManager.success('Problem deleting the Quiz 😞', 'Error', 4000);
+            console.log(error);
+          })
+        }).catch(error =>{
+          // Couldn't delete the quiz from the usersDB
+          NotificationManager.success('Problem deleting the Quiz 😞', 'Error', 4000);
+          console.log(error);
+        })
+      })
+    }).catch(err => {NotificationManager.success('Problem deleting the Quiz 😞', 'Error', 4000);console.log(err);}) 
+  }
+
   doNothing () {}
 
   render() {
@@ -461,10 +493,12 @@ class TakeQuiz extends Component {
       this.state.isStarred ? ( <>
         <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}}>Un-favorite Quiz</Button>
         <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
+        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.deleteThisQuiz()}}>Delete this Quiz</Button>
         <div> "Favoriting a Quiz  will allow you to import its questions when creating your own Quiz"</div> </>
       ):( <>
         <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}}>Favorite Quiz</Button>
-        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button> 
+        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
+        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.deleteThisQuiz()}}>Delete this Quiz</Button> 
         <div styles={{color:'red'}}> <b> "Favoriting a Quiz will allow you to import its questions when creating your own Quiz" </b> </div> </>
       )
     ):(
