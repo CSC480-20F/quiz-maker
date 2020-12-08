@@ -111,6 +111,15 @@ const Styles = styled.div`
     border-radius: 20px;
   }
 
+  .delete-quiz-button {
+    background-color: #B20000;
+    color: white;
+    min-width: 20%;
+    max-width: 25%;
+    align-self: center;
+    border-radius: 20px;
+  }
+
   .score-card{
     padding: 50px;
     font-size: 50px;
@@ -492,15 +501,19 @@ class TakeQuiz extends Component {
       
     const endButtons = this.state.isInstructor ? (
       this.state.isStarred ? ( <>
-        <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}}>Un-favorite Quiz</Button>
-        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
-        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.deleteThisQuiz()}}>Delete this Quiz</Button>
-        <p styles={{color:'red'}}> "Favoriting a Quiz  will allow you to import its questions when creating your own Quiz"</p> </>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+        <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}} style={{margin: '10px'}}>Un-favorite Quiz</Button>
+        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}} style={{margin: '10px'}}>Back to Course</Button>
+        <Button variant="light" type="button" className="delete-quiz-button" onClick={() => { this.deleteThisQuiz()}} style={{margin: '10px'}}>Delete this Quiz</Button>
+        </div>
+        <p styles={{color:'#B91919', fontSize: '12px'}}> "Favoriting a Quiz  will allow you to import its questions when creating your own Quiz"</p> </>
       ):( <>
-        <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}}>Favorite Quiz</Button>
-        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
-        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.deleteThisQuiz()}}>Delete this Quiz</Button> 
-        <p styles={{color:'red'}}> <b> "Favoriting a Quiz will allow you to import its questions when creating your own Quiz" </b> </p> </>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+        <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}} style={{margin: '10px'}}>Favorite Quiz</Button>
+        <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}} style={{margin: '10px'}}>Back to Course</Button>
+        <Button variant="light" type="button" className="delete-quiz-button" onClick={() => { this.deleteThisQuiz()}} style={{margin: '10px'}}>Delete this Quiz</Button>
+        </div> 
+        <p styles={{color:'#B91919', fontSize: '12px'}}> <b> "Favoriting a Quiz will allow you to import its questions when creating your own Quiz" </b> </p> </>
       )
     ):(
       <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
