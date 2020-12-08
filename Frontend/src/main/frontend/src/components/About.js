@@ -28,8 +28,8 @@ class About extends React.Component {
 
         const engine = [{name: 'Matt Ljuljic', portfolio:'https://github.com/mljuljicPrograms'}, {name: 'Trevor Primus', portfolio:'https://www.linkedin.com/in/trevor-primus/'}];
         const gui = [{name: 'Anisha KC', portfolio:'https://github.com/KC-Anisha'}, {name: 'Nathan Payag', portfolio:'https://github.com/kiyain12'}];
-        const usability = [{name: 'Juhui Kang', portfolio:'https://juhuikang.myportfolio.com/'}, {name: 'Leandro Garrido', portfolio:'https://leandrogarrido.myportfolio.com/'}, {name: 'Danielle LaRosa', portfolio:'google.com'}, {name: 'Michael Olson', portfolio:'https://michaelolson.design/'},  {name: 'Pashang Engineer', portfolio:'https://pashangengineer.com/'}];
-        const requirements = [{name: 'Pashang Engineer', portfolio:'https://pashangengineer.com/'}, {name: 'Daniel Garcia', portfolio:'google.com'} ];
+        const usability = [{name: 'Juhui Kang', portfolio:'https://juhuikang.myportfolio.com/'}, {name: 'Leandro Garrido', portfolio:'https://leandrogarrido.myportfolio.com/'}, {name: 'Danielle LaRosa', portfolio:'https://daniellelarosa.design/'}, {name: 'Michael Olson', portfolio:'https://michaelolson.design/'},  {name: 'Pashang Engineer', portfolio:'https://pashangengineer.com/'}];
+        const requirements = [{name: 'Pashang Engineer', portfolio:'https://pashangengineer.com/'}, {name: 'Daniel Garcia', portfolio:'https://www.google.com'} ];
 
         const professors = [{name: 'Bastian Tenbergen'}, {name: 'Vanessa Maike'}, {name: 'Paul Austin'}]
 
