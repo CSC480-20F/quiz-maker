@@ -65,6 +65,7 @@ public class QuizMakerUsersDbInfo {
             }
         }
         dbInfo = dbInfo.concat("]");
+        mongoClient.close();
         return Response.ok(dbInfo, MediaType.APPLICATION_JSON).build();
 
     }
@@ -82,7 +83,7 @@ public class QuizMakerUsersDbInfo {
 
         DBObject currentUser = collection.findOne(query);
         Object o = currentUser.get("courseId");
-
+        mongoClient.close();
         return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -99,7 +100,7 @@ public class QuizMakerUsersDbInfo {
 
         DBObject currentUser = collection.findOne(query);
         Object o = currentUser.get("quizTaken");
-
+        mongoClient.close();
         return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -112,6 +113,7 @@ public class QuizMakerUsersDbInfo {
         query.put("email", email);
         DBObject currentUser = collection.findOne(query);
         Object o = currentUser.get("isInstructor");
+        mongoClient.close();
         return Response.ok(o.toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -149,7 +151,7 @@ public class QuizMakerUsersDbInfo {
                 collection.findAndModify(foundUser, update);
             }
         }
-
+        mongoClient.close();
         return Response.ok().build();
     }
 
@@ -174,9 +176,10 @@ public class QuizMakerUsersDbInfo {
           foundQuiz.put("email", email);
           collection.findAndModify(foundQuiz,update);
         }
+        mongoClient.close();
         return Response.ok().build();
     }
-
+  
     @Path("/remove-from-course")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -196,6 +199,7 @@ public class QuizMakerUsersDbInfo {
                 collection.findAndModify(userLookUp, foundUser);
             }
         }
+        mongoClient.close();
         return Response.ok().build();
     }
 }

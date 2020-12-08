@@ -702,6 +702,7 @@ class CreateQuizForm extends React.Component{
             <Button id="dark-mode-button" variant="light" className="editing-cancel-button rounded-corner" onClick={() => {this.setState({reviewQuizEditing: false})}}> Cancel </Button>
             <Button id="dark-mode-button" variant="light" className="editing-save-button rounded-corner" onClick={() => {this.saveEditedQuestion()}}> Save Changes </Button>
           </div>
+
           </Card>
           <div className="small-spacer"></div>
         </>
