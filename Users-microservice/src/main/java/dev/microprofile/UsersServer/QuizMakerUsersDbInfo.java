@@ -24,7 +24,6 @@ package dev.microprofile.UsersServer;
 
 import com.mongodb.*;
 
-import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -34,7 +33,7 @@ import javax.ws.rs.core.Response;
 import java.util.Collections;
 
 @RequestScoped
-@RolesAllowed({"oswego.edu"})
+//@RolesAllowed({"oswego.edu"})
 @Path("/users")
 public class QuizMakerUsersDbInfo {
     // Creates login username and password
@@ -209,23 +208,21 @@ public class QuizMakerUsersDbInfo {
     public Response deleteTakenQuizzes(JsonObject quizTaken){
         System.out.println(quizTaken.toString());
         DBCollection collection = database.getCollection("users");
-        String quizId = quizTaken.getString("id");
+        String id = quizTaken.getString("id");
         JsonArray emails = quizTaken.getJsonArray("emails");
-        for(JsonValue j: emails) {
-            BasicDBObject query = new BasicDBObject();
-            query.put("email", j);
-            DBObject user = collection.findOne(query);
-            BasicDBList quizList = (BasicDBList) user.get("quizTaken");
-
-            if (quizList.contains(quizId)) {
-                quizList.remove(quizId);
-                BasicDBObject foundQuiz = new BasicDBObject();
-                DBObject update = user;
-                update.put("quizTaken", quizList);
-                foundQuiz.put("email", j);
-                collection.findAndModify(foundQuiz, update);
+        for (int i = 0; i < emails.size(); i++) {
+            BasicDBObject userLookUp = new BasicDBObject();
+            userLookUp.put("email", emails.getString(i));
+            DBObject foundUser = collection.findOne(userLookUp);
+            BasicDBList quizList = (BasicDBList)foundUser.get("quizTaken");
+            if (quizList.contains(id)) {
+                quizList.remove(id);
+                foundUser.put("quizTaken", quizList);
+                collection.findAndModify(userLookUp, foundUser);
             }
         }
+        mongoClient.close();
         return Response.ok().build();
     }
+
 }

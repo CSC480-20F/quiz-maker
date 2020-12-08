@@ -25,11 +25,8 @@ package dev.microprofile.QuizzesServer;
 import com.mongodb.*;
 import org.bson.types.ObjectId;
 
-import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
-import javax.json.JsonValue;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @RequestScoped
-@RolesAllowed({"oswego.edu"})
+//@RolesAllowed({"oswego.edu"})
 @Path("/quizzes")
 public class QuizMakerQuizzesDbInfo {
     // Creates login username and password
@@ -226,6 +223,18 @@ public class QuizMakerQuizzesDbInfo {
         System.out.println(query.toString());
         collection.findAndModify(foundQuiz, query);
         mongoClient.close();
+        return Response.ok().build();
+    }
+
+    @Path("/delete-quiz")
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteQuiz(JsonObject quiz){
+        DBCollection collection = database.getCollection("quizzes");
+        String quizid = quiz.getString("id");
+        BasicDBObject foundQuiz = new BasicDBObject();
+        foundQuiz.put("_id", new ObjectId(quizid));
+        collection.remove(foundQuiz);
         return Response.ok().build();
     }
 }
