@@ -228,7 +228,7 @@ public class QuizMakerQuizzesDbInfo {
     }
 
     @Path("/delete-quiz")
-    @DELETE
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteQuiz(JsonObject quiz){
         DBCollection collection = database.getCollection("quizzes");

@@ -366,9 +366,9 @@ class TakeQuiz extends Component {
           "emails": sendingRoster
         }, { headers: {"Authorization" : `Bearer ${this.state.token}`}}).then(res => {
           // Now, delete the quiz from the quizzesDB
-          axios.delete(`http://pi.cs.oswego.edu:9082/quizzes/delete-quiz`, {
-            headers: {"Authorization" : `Bearer ${this.state.token}`},
-            data: {"id" : this.props.match.params.quiz_id}
+          axios.put(`http://pi.cs.oswego.edu:9082/quizzes/delete-quiz`, {
+            "id" : this.props.match.params.quiz_id
+          }, { headers: {"Authorization" : `Bearer ${this.state.token}`}
           }).then(res => {
             // Fully deleted quiz
             NotificationManager.success('Quiz deleted! 🥳', 'Success', 4000);
@@ -506,14 +506,14 @@ class TakeQuiz extends Component {
         <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}} style={{margin: '10px'}}>Back to Course</Button>
         <Button variant="light" type="button" className="delete-quiz-button" onClick={() => { this.deleteThisQuiz()}} style={{margin: '10px'}}>Delete this Quiz</Button>
         </div>
-        <p styles={{color:'#B91919', fontSize: '12px'}}> "Favoriting a Quiz  will allow you to import its questions when creating your own Quiz"</p> </>
+        <div styles={{color:'#B91919', fontSize: '12px'}}> "Favoriting a Quiz  will allow you to import its questions when creating your own Quiz"</div> </>
       ):( <>
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
         <Button id="star-button" variant="light" type="button" className="back-course-button" onClick={() => { this.starQuiz()}} style={{margin: '10px'}}>Favorite Quiz</Button>
         <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}} style={{margin: '10px'}}>Back to Course</Button>
         <Button variant="light" type="button" className="delete-quiz-button" onClick={() => { this.deleteThisQuiz()}} style={{margin: '10px'}}>Delete this Quiz</Button>
         </div> 
-        <p styles={{color:'#B91919', fontSize: '12px'}}> <b> "Favoriting a Quiz will allow you to import its questions when creating your own Quiz" </b> </p> </>
+        <div styles={{color:'#B91919', fontSize: '12px'}}> <b> "Favoriting a Quiz will allow you to import its questions when creating your own Quiz" </b> </div> </>
       )
     ):(
       <Button variant="light" type="button" className="back-course-button" onClick={() => { this.goBackToCourse()}}>Back to Course</Button>
