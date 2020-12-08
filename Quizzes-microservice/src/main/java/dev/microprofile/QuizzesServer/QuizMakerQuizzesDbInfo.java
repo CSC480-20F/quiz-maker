@@ -25,6 +25,7 @@ package dev.microprofile.QuizzesServer;
 import com.mongodb.*;
 import org.bson.types.ObjectId;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.json.JsonObject;
 import javax.ws.rs.*;

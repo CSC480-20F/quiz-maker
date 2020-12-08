@@ -24,6 +24,7 @@ package dev.microprofile.UsersServer;
 
 import com.mongodb.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -178,7 +179,7 @@ public class QuizMakerUsersDbInfo {
         mongoClient.close();
         return Response.ok().build();
     }
-  
+
     @Path("/remove-from-course")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
